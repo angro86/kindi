@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<!-- 
+  IMPORTANT: This file must be run on a local server, not opened directly!
+  See README-KINDI.txt for instructions.
+  Quick start: python3 -m http.server 8000 → http://localhost:8000/kindi.html
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kindi - Educational Videos for Kids</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Nunito', sans-serif; }
+    .line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// Icons
+const Icon = ({ d, className, fill }) => <svg className={className} viewBox="0 0 24 24" fill={fill||"none"} stroke="currentColor" strokeWidth="2"><path d={d}/></svg>;
+const Play = ({className}) => <svg className={className} viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor" stroke="currentColor"/></svg>;
+const Clock = ({className}) => <Icon className={className} d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM12 6v6l4 2"/>;
+const Star = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>;
+const Plus = ({className}) => <Icon className={className} d="M12 5v14M5 12h14"/>;
+const X = ({className}) => <Icon className={className} d="M18 6L6 18M6 6l12 12"/>;
+const Edit2 = ({className}) => <Icon className={className} d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>;
+const ArrowLeft = ({className}) => <Icon className={className} d="M19 12H5M12 19l-7-7 7-7"/>;
+const ChevronLeft = ({className}) => <Icon className={className} d="M15 18l-6-6 6-6"/>;
+const Trophy = ({className}) => <Icon className={className} d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/>;
+const Gift = ({className}) => <Icon className={className} d="M20 12v10H4V12M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/>;
+const Volume2 = ({className}) => <Icon className={className} d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>;
+
+// Video database with YouTube IDs
+const VIDEOS = [
+  { id: 1, title: 'ABC Song', channel: 'Super Simple Songs', age: 2, cat: 'songs', color: '#FFE0B2', duration: 180, youtubeId: '_UR-l3QI2nE' },
+  { id: 2, title: 'Phonics Song', channel: 'Super Simple Songs', age: 2, cat: 'songs', color: '#FFCC80', duration: 240, youtubeId: 'BELlZKpi1Zs' },
+  { id: 3, title: 'Wheels on the Bus', channel: 'Little Baby Bum', age: 2, cat: 'songs', color: '#FFB74D', duration: 200, youtubeId: 'e_04ZrNroTo' },
+  { id: 4, title: 'Twinkle Twinkle', channel: 'Super Simple Songs', age: 2, cat: 'songs', color: '#FFE0B2', duration: 160, youtubeId: 'yCjJyiqpAuU' },
+  { id: 5, title: 'Old MacDonald', channel: 'Cocomelon', age: 2, cat: 'songs', color: '#FFCC80', duration: 190, youtubeId: '_6HzoUcx3eo' },
+  { id: 6, title: 'If Youre Happy', channel: 'Super Simple Songs', age: 2, cat: 'songs', color: '#FFB74D', duration: 150, youtubeId: 'l4WNrvVjiTw' },
+  { id: 7, title: 'Baby Shark', channel: 'Pinkfong', age: 2, cat: 'movement', color: '#A5D6A7', duration: 140, youtubeId: 'XqZsoesa55w' },
+  { id: 8, title: 'Head Shoulders', channel: 'Super Simple Songs', age: 2, cat: 'movement', color: '#C8E6C9', duration: 150, youtubeId: 'WX8HmogNyCY' },
+  { id: 9, title: 'Freeze Dance', channel: 'GoNoodle', age: 2, cat: 'movement', color: '#C8E6C9', duration: 180, youtubeId: '2UcZWXvgMZE' },
+  { id: 10, title: 'Walking Walking', channel: 'Super Simple Songs', age: 2, cat: 'movement', color: '#A5D6A7', duration: 130, youtubeId: 'fPMjnlTEZwU' },
+  { id: 11, title: 'Count to 10', channel: 'Super Simple Songs', age: 2, cat: 'counting', color: '#BBDEFB', duration: 180, youtubeId: '85M1yxIcHpw' },
+  { id: 12, title: 'Five Little Ducks', channel: 'Little Baby Bum', age: 2, cat: 'counting', color: '#90CAF9', duration: 200, youtubeId: 'pZw9veQ76fo' },
+  { id: 13, title: 'Five Little Monkeys', channel: 'Super Simple Songs', age: 2, cat: 'counting', color: '#BBDEFB', duration: 185, youtubeId: 'b0NHrFNZWh0' },
+  { id: 14, title: 'Count and Move', channel: 'Jack Hartmann', age: 2, cat: 'counting', color: '#90CAF9', duration: 170, youtubeId: '0TgLtF3PMOc' },
+  { id: 15, title: 'Rainbow Colors', channel: 'Super Simple Songs', age: 2, cat: 'colors', color: '#E1BEE7', duration: 200, youtubeId: 'tRNy2i75tCc' },
+  { id: 16, title: 'Color Song', channel: 'Pinkfong', age: 2, cat: 'colors', color: '#CE93D8', duration: 180, youtubeId: 'SuFScoO4tb0' },
+  { id: 17, title: 'I See Something Blue', channel: 'Super Simple Songs', age: 2, cat: 'colors', color: '#E1BEE7', duration: 170, youtubeId: 'jYAWf8Y91hA' },
+  { id: 18, title: 'Learn Colors', channel: 'Blippi', age: 2, cat: 'colors', color: '#CE93D8', duration: 220, youtubeId: 'M2Ha1HvkKPw' },
+  { id: 19, title: 'Animal Sounds', channel: 'Bounce Patrol', age: 2, cat: 'animals', color: '#FFCCBC', duration: 200, youtubeId: 't99ULJjCsaM' },
+  { id: 20, title: 'Farm Animals', channel: 'Blippi', age: 2, cat: 'animals', color: '#FFAB91', duration: 240, youtubeId: 'tlG1N8W3fQQ' },
+  { id: 21, title: 'Zoo Animals', channel: 'Nat Geo Kids', age: 2, cat: 'animals', color: '#FFCCBC', duration: 210, youtubeId: 'OwRmivbNgQk' },
+  { id: 22, title: 'Dinosaur Songs', channel: 'Pinkfong', age: 2, cat: 'animals', color: '#FFAB91', duration: 200, youtubeId: 'Lnt9Ynk3NHc' },
+  { id: 41, title: 'How Plants Grow', channel: 'Peekaboo Kidz', age: 4, cat: 'science', color: '#C8E6C9', duration: 420, youtubeId: 'tkFPyue0E0Q' },
+  { id: 42, title: 'Weather for Kids', channel: 'SciShow Kids', age: 4, cat: 'science', color: '#A5D6A7', duration: 380, youtubeId: 'Uo8lbeVVvwc' },
+  { id: 43, title: 'Water Cycle', channel: 'Peekaboo Kidz', age: 4, cat: 'science', color: '#C8E6C9', duration: 400, youtubeId: 'ncORPosDrjI' },
+  { id: 44, title: 'How Volcanoes Work', channel: 'Nat Geo Kids', age: 4, cat: 'science', color: '#A5D6A7', duration: 410, youtubeId: 'lAmqsMQG3RM' },
+  { id: 49, title: 'Letter Sounds A-Z', channel: 'Jack Hartmann', age: 4, cat: 'reading', color: '#B3E5FC', duration: 480, youtubeId: '36IBDpTRVNE' },
+  { id: 50, title: 'Sight Words', channel: 'Scratch Garden', age: 4, cat: 'reading', color: '#81D4FA', duration: 420, youtubeId: 'hq3yfQnllfQ' },
+  { id: 51, title: 'Alphablocks', channel: 'Alphablocks', age: 4, cat: 'reading', color: '#B3E5FC', duration: 450, youtubeId: 'j4w9e2I8JGo' },
+  { id: 52, title: 'Rhyming Words', channel: 'Scratch Garden', age: 4, cat: 'reading', color: '#81D4FA', duration: 360, youtubeId: 'GYeFm-qP3eA' },
+  { id: 57, title: 'Addition', channel: 'Numberblocks', age: 4, cat: 'math', color: '#FFF9C4', duration: 360, youtubeId: 'WTeqUejf3D0' },
+  { id: 58, title: 'Counting to 100', channel: 'Numberblocks', age: 4, cat: 'math', color: '#FFF59D', duration: 380, youtubeId: 'bGetqbqDVaA' },
+  { id: 59, title: 'Shapes', channel: 'Scratch Garden', age: 4, cat: 'math', color: '#FFF9C4', duration: 320, youtubeId: 'OEbRDtCAFdU' },
+  { id: 60, title: 'Skip Counting', channel: 'Jack Hartmann', age: 4, cat: 'math', color: '#FFF59D', duration: 350, youtubeId: 'OCxvNtrcDIs' },
+  { id: 65, title: 'Draw Animals', channel: 'Art for Kids Hub', age: 4, cat: 'arts', color: '#F8BBD9', duration: 540, youtubeId: '46S_bVFPTLU' },
+  { id: 66, title: 'Draw a Cat', channel: 'Art for Kids Hub', age: 4, cat: 'arts', color: '#F48FB1', duration: 420, youtubeId: 'FzFgJVdWXoo' },
+  { id: 67, title: 'Paper Crafts', channel: 'Red Ted Art', age: 4, cat: 'arts', color: '#F8BBD9', duration: 500, youtubeId: 'bEtllDJfPmE' },
+  { id: 68, title: 'Origami', channel: 'Red Ted Art', age: 4, cat: 'arts', color: '#F48FB1', duration: 520, youtubeId: 'ymFFHLdPqoo' },
+  { id: 73, title: 'Being a Good Friend', channel: 'Sesame Street', age: 4, cat: 'social', color: '#D1C4E9', duration: 300, youtubeId: 'ryNX9o7ozB0' },
+  { id: 74, title: 'Sharing is Caring', channel: 'Daniel Tiger', age: 4, cat: 'social', color: '#B39DDB', duration: 280, youtubeId: 'fQKgDdK-5vU' },
+  { id: 75, title: 'Managing Feelings', channel: 'Sesame Street', age: 4, cat: 'social', color: '#D1C4E9', duration: 320, youtubeId: 'ZVTLsQ8iNCM' },
+  { id: 76, title: 'Being Kind', channel: 'Daniel Tiger', age: 4, cat: 'social', color: '#B39DDB', duration: 290, youtubeId: 'GOzrCZPA7u4' },
+  { id: 81, title: 'Butterfly Life Cycle', channel: 'SciShow Kids', age: 4, cat: 'nature', color: '#DCEDC8', duration: 390, youtubeId: 'O1S2IA7mZ5Q' },
+  { id: 82, title: 'Seasons', channel: 'Peekaboo Kidz', age: 4, cat: 'nature', color: '#C5E1A5', duration: 360, youtubeId: 'VHpkfSVPmEY' },
+  { id: 83, title: 'Ocean Creatures', channel: 'Nat Geo Kids', age: 4, cat: 'nature', color: '#DCEDC8', duration: 420, youtubeId: 'b6DIfwJAIkk' },
+  { id: 84, title: 'Amazing Insects', channel: 'Nat Geo Kids', age: 4, cat: 'nature', color: '#C5E1A5', duration: 400, youtubeId: 'qBLTiUE0g0E' },
+  { id: 89, title: 'Volcano Experiment', channel: 'Science Max', age: 6, cat: 'experiments', color: '#FFCDD2', duration: 600, youtubeId: 'PuEkBSLTo2M' },
+  { id: 90, title: 'Slime Science', channel: 'SciShow Kids', age: 6, cat: 'experiments', color: '#EF9A9A', duration: 480, youtubeId: 'GR2aD-ludT8' },
+  { id: 91, title: 'Kitchen Chemistry', channel: 'SciShow Kids', age: 6, cat: 'experiments', color: '#FFCDD2', duration: 520, youtubeId: 'XUkmLFAE6jM' },
+  { id: 92, title: 'Static Electricity', channel: 'Science Max', age: 6, cat: 'experiments', color: '#EF9A9A', duration: 480, youtubeId: 'TdDovJyMROE' },
+  { id: 97, title: 'Multiplication', channel: 'Math Antics', age: 6, cat: 'math', color: '#B2DFDB', duration: 540, youtubeId: 'lsaxd8l7hPI' },
+  { id: 98, title: 'Division', channel: 'Math Antics', age: 6, cat: 'math', color: '#80CBC4', duration: 520, youtubeId: 'KGMf314LUc0' },
+  { id: 99, title: 'Fractions', channel: 'Math Antics', age: 6, cat: 'math', color: '#B2DFDB', duration: 560, youtubeId: 'n0FZhQ_GkKw' },
+  { id: 100, title: 'Times Tables', channel: 'Scratch Garden', age: 6, cat: 'math', color: '#80CBC4', duration: 420, youtubeId: 'Iq4vuLF0c-c' },
+  { id: 105, title: 'Solar System', channel: 'Nat Geo Kids', age: 6, cat: 'space', color: '#C5CAE9', duration: 720, youtubeId: 'Qd6nLM2QlWw' },
+  { id: 106, title: 'The Moon', channel: 'SciShow Kids', age: 6, cat: 'space', color: '#9FA8DA', duration: 540, youtubeId: 'nXUJZt_TYqA' },
+  { id: 107, title: 'What are Stars', channel: 'Peekaboo Kidz', age: 6, cat: 'space', color: '#C5CAE9', duration: 480, youtubeId: 'T9U7Fs0gQXs' },
+  { id: 108, title: 'Astronauts', channel: 'NASA Kids', age: 6, cat: 'space', color: '#9FA8DA', duration: 660, youtubeId: '0e8mFAzCe1c' },
+  { id: 113, title: 'Ancient Egypt', channel: 'Crash Course Kids', age: 6, cat: 'history', color: '#FFE0B2', duration: 660, youtubeId: 'lZOlbCIlalE' },
+  { id: 114, title: 'Dinosaur Era', channel: 'Nat Geo Kids', age: 6, cat: 'history', color: '#FFCC80', duration: 600, youtubeId: 'FBYK2UEQBXE' },
+  { id: 115, title: 'Ancient Greece', channel: 'Crash Course Kids', age: 6, cat: 'history', color: '#FFE0B2', duration: 640, youtubeId: 'F-zROoSQLYc' },
+  { id: 116, title: 'Vikings', channel: 'Nat Geo Kids', age: 6, cat: 'history', color: '#FFCC80', duration: 560, youtubeId: 'M6_xM4aTNQQ' },
+  { id: 121, title: 'Story Elements', channel: 'Teaching Without Frills', age: 6, cat: 'reading', color: '#B3E5FC', duration: 480, youtubeId: 'fD9cRxWVG0M' },
+  { id: 122, title: 'Reading Comprehension', channel: 'Scratch Garden', age: 6, cat: 'reading', color: '#81D4FA', duration: 520, youtubeId: 'k4d2Ysy9f-c' },
+  { id: 123, title: 'Main Idea', channel: 'Scratch Garden', age: 6, cat: 'reading', color: '#B3E5FC', duration: 460, youtubeId: 'a3-dS7X7LX8' },
+  { id: 124, title: 'Poetry', channel: 'Scratch Garden', age: 6, cat: 'reading', color: '#81D4FA', duration: 500, youtubeId: '71KhFr-xmGs' },
+  { id: 129, title: 'What is Coding', channel: 'Code.org', age: 6, cat: 'coding', color: '#D7CCC8', duration: 420, youtubeId: 'THOEQ5soVpY' },
+  { id: 130, title: 'Loops', channel: 'Scratch Team', age: 6, cat: 'coding', color: '#BCAAA4', duration: 480, youtubeId: 'mgooqyWMTxk' },
+  { id: 131, title: 'Variables', channel: 'Code.org', age: 6, cat: 'coding', color: '#D7CCC8', duration: 500, youtubeId: 'HmWJwfJXYOg' },
+  { id: 132, title: 'Make a Game', channel: 'Code.org', age: 6, cat: 'coding', color: '#BCAAA4', duration: 600, youtubeId: 'Ok6LbV6bqaE' },
+];
+
+const QUIZ_INTERVAL = 180;
+const CATEGORIES = {
+  2: { songs: '🎵 Songs', movement: '💃 Dance', counting: '🔢 Numbers', colors: '🎨 Colors', animals: '🐾 Animals' },
+  4: { science: '🔬 Science Lab', reading: '📖 Story Time', math: '🔢 Number Quest', arts: '🎨 Art Studio', social: '🤝 Friend School', nature: '🌿 Nature Walk' },
+  6: { experiments: '🧪 Experiments', math: '🔢 Math Quest', space: '🚀 Space', history: '🏛️ History', reading: '📚 Reading', coding: '💻 Coding' },
+};
+
+const QUESTIONS = {
+  2: [
+    { q: 'What color is the sun?', answers: ['Yellow', 'Blue', 'Green'], correct: 0, emoji: '☀️' },
+    { q: 'What sound does a cow make?', answers: ['Woof', 'Moo', 'Meow'], correct: 1, emoji: '🐄' },
+    { q: 'How many legs does a dog have?', answers: ['2', '4', '6'], correct: 1, emoji: '🐕' },
+    { q: 'Which one can fly?', answers: ['Fish', 'Bird', 'Cat'], correct: 1, emoji: '🐦' },
+  ],
+  4: [
+    { q: 'What do plants need to grow?', answers: ['Candy', 'Water and Sun', 'Toys'], correct: 1, emoji: '🌱' },
+    { q: 'How many days in a week?', answers: ['5', '7', '10'], correct: 1, emoji: '📅' },
+    { q: 'What is 2 plus 3?', answers: ['4', '5', '6'], correct: 1, emoji: '🔢' },
+    { q: 'What do bees make?', answers: ['Milk', 'Honey', 'Bread'], correct: 1, emoji: '🐝' },
+  ],
+  6: [
+    { q: 'Which is the Red Planet?', answers: ['Venus', 'Mars', 'Jupiter'], correct: 1, emoji: '🔴' },
+    { q: 'How many continents?', answers: ['5', '7', '9'], correct: 1, emoji: '🌍' },
+    { q: 'What is 8 times 7?', answers: ['54', '56', '58'], correct: 1, emoji: '✖️' },
+    { q: 'Sides of a hexagon?', answers: ['5', '6', '8'], correct: 1, emoji: '⬡' },
+  ],
+};
+
+const FREE_CHOICE = [
+  { id: 'dinosaurs', label: '🦖 Dinosaurs', term: 'dinosaurs for kids' },
+  { id: 'space', label: '🚀 Space', term: 'space for kids' },
+  { id: 'animals', label: '🐾 Animals', term: 'animals for kids' },
+  { id: 'cars', label: '🚗 Cars', term: 'cars trucks for kids' },
+  { id: 'princesses', label: '👸 Princesses', term: 'princess stories kids' },
+  { id: 'superheroes', label: '🦸 Heroes', term: 'superheroes for kids' },
+  { id: 'gaming', label: '🎮 Gaming', term: 'minecraft for kids' },
+  { id: 'sports', label: '⚽ Sports', term: 'sports for kids' },
+];
+
+// TTS
+const useSpeech = () => {
+  const speak = (text) => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 0.9;
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(v => v.lang.startsWith('en'));
+      if (voice) u.voice = voice;
+      window.speechSynthesis.speak(u);
+    }
+  };
+  useEffect(() => { window.speechSynthesis?.getVoices(); }, []);
+  return { speak };
+};
+
+// Avatars
+const Fox = ({size=60, happy}) => <svg viewBox="0 0 80 80" width={size} height={size}><circle cx="40" cy="42" r="32" fill="#FF9A5C"/><polygon points="12,20 25,45 5,40" fill="#FF9A5C"/><polygon points="68,20 55,45 75,40" fill="#FF9A5C"/><ellipse cx="40" cy="52" rx="18" ry="14" fill="#FFD4B8"/><circle cx="30" cy="38" r="6" fill="#333"/><circle cx="50" cy="38" r="6" fill="#333"/><circle cx="31" cy="37" r="2.5" fill="#FFF"/><circle cx="51" cy="37" r="2.5" fill="#FFF"/><ellipse cx="40" cy="48" rx="4" ry="3" fill="#333"/>{happy ? <ellipse cx="40" cy="58" rx="6" ry="5" fill="#333"/> : <path d="M32 55 Q40 62 48 55" fill="none" stroke="#333" strokeWidth="2"/>}</svg>;
+const Bunny = ({size=60, happy}) => <svg viewBox="0 0 80 80" width={size} height={size}><circle cx="40" cy="48" r="28" fill="#FFB6C1"/><ellipse cx="25" cy="18" rx="10" ry="24" fill="#FFB6C1"/><ellipse cx="55" cy="18" rx="10" ry="24" fill="#FFB6C1"/><circle cx="30" cy="45" r="5" fill="#333"/><circle cx="50" cy="45" r="5" fill="#333"/><ellipse cx="40" cy="54" rx="4" ry="2.5" fill="#FF8A80"/><path d="M34 58 Q40 63 46 58" fill="none" stroke="#333" strokeWidth="2"/></svg>;
+const Owl = ({size=60}) => <svg viewBox="0 0 80 80" width={size} height={size}><circle cx="40" cy="44" r="30" fill="#8D6E63"/><ellipse cx="40" cy="46" rx="22" ry="20" fill="#D7CCC8"/><circle cx="30" cy="42" r="10" fill="#FFF"/><circle cx="50" cy="42" r="10" fill="#FFF"/><circle cx="30" cy="42" r="5" fill="#333"/><circle cx="50" cy="42" r="5" fill="#333"/><polygon points="40,50 35,58 45,58" fill="#FF9800"/></svg>;
+const Panda = ({size=60}) => <svg viewBox="0 0 80 80" width={size} height={size}><circle cx="40" cy="44" r="30" fill="#FFF"/><circle cx="16" cy="22" r="10" fill="#333"/><circle cx="64" cy="22" r="10" fill="#333"/><ellipse cx="28" cy="40" rx="11" ry="13" fill="#333"/><ellipse cx="52" cy="40" rx="11" ry="13" fill="#333"/><circle cx="28" cy="40" r="6" fill="#FFF"/><circle cx="52" cy="40" r="6" fill="#FFF"/><circle cx="28" cy="40" r="3" fill="#333"/><circle cx="52" cy="40" r="3" fill="#333"/><ellipse cx="40" cy="52" rx="6" ry="4" fill="#333"/></svg>;
+const avatars = [Fox, Bunny, Owl, Panda];
+const avatarNames = ['Foxy', 'Bun Bun', 'Ollie', 'Pan Pan'];
+
+// Components
+const QuestionModal = ({ question, onAnswer }) => {
+  const [sel, setSel] = useState(null);
+  const [done, setDone] = useState(false);
+  const { speak } = useSpeech();
+  useEffect(() => { speak(question.q); }, []);
+  const pick = (i) => { setSel(i); setDone(true); speak(i === question.correct ? "That's right!" : "Good try!"); setTimeout(() => onAnswer(i === question.correct), 2000); };
+  return (
+    <div className="fixed inset-0 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center z-50 p-4">
+      <div className="max-w-lg w-full text-center">
+        {!done ? (<>
+          <div className="text-8xl mb-6">{question.emoji}</div>
+          <h2 className="text-3xl font-bold text-white mb-6">{question.q}</h2>
+          <button onClick={() => speak(question.q)} className="px-5 py-2 bg-white/20 rounded-full text-white mb-8"><Volume2 className="w-5 h-5 inline mr-2"/>Read to me</button>
+          <div className="space-y-3">{question.answers.map((a,i) => <button key={i} onClick={() => pick(i)} className="w-full py-4 rounded-2xl bg-white/20 hover:bg-white text-white hover:text-indigo-600 text-xl font-bold">{a}</button>)}</div>
+        </>) : (<>
+          <div className="text-9xl mb-6">{sel === question.correct ? '⭐' : '😅'}</div>
+          <h2 className="text-4xl font-bold text-white">{sel === question.correct ? 'You got it!' : 'So close!'}</h2>
+          {sel !== question.correct && <p className="text-xl text-white/80 mt-3">It was: <strong>{question.answers[question.correct]}</strong></p>}
+        </>)}
+      </div>
+    </div>
+  );
+};
+
+const JarFullModal = ({ name, onClaim }) => {
+  const { speak } = useSpeech();
+  useEffect(() => { speak(`Wow ${name}! You filled the star jar!`); }, []);
+  return (
+    <div className="fixed inset-0 bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center z-50 p-4">
+      <div className="text-center">
+        <div className="text-9xl mb-4">🎉</div>
+        <h2 className="text-4xl font-bold text-white mb-3">Bonus Unlocked!</h2>
+        <p className="text-2xl text-white/90 mb-8">Way to go, {name}!</p>
+        <button onClick={onClaim} className="px-10 py-5 bg-white text-orange-500 font-bold text-xl rounded-2xl shadow-xl hover:scale-105">🎬 Choose My Video!</button>
+      </div>
+    </div>
+  );
+};
+
+const FreeChoiceSelector = ({ onSelect, onCancel }) => {
+  const [step, setStep] = useState('choose');
+  const [term, setTerm] = useState('');
+  const [cat, setCat] = useState(null);
+  return (
+    <div className="fixed inset-0 bg-gradient-to-b from-purple-600 via-indigo-600 to-blue-600 flex items-center justify-center z-50 p-4">
+      <div className="max-w-xl w-full text-center">
+        {step === 'choose' && (<>
+          <div className="text-7xl mb-4">🎁</div>
+          <h2 className="text-3xl font-bold text-white mb-8">Bonus Video Time!</h2>
+          <div className="space-y-4 mb-8">
+            <button onClick={() => setStep('search')} className="w-full p-5 rounded-2xl bg-white/20 hover:bg-white hover:text-purple-600 text-white"><span className="text-4xl mr-4">🔍</span><span className="text-xl font-bold">Search for anything!</span></button>
+            <button onClick={() => setStep('category')} className="w-full p-5 rounded-2xl bg-white/20 hover:bg-white hover:text-purple-600 text-white"><span className="text-4xl mr-4">🎯</span><span className="text-xl font-bold">Pick a category</span></button>
+          </div>
+          <button onClick={onCancel} className="text-white/70">Save for later</button>
+        </>)}
+        {step === 'search' && (<>
+          <button onClick={() => setStep('choose')} className="text-white/70 mb-6"><ChevronLeft className="w-5 h-5 inline"/>Back</button>
+          <div className="text-6xl mb-4">🔍</div>
+          <h3 className="text-2xl font-bold text-white mb-6">What do you want to watch?</h3>
+          <input value={term} onChange={e => setTerm(e.target.value)} onKeyPress={e => e.key === 'Enter' && term.trim() && onSelect({type:'search',term})} placeholder="e.g., Paw Patrol, dinosaurs..." className="w-full px-6 py-4 text-xl bg-white/20 border-2 border-white/30 rounded-2xl text-white placeholder-white/50 focus:outline-none mb-4" autoFocus/>
+          <div className="flex gap-3">
+            <button onClick={onCancel} className="flex-1 py-4 rounded-xl bg-white/20 text-white font-bold">Cancel</button>
+            <button onClick={() => term.trim() && onSelect({type:'search',term})} disabled={!term.trim()} className="flex-1 py-4 rounded-xl bg-white text-purple-600 font-bold disabled:opacity-50">Search!</button>
+          </div>
+        </>)}
+        {step === 'category' && (<>
+          <button onClick={() => setStep('choose')} className="text-white/70 mb-6"><ChevronLeft className="w-5 h-5 inline"/>Back</button>
+          <h3 className="text-2xl font-bold text-white mb-6">Pick something you love!</h3>
+          <div className="grid grid-cols-4 gap-3 mb-6">{FREE_CHOICE.map(c => <button key={c.id} onClick={() => setCat(c)} className={`aspect-square rounded-2xl flex flex-col items-center justify-center ${cat?.id === c.id ? 'bg-white scale-105' : 'bg-white/20'}`}><span className="text-2xl">{c.label.split(' ')[0]}</span><span className={`text-xs font-bold ${cat?.id === c.id ? 'text-purple-600' : 'text-white'}`}>{c.label.split(' ')[1]}</span></button>)}</div>
+          <div className="flex gap-3">
+            <button onClick={onCancel} className="flex-1 py-4 rounded-xl bg-white/20 text-white font-bold">Cancel</button>
+            <button onClick={() => cat && onSelect({type:'category',...cat})} disabled={!cat} className="flex-1 py-4 rounded-xl bg-white text-purple-600 font-bold disabled:opacity-50">Watch!</button>
+          </div>
+        </>)}
+      </div>
+    </div>
+  );
+};
+
+const FreeChoicePlayer = ({ choice, onDone }) => {
+  const term = choice.type === 'search' ? choice.term : choice.term;
+  const title = choice.type === 'search' ? `"${choice.term}"` : choice.label;
+  return (
+    <div className="fixed inset-0 bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 z-50 flex flex-col">
+      <div className="p-4 flex justify-between items-center">
+        <span className="font-bold text-white text-lg">🎉 Bonus: {title}</span>
+        <button onClick={onDone} className="px-5 py-2.5 bg-white/20 rounded-full font-bold text-white">Done</button>
+      </div>
+      <div className="flex-1 p-4">
+        <div className="h-full bg-black rounded-2xl overflow-hidden">
+          <iframe src={`https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(term + ' for kids')}&autoplay=1`} className="w-full h-full" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const YouTubePlayer = ({ video, onBack, onQuiz, onEnd, rewards }) => {
+  const [time, setTime] = useState(0);
+  const [lastQuiz, setLastQuiz] = useState(0);
+  const triggered = useRef(false);
+  const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  
+  useEffect(() => {
+    const i = setInterval(() => {
+      setTime(t => {
+        const n = t + 1;
+        if (n >= video.duration) { clearInterval(i); if (rewards && !triggered.current) { triggered.current = true; onQuiz(); } else onEnd(); return video.duration; }
+        if (rewards && !triggered.current && n - lastQuiz >= QUIZ_INTERVAL && video.duration - n > 300) { triggered.current = true; setLastQuiz(n); onQuiz(); }
+        return n;
+      });
+    }, 1000);
+    return () => clearInterval(i);
+  }, [video.duration, lastQuiz, rewards, onQuiz, onEnd]);
+
+  return (
+    <div className="bg-white rounded-3xl overflow-hidden shadow-xl">
+      <div className="relative aspect-video bg-black">
+        {rewards && <div className="absolute top-4 right-4 bg-white/95 rounded-full px-3 py-1.5 flex items-center gap-2 shadow-lg z-10"><Star className="w-4 h-4 text-yellow-500"/><span className="text-sm font-bold">Quiz {fmt(Math.max(0, QUIZ_INTERVAL - (time - lastQuiz)))}</span></div>}
+        <iframe src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&rel=0`} className="w-full h-full" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/>
+      </div>
+      <div className="p-4 flex justify-between items-center">
+        <div className="flex-1 min-w-0"><h3 className="font-bold text-gray-800 truncate">{video.title}</h3><p className="text-sm text-gray-500">{video.channel}</p></div>
+        <span className="text-sm text-gray-500 mx-4">{fmt(time)} / {fmt(video.duration)}</span>
+        <button onClick={onBack} className="px-4 py-2 bg-gray-100 rounded-full font-medium text-gray-600 flex items-center gap-2"><ArrowLeft className="w-4 h-4"/>Back</button>
+      </div>
+    </div>
+  );
+};
+
+const VideoGrid = ({ videos, onSelect }) => (
+  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {videos.map(v => (
+      <button key={v.id} onClick={() => onSelect(v)} className="group text-left rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl hover:scale-105 transition-all">
+        <div className="relative aspect-video"><img src={`https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`} alt={v.title} className="w-full h-full object-cover"/><div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center"><div className="w-12 h-12 rounded-full bg-white flex items-center justify-center"><Play className="w-5 h-5 text-gray-700"/></div></div></div>
+        <div className="p-3"><h3 className="font-bold text-sm text-gray-800 line-clamp-2">{v.title}</h3><p className="text-xs text-gray-500 mt-1">{v.channel}</p></div>
+      </button>
+    ))}
+  </div>
+);
+
+const ChildModal = ({ child, onSave, onClose }) => {
+  const [name, setName] = useState(child?.name || '');
+  const [age, setAge] = useState(child?.age || 4);
+  const [av, setAv] = useState(child?.avatar || 0);
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-3xl p-8 max-w-md w-full">
+        <div className="flex justify-between items-center mb-6"><h2 className="text-2xl font-bold">{child ? 'Edit' : 'Add'} Profile</h2><button onClick={onClose}><X className="w-5 h-5 text-gray-500"/></button></div>
+        <div className="flex gap-3 justify-center mb-6">{avatars.map((A,i) => <button key={i} onClick={() => setAv(i)} className={`p-2 rounded-xl ${av === i ? 'bg-indigo-100 ring-2 ring-indigo-400' : ''}`}><A size={50} happy={av === i}/><span className="text-xs text-gray-500 block">{avatarNames[i]}</span></button>)}</div>
+        <input value={name} onChange={e => setName(e.target.value)} className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-lg mb-4" placeholder="Name"/>
+        <div className="mb-6"><span className="text-sm text-gray-600">Age: {age}</span><input type="range" min="2" max="8" value={age} onChange={e => setAge(+e.target.value)} className="w-full mt-2"/></div>
+        <div className="flex gap-3"><button onClick={onClose} className="flex-1 py-3 rounded-xl border-2 border-gray-200 font-bold text-gray-600">Cancel</button><button onClick={() => name.trim() && (onSave({id: child?.id || Date.now(), name, age, avatar: av}), onClose())} className="flex-1 py-3 rounded-xl bg-indigo-500 font-bold text-white">{child ? 'Save' : 'Add'}</button></div>
+      </div>
+    </div>
+  );
+};
+
+// Setup Page
+const SetupPage = ({ kids, onStart, onAdd, onEdit }) => {
+  const [step, setStep] = useState(1);
+  const [sel, setSel] = useState(null);
+  const [dur, setDur] = useState(30);
+  const [cats, setCats] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [rewards, setRewards] = useState(true);
+  const [goal, setGoal] = useState(5);
+
+  const ageGroup = sel ? (sel.age <= 3 ? 2 : sel.age <= 5 ? 4 : 6) : null;
+  const avail = ageGroup ? Object.entries(CATEGORIES[ageGroup]) : [];
+  const canGo = () => step === 1 ? sel : step === 2 ? cats.length > 0 : true;
+  const next = () => step === 3 ? onStart(sel, dur, cats, {enabled: rewards, goal}) : setStep(step + 1);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 flex flex-col relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none"><div className="absolute top-20 -left-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"/><div className="absolute top-1/3 -right-20 w-60 h-60 bg-white/10 rounded-full blur-3xl"/></div>
+      <div className="relative z-10 px-6 pt-6 pb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2"><div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><span className="text-xl">🦊</span></div><span className="text-xl font-bold text-white">kindi</span></div>
+        <button onClick={() => { setEditing(null); setModal(true); }} className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><Plus className="w-5 h-5 text-white"/></button>
+      </div>
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 py-6 max-w-xl mx-auto w-full">
+        {step === 1 && (<div className="text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">Who's watching?</h1>
+          <p className="text-white/70 mb-10">Tap to choose</p>
+          <div className="flex justify-center gap-6 flex-wrap">{kids.map(k => { const A = avatars[k.avatar || 0]; return (
+            <button key={k.id} onClick={() => { setSel(k); setCats([]); }} className={`relative transition-all ${sel?.id === k.id ? 'scale-110' : 'opacity-70 hover:opacity-100'}`}>
+              <div className={`w-20 h-20 rounded-2xl flex items-center justify-center ${sel?.id === k.id ? 'bg-white shadow-xl' : 'bg-white/20'}`}><A size={50} happy={sel?.id === k.id}/></div>
+              <p className={`mt-3 font-semibold ${sel?.id === k.id ? 'text-white' : 'text-white/70'}`}>{k.name}</p>
+              <p className={`text-sm ${sel?.id === k.id ? 'text-white/80' : 'text-white/50'}`}>{k.age} years</p>
+              <button onClick={e => { e.stopPropagation(); setEditing(k); setModal(true); }} className="absolute -top-1 -right-1 w-6 h-6 bg-white/30 rounded-full flex items-center justify-center opacity-0 hover:opacity-100"><Edit2 className="w-3 h-3 text-white"/></button>
+            </button>
+          )})}</div>
+        </div>)}
+        {step === 2 && (<div className="text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">Pick adventures</h1>
+          <p className="text-white/70 mb-8">What sounds fun for {sel?.name}?</p>
+          <div className="grid grid-cols-3 gap-3 mb-8">{avail.map(([k, l]) => { const isSel = cats.includes(k); return (
+            <button key={k} onClick={() => setCats(p => p.includes(k) ? p.filter(c => c !== k) : [...p, k])} className={`aspect-square rounded-2xl flex flex-col items-center justify-center ${isSel ? 'bg-white shadow-xl scale-105' : 'bg-white/20'}`}>
+              <span className="text-2xl mb-1">{l.split(' ')[0]}</span>
+              <span className={`text-xs font-semibold ${isSel ? 'text-indigo-600' : 'text-white'}`}>{l.split(' ').slice(1).join(' ')}</span>
+            </button>
+          )})}</div>
+        </div>)}
+        {step === 3 && (<div className="text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">Set it up</h1>
+          <p className="text-white/70 mb-8">Time and rewards</p>
+          <div className="bg-white/20 rounded-2xl p-5 mb-4">
+            <p className="text-white/80 text-sm mb-3"><Clock className="w-4 h-4 inline mr-2"/>Duration</p>
+            <div className="flex gap-2">{[15,30,45,60].map(m => <button key={m} onClick={() => setDur(m)} className={`flex-1 py-3 rounded-xl font-bold ${dur === m ? 'bg-white text-indigo-600' : 'bg-white/20 text-white'}`}>{m}m</button>)}</div>
+          </div>
+          <div className="bg-white/20 rounded-2xl p-5 mb-4">
+            <button onClick={() => setRewards(!rewards)} className={`flex items-center gap-2 px-4 py-2 rounded-full mx-auto mb-3 ${rewards ? 'bg-amber-400 text-amber-900' : 'bg-white/20 text-white'}`}><Star className="w-4 h-4"/><span className="font-bold text-sm">Star Rewards</span></button>
+            {rewards && <><p className="text-white/80 text-sm mb-3">Stars for bonus video</p><div className="flex gap-2">{[3,5,10,15].map(n => <button key={n} onClick={() => setGoal(n)} className={`flex-1 py-3 rounded-xl font-bold ${goal === n ? 'bg-amber-400 text-amber-900' : 'bg-white/20 text-white'}`}>{n} ⭐</button>)}</div></>}
+          </div>
+          {rewards && <div className="bg-white/10 rounded-xl p-4"><p className="text-white/90 text-sm">🎯 Quiz every 3 min → ⭐ Stars → 🎁 {goal} = Bonus!</p></div>}
+        </div>)}
+      </div>
+      <div className="relative z-10 px-6 pb-8 max-w-xl mx-auto w-full">
+        <div className="flex justify-center gap-2 mb-4">{[1,2,3].map(s => <button key={s} onClick={() => s < step && setStep(s)} className={`h-2 rounded-full ${step === s ? 'w-8 bg-white' : s < step ? 'w-2 bg-white/60' : 'w-2 bg-white/30'}`}/>)}</div>
+        <div className="flex gap-3">
+          {step > 1 && <button onClick={() => setStep(step-1)} className="flex-1 py-4 bg-white/20 text-white font-bold rounded-2xl">Back</button>}
+          <button onClick={next} disabled={!canGo()} className="flex-1 py-4 bg-white text-indigo-600 font-bold rounded-2xl disabled:opacity-50">{step === 3 ? "Let's Go! 🚀" : 'Next'}</button>
+        </div>
+      </div>
+      {modal && <ChildModal child={editing} onSave={editing ? onEdit : onAdd} onClose={() => { setModal(false); setEditing(null); }}/>}
+    </div>
+  );
+};
+
+// Watch Page
+const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
+  const [video, setVideo] = useState(null);
+  const [timeUp, setTimeUp] = useState(false);
+  const [active, setActive] = useState(categories);
+  const [stars, setStars] = useState(0);
+  const [question, setQuestion] = useState(null);
+  const [jarFull, setJarFull] = useState(false);
+  const [freeChoice, setFreeChoice] = useState(false);
+  const [freePlay, setFreePlay] = useState(null);
+  const [time, setTime] = useState(duration * 60);
+
+  const ageGroup = child.age <= 3 ? 2 : child.age <= 5 ? 4 : 6;
+  const allCats = CATEGORIES[ageGroup];
+  const availCats = categories.map(k => [k, allCats[k]]);
+  const videos = VIDEOS.filter(v => v.age === ageGroup && active.includes(v.cat));
+  const questions = QUESTIONS[ageGroup];
+  const A = avatars[child.avatar || 0];
+  const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+  useEffect(() => { const t = setInterval(() => setTime(p => { if (p <= 1) { clearInterval(t); setTimeUp(true); return 0; } return p - 1; }), 1000); return () => clearInterval(t); }, []);
+  const onQuiz = () => { if (rewards.enabled) setQuestion(questions[Math.floor(Math.random() * questions.length)]); };
+  const onVideoEnd = () => { if (!question) setVideo(null); };
+  const onAnswer = (correct) => { setQuestion(null); if (correct) { const n = stars + 1; setStars(n); if (n >= rewards.goal) setTimeout(() => setJarFull(true), 500); } };
+
+  if (freePlay) return <FreeChoicePlayer choice={freePlay} onDone={() => setFreePlay(null)}/>;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-indigo-100 via-purple-50 to-pink-50">
+      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg sticky top-0 z-40">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2"><div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><span className="text-lg">🦊</span></div><span className="text-lg font-bold text-white">kindi</span></div>
+          <div className="flex items-center gap-2">
+            <div className="bg-white/20 rounded-full px-3 py-1.5 flex items-center gap-1.5"><Clock className="w-4 h-4 text-white"/><span className="font-bold text-white">{fmt(time)}</span></div>
+            {rewards.enabled && <div className="bg-amber-400 rounded-full px-3 py-1.5 flex items-center gap-1.5"><Star className="w-4 h-4 text-amber-900"/><span className="font-bold text-amber-900">{stars}/{rewards.goal}</span></div>}
+            <div className="bg-white/20 rounded-full pl-1 pr-3 py-1 flex items-center gap-1.5"><A size={26}/><span className="text-white font-medium text-sm">{child.name}</span></div>
+            <button onClick={onEnd} className="px-3 py-1.5 bg-white/20 rounded-full font-medium text-white text-sm">End</button>
+          </div>
+        </div>
+      </div>
+      {availCats.length > 1 && <div className="bg-white/80 border-b border-purple-100"><div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-2 overflow-x-auto"><span className="text-sm text-purple-600 font-medium">Show:</span>{availCats.map(([k,l]) => <button key={k} onClick={() => setActive(p => p.includes(k) ? p.filter(c => c !== k) : [...p, k])} className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${active.includes(k) ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' : 'bg-white text-gray-600'}`}>{l}</button>)}</div></div>}
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {!video ? (<>
+          <h1 className="text-xl font-bold text-indigo-900 mb-4">{videos.length} videos to explore! 🎉</h1>
+          {videos.length === 0 ? <div className="text-center py-16"><div className="text-6xl mb-4">🎬</div><p className="text-gray-500">Select categories above</p></div> : <VideoGrid videos={videos} onSelect={setVideo}/>}
+        </>) : (
+          <div className="max-w-3xl mx-auto space-y-6">
+            <YouTubePlayer video={video} onBack={() => setVideo(null)} onQuiz={onQuiz} onEnd={onVideoEnd} rewards={rewards.enabled}/>
+            {videos.filter(v => v.id !== video.id).length > 0 && <div className="bg-white rounded-2xl p-4 shadow-md"><h3 className="text-lg font-bold text-gray-800 mb-3">Up Next 🎬</h3><div className="grid grid-cols-2 md:grid-cols-4 gap-3">{videos.filter(v => v.id !== video.id).slice(0,4).map(v => <button key={v.id} onClick={() => setVideo(v)} className="rounded-xl overflow-hidden shadow-sm hover:shadow-md"><div className="aspect-video"><img src={`https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`} alt={v.title} className="w-full h-full object-cover"/></div><div className="p-2 bg-white"><p className="text-xs font-medium text-gray-700 truncate">{v.title}</p></div></button>)}</div></div>}
+          </div>
+        )}
+      </div>
+      {question && <QuestionModal question={question} onAnswer={onAnswer}/>}
+      {jarFull && <JarFullModal name={child.name} onClaim={() => { setJarFull(false); setFreeChoice(true); }}/>}
+      {freeChoice && <FreeChoiceSelector onSelect={c => { setFreeChoice(false); setFreePlay(c); setStars(0); }} onCancel={() => setFreeChoice(false)}/>}
+      {timeUp && <div className="fixed inset-0 bg-gradient-to-b from-amber-500 via-orange-500 to-rose-500 flex items-center justify-center z-50 p-4"><div className="text-center"><Trophy className="w-20 h-20 text-white mx-auto mb-4"/><h2 className="text-4xl font-bold text-white mb-3">Time's up! 🎉</h2><p className="text-2xl text-white/90 mb-6">{child.name} had {duration} min of fun!{rewards.enabled && stars > 0 && <><br/>Plus {stars} stars! ⭐</>}</p><button onClick={onEnd} className="px-10 py-4 bg-white text-orange-500 font-bold text-xl rounded-2xl shadow-xl hover:scale-105">All Done! ✨</button></div></div>}
+    </div>
+  );
+};
+
+// Main App
+function App() {
+  const [kids, setKids] = useState([{ id: 1, name: 'Nico', age: 5, avatar: 0 }, { id: 2, name: 'Adri', age: 3, avatar: 1 }]);
+  const [session, setSession] = useState(null);
+  if (session) return <WatchPage child={session.child} duration={session.duration} categories={session.categories} rewards={session.rewards} onEnd={() => setSession(null)}/>;
+  return <SetupPage kids={kids} onStart={(c,d,cats,r) => setSession({child:c,duration:d,categories:cats,rewards:r})} onAdd={k => setKids([...kids, k])} onEdit={k => setKids(kids.map(x => x.id === k.id ? k : x))}/>;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
