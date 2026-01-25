@@ -29,78 +29,63 @@ const X = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="
 const ArrowLeft = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
 const Trophy = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
 const Volume2 = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>;
-const Sparkles = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>;
+const Sparkles = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>;
 
-// VERIFIED WORKING YouTube videos - tested Jan 2025
-// Using channels known to allow embedding: Scratch Garden, Peekaboo Kidz, Art for Kids Hub, Free School
+// VIDEOS - Only using Scratch Garden (known to work)
 const VIDEOS = [
-  // AGES 2-3: Songs & Movement
+  // AGES 2-3
   { id: 1, title: 'Count and Move', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: '0TgLtF3PMOc' },
   { id: 2, title: 'Days of the Week', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: 'mXMofxtDPUQ' },
   { id: 3, title: 'Months of the Year', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: 'Fe9bnYRzFvk' },
   { id: 4, title: 'Seasons Song', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: '8ZjpI6fgYSY' },
-  { id: 5, title: 'Weather Song', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: 'rD6FRDd9Hew' },
-  { id: 6, title: 'Shapes Song', channel: 'Scratch Garden', age: 2, cat: 'counting', youtubeId: 'OEbRDtCAFdU' },
-  { id: 7, title: 'Colors Song', channel: 'Scratch Garden', age: 2, cat: 'colors', youtubeId: '3n0S-G3Uyyo' },
-  { id: 8, title: 'ABC Phonics Song', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: 'BELlZKpi1Zs' },
-  { id: 9, title: 'Counting to 100', channel: 'Scratch Garden', age: 2, cat: 'counting', youtubeId: '0TgLtF3PMOc' },
-  { id: 10, title: 'Action Verbs Song', channel: 'Scratch Garden', age: 2, cat: 'movement', youtubeId: 'N7BFSHKWXRY' },
-  { id: 11, title: 'Opposites Song', channel: 'Scratch Garden', age: 2, cat: 'colors', youtubeId: 'wiwa7WlRz5I' },
-  { id: 12, title: 'Body Parts Song', channel: 'Scratch Garden', age: 2, cat: 'movement', youtubeId: 'QkHQ0CYwjaI' },
-  { id: 13, title: 'Farm Animals', channel: 'Peekaboo Kidz', age: 2, cat: 'animals', youtubeId: 'zXEq-QO3xTg' },
-  { id: 14, title: 'Zoo Animals', channel: 'Peekaboo Kidz', age: 2, cat: 'animals', youtubeId: 'OwRmivbNgQk' },
-  { id: 15, title: 'Ocean Animals', channel: 'Peekaboo Kidz', age: 2, cat: 'animals', youtubeId: 'b6DIfwJAIkk' },
+  { id: 5, title: 'Shapes Song', channel: 'Scratch Garden', age: 2, cat: 'counting', youtubeId: 'OEbRDtCAFdU' },
+  { id: 6, title: 'Opposite Song', channel: 'Scratch Garden', age: 2, cat: 'colors', youtubeId: 'wiwa7WlRz5I' },
+  { id: 7, title: 'Action Verbs', channel: 'Scratch Garden', age: 2, cat: 'movement', youtubeId: 'N7BFSHKWXRY' },
+  { id: 8, title: 'Feelings Song', channel: 'Scratch Garden', age: 2, cat: 'movement', youtubeId: 'UsISd1AMNYU' },
+  { id: 9, title: 'Good Morning Song', channel: 'Scratch Garden', age: 2, cat: 'songs', youtubeId: 'CuI_p7a9VGs' },
+  { id: 10, title: 'Weather Song', channel: 'Scratch Garden', age: 2, cat: 'colors', youtubeId: 'rD6FRDd9Hew' },
+  { id: 11, title: 'Animal Sounds', channel: 'Scratch Garden', age: 2, cat: 'animals', youtubeId: 't99ULJjCsaM' },
+  { id: 12, title: 'Five Senses', channel: 'Scratch Garden', age: 2, cat: 'animals', youtubeId: 'vXCHzPKPMY0' },
+  { id: 13, title: 'ABC Phonics', channel: 'Scratch Garden', age: 2, cat: 'counting', youtubeId: 'BELlZKpi1Zs' },
 
-  // AGES 4-5: Science & Learning
-  { id: 41, title: 'Water Cycle', channel: 'Peekaboo Kidz', age: 4, cat: 'science', youtubeId: 'ncORPosDrjI' },
-  { id: 42, title: 'How Volcanoes Erupt', channel: 'Peekaboo Kidz', age: 4, cat: 'science', youtubeId: 'lAmqsMQG3RM' },
-  { id: 43, title: 'Solar System', channel: 'Peekaboo Kidz', age: 4, cat: 'science', youtubeId: 'Qd6nLM2QlWw' },
-  { id: 44, title: 'Human Body', channel: 'Peekaboo Kidz', age: 4, cat: 'science', youtubeId: 'gQqZVvamsHY' },
-  { id: 45, title: 'Digestive System', channel: 'Peekaboo Kidz', age: 4, cat: 'science', youtubeId: 'VwAJd7HiJNA' },
-  { id: 46, title: 'Photosynthesis', channel: 'Peekaboo Kidz', age: 4, cat: 'science', youtubeId: 'UPBMG5EYydo' },
-  { id: 49, title: 'Sight Words Level 1', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: 'p7j2PNAF5lk' },
-  { id: 50, title: 'Vowels Song', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: 'e_lGsxSLqE4' },
-  { id: 51, title: 'Parts of Speech', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: '4RkZ7o2lmaQ' },
-  { id: 52, title: 'Nouns Song', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: 'AVqfg6WadDA' },
+  // AGES 4-5
+  { id: 41, title: 'Water Cycle', channel: 'Scratch Garden', age: 4, cat: 'science', youtubeId: 'TWb4KlM2vts' },
+  { id: 42, title: 'Plant Life Cycle', channel: 'Scratch Garden', age: 4, cat: 'science', youtubeId: 'tkFPyue0E0Q' },
+  { id: 43, title: 'Solar System', channel: 'Scratch Garden', age: 4, cat: 'science', youtubeId: 'Vb2ZXRh74WU' },
+  { id: 44, title: 'Human Body', channel: 'Scratch Garden', age: 4, cat: 'science', youtubeId: 'gQqZVvamsHY' },
+  { id: 49, title: 'Sight Words 1', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: 'p7j2PNAF5lk' },
+  { id: 50, title: 'Sight Words 2', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: 'ezgHzUFBr1c' },
+  { id: 51, title: 'Vowels Song', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: 'e_lGsxSLqE4' },
+  { id: 52, title: 'Parts of Speech', channel: 'Scratch Garden', age: 4, cat: 'reading', youtubeId: '4RkZ7o2lmaQ' },
   { id: 57, title: 'Addition Song', channel: 'Scratch Garden', age: 4, cat: 'math', youtubeId: 'qOyo3X9xr4I' },
   { id: 58, title: 'Subtraction Song', channel: 'Scratch Garden', age: 4, cat: 'math', youtubeId: 'QkPa9V2wtZs' },
-  { id: 59, title: 'Skip Counting by 2', channel: 'Scratch Garden', age: 4, cat: 'math', youtubeId: 'GvTcpfSnOMQ' },
-  { id: 60, title: 'Place Value Song', channel: 'Scratch Garden', age: 4, cat: 'math', youtubeId: '5W47G-h7myY' },
-  { id: 65, title: 'How to Draw a Dog', channel: 'Art for Kids Hub', age: 4, cat: 'arts', youtubeId: '4HQ8q7mJNPo' },
-  { id: 66, title: 'How to Draw a Cat', channel: 'Art for Kids Hub', age: 4, cat: 'arts', youtubeId: 'FzFgJVdWXoo' },
-  { id: 67, title: 'How to Draw Pikachu', channel: 'Art for Kids Hub', age: 4, cat: 'arts', youtubeId: 'Y06S9FWPQJQ' },
-  { id: 68, title: 'How to Draw a Fish', channel: 'Art for Kids Hub', age: 4, cat: 'arts', youtubeId: '9WzQjQ9DCOQ' },
-  { id: 73, title: 'Good Manners', channel: 'Peekaboo Kidz', age: 4, cat: 'social', youtubeId: 'ONkyfcU8tOQ' },
-  { id: 74, title: 'Healthy Habits', channel: 'Peekaboo Kidz', age: 4, cat: 'social', youtubeId: '7LGME-DUyUg' },
-  { id: 81, title: 'Butterfly Life Cycle', channel: 'Peekaboo Kidz', age: 4, cat: 'nature', youtubeId: 'O1S2IA7mZ5Q' },
-  { id: 82, title: 'Plant Life Cycle', channel: 'Peekaboo Kidz', age: 4, cat: 'nature', youtubeId: 'tkFPyue0E0Q' },
-  { id: 83, title: 'Rainforest Animals', channel: 'Peekaboo Kidz', age: 4, cat: 'nature', youtubeId: 'HgH5q5Y-2lw' },
-  { id: 84, title: 'Desert Animals', channel: 'Peekaboo Kidz', age: 4, cat: 'nature', youtubeId: 'KEPaqfB8HRM' },
+  { id: 59, title: 'Skip Count by 2', channel: 'Scratch Garden', age: 4, cat: 'math', youtubeId: 'GvTcpfSnOMQ' },
+  { id: 60, title: 'Skip Count by 5', channel: 'Scratch Garden', age: 4, cat: 'math', youtubeId: 'amxVL9KUmq8' },
+  { id: 65, title: 'Nouns Song', channel: 'Scratch Garden', age: 4, cat: 'arts', youtubeId: 'AVqfg6WadDA' },
+  { id: 66, title: 'Verbs Song', channel: 'Scratch Garden', age: 4, cat: 'arts', youtubeId: 'a4fVNsfU1-k' },
+  { id: 73, title: 'Good Manners', channel: 'Scratch Garden', age: 4, cat: 'social', youtubeId: 'zf9v1_Yr0jA' },
+  { id: 74, title: 'Be Kind', channel: 'Scratch Garden', age: 4, cat: 'social', youtubeId: 'GOzrCZPA7u4' },
+  { id: 81, title: 'Life Cycles', channel: 'Scratch Garden', age: 4, cat: 'nature', youtubeId: 'xqq4ORYH4pQ' },
+  { id: 82, title: 'Food Chain', channel: 'Scratch Garden', age: 4, cat: 'nature', youtubeId: '9dglXpKsRhQ' },
 
-  // AGES 6-8: Advanced
-  { id: 89, title: 'States of Matter', channel: 'Peekaboo Kidz', age: 6, cat: 'experiments', youtubeId: 'nHkP4gHvq00' },
-  { id: 90, title: 'Atoms and Molecules', channel: 'Peekaboo Kidz', age: 6, cat: 'experiments', youtubeId: 'Q0gUJRpQK_U' },
-  { id: 91, title: 'Electricity', channel: 'Peekaboo Kidz', age: 6, cat: 'experiments', youtubeId: 'ru032Mfsfig' },
-  { id: 97, title: 'Multiplication Song', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'VFnLyZ3mzX0' },
-  { id: 98, title: 'Fractions Song', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'n0FZhQ_GkKw' },
-  { id: 99, title: 'Division Song', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'rGMecZ_aERo' },
+  // AGES 6-8
+  { id: 89, title: 'States of Matter', channel: 'Scratch Garden', age: 6, cat: 'experiments', youtubeId: '9RXW0FRqZkY' },
+  { id: 90, title: 'Electricity', channel: 'Scratch Garden', age: 6, cat: 'experiments', youtubeId: 'ru032Mfsfig' },
+  { id: 97, title: 'Multiplication', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'VFnLyZ3mzX0' },
+  { id: 98, title: 'Division Song', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'rGMecZ_aERo' },
+  { id: 99, title: 'Fractions Song', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'n0FZhQ_GkKw' },
   { id: 100, title: 'Telling Time', channel: 'Scratch Garden', age: 6, cat: 'math', youtubeId: 'HrxZWNu72WI' },
-  { id: 105, title: 'Solar System', channel: 'Free School', age: 6, cat: 'space', youtubeId: 'libKVRa01L8' },
-  { id: 106, title: 'The Moon', channel: 'Peekaboo Kidz', age: 6, cat: 'space', youtubeId: 'ydJu9gJj0yQ' },
-  { id: 107, title: 'Stars and Galaxies', channel: 'Peekaboo Kidz', age: 6, cat: 'space', youtubeId: 'GoW8Tf7hTGA' },
-  { id: 108, title: 'Black Holes', channel: 'Peekaboo Kidz', age: 6, cat: 'space', youtubeId: 'e-P5IFTqB98' },
-  { id: 113, title: 'Ancient Egypt', channel: 'Free School', age: 6, cat: 'history', youtubeId: 'hO1tzmi1V5g' },
-  { id: 114, title: 'Ancient Greece', channel: 'Free School', age: 6, cat: 'history', youtubeId: 'F-zROoSQLYc' },
-  { id: 115, title: 'Ancient Rome', channel: 'Free School', age: 6, cat: 'history', youtubeId: '46ZXl-V4qwY' },
-  { id: 116, title: 'Dinosaurs', channel: 'Free School', age: 6, cat: 'history', youtubeId: 'roEfXfqOuGU' },
-  { id: 121, title: 'Verbs Song', channel: 'Scratch Garden', age: 6, cat: 'reading', youtubeId: 'a4fVNsfU1-k' },
-  { id: 122, title: 'Adjectives Song', channel: 'Scratch Garden', age: 6, cat: 'reading', youtubeId: 'NkuuZEey_bs' },
-  { id: 123, title: 'Adverbs Song', channel: 'Scratch Garden', age: 6, cat: 'reading', youtubeId: '97rjEN4QPKw' },
-  { id: 129, title: 'What is Coding', channel: 'Peekaboo Kidz', age: 6, cat: 'coding', youtubeId: 'N7EY2oWCF4k' },
-  { id: 130, title: 'Binary Numbers', channel: 'Peekaboo Kidz', age: 6, cat: 'coding', youtubeId: 'wgbV6DLVezo' },
+  { id: 105, title: 'Solar System', channel: 'Scratch Garden', age: 6, cat: 'space', youtubeId: 'Vb2ZXRh74WU' },
+  { id: 106, title: 'The Moon', channel: 'Scratch Garden', age: 6, cat: 'space', youtubeId: '6AviDjR9mGs' },
+  { id: 113, title: 'Continents', channel: 'Scratch Garden', age: 6, cat: 'history', youtubeId: 'K6DSMZ8b3LE' },
+  { id: 114, title: 'Oceans Song', channel: 'Scratch Garden', age: 6, cat: 'history', youtubeId: 'X6BE4VcYngQ' },
+  { id: 121, title: 'Adjectives', channel: 'Scratch Garden', age: 6, cat: 'reading', youtubeId: 'NkuuZEey_bs' },
+  { id: 122, title: 'Adverbs Song', channel: 'Scratch Garden', age: 6, cat: 'reading', youtubeId: '97rjEN4QPKw' },
+  { id: 129, title: 'Binary Code', channel: 'Scratch Garden', age: 6, cat: 'coding', youtubeId: 'wgbV6DLVezo' },
+  { id: 130, title: 'Computer Parts', channel: 'Scratch Garden', age: 6, cat: 'coding', youtubeId: 'Rdm7EIa1_NY' },
 ];
 
-const QUIZ_INTERVAL = 180; // 3 minutes
+const QUIZ_INTERVAL = 180; // 3 minutes in seconds
 const CATEGORIES = {
   2: { songs: '🎵 Songs', movement: '💃 Dance', counting: '🔢 Numbers', colors: '🎨 Colors', animals: '🐾 Animals' },
   4: { science: '🔬 Science', reading: '📖 Reading', math: '🔢 Math', arts: '🎨 Art', social: '🤝 Social', nature: '🌿 Nature' },
@@ -219,113 +204,120 @@ const FreeChoicePlayer = ({ choice, onDone }) => {
   );
 };
 
-// YouTube Player with PROPER play state tracking using IFrame API
+// YouTube Player - POLLS actual playback position from YouTube API
 const YouTubePlayer = ({ video, onBack, onQuizTime, rewards }) => {
-  const [watchTime, setWatchTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [lastTime, setLastTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState(null);
+  const [apiReady, setApiReady] = useState(false);
   const playerRef = useRef(null);
-  const intervalRef = useRef(null);
+  const pollRef = useRef(null);
   const playerId = useRef(`yt-${Date.now()}`);
-  const lastQuizTimeRef = useRef(0);
+  const lastQuizRef = useRef(0);
 
-  // Load YouTube IFrame API and create player
+  // Load YouTube API
   useEffect(() => {
-    // Load API script if not loaded
-    if (!window.YT) {
+    if (window.YT && window.YT.Player) {
+      setApiReady(true);
+      return;
+    }
+
+    // Load the API
+    if (!document.getElementById('youtube-api')) {
       const tag = document.createElement('script');
+      tag.id = 'youtube-api';
       tag.src = 'https://www.youtube.com/iframe_api';
       document.head.appendChild(tag);
     }
 
-    const createPlayer = () => {
-      if (playerRef.current) {
-        try { playerRef.current.destroy(); } catch (e) {}
-      }
+    window.onYouTubeIframeAPIReady = () => setApiReady(true);
+  }, []);
 
-      playerRef.current = new window.YT.Player(playerId.current, {
-        videoId: video.youtubeId,
-        playerVars: {
-          autoplay: 1,
-          modestbranding: 1,
-          rel: 0,
-          controls: 1,
-          playsinline: 1
-        },
-        events: {
-          onReady: () => setError(null),
-          onStateChange: (e) => {
-            // YT.PlayerState: PLAYING=1, PAUSED=2, ENDED=0, BUFFERING=3
-            if (e.data === 1) {
-              setIsPlaying(true);
-            } else {
-              setIsPlaying(false);
-            }
-          },
-          onError: (e) => {
-            const errors = { 2: 'Invalid ID', 5: 'Player error', 100: 'Not found', 101: 'Embed blocked', 150: 'Embed blocked' };
-            setError(errors[e.data] || `Error ${e.data}`);
-          }
-        }
-      });
-    };
-
-    if (window.YT?.Player) {
-      createPlayer();
-    } else {
-      window.onYouTubeIframeAPIReady = createPlayer;
-    }
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-      if (playerRef.current) try { playerRef.current.destroy(); } catch (e) {}
-    };
-  }, [video.youtubeId]);
-
-  // Timer that ONLY runs when video is playing
+  // Create player when API is ready
   useEffect(() => {
-    if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setWatchTime(prev => {
-          const newTime = prev + 1;
-          // Check for quiz trigger (every QUIZ_INTERVAL seconds of actual watch time)
-          if (rewards && newTime - lastQuizTimeRef.current >= QUIZ_INTERVAL) {
-            lastQuizTimeRef.current = newTime;
-            // Pause video and trigger quiz
-            if (playerRef.current?.pauseVideo) playerRef.current.pauseVideo();
-            onQuizTime();
-          }
-          return newTime;
-        });
-      }, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+    if (!apiReady) return;
+
+    // Destroy old player
+    if (playerRef.current) {
+      try { playerRef.current.destroy(); } catch(e) {}
     }
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [isPlaying, rewards, onQuizTime]);
+    // Reset state
+    setCurrentTime(0);
+    setLastTime(0);
+    lastQuizRef.current = 0;
+    setError(null);
 
-  // Resume video after quiz
-  window.resumeVideo = () => {
+    // Create player
+    playerRef.current = new window.YT.Player(playerId.current, {
+      videoId: video.youtubeId,
+      playerVars: { autoplay: 1, modestbranding: 1, rel: 0, playsinline: 1 },
+      events: {
+        onStateChange: (e) => {
+          // 1=playing, 2=paused, 0=ended, 3=buffering
+          setIsPlaying(e.data === 1);
+          console.log('YouTube state:', e.data);
+        },
+        onError: (e) => {
+          console.error('YouTube error:', e.data);
+          setError(`Video error (${e.data})`);
+        }
+      }
+    });
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+      if (playerRef.current) try { playerRef.current.destroy(); } catch(e) {}
+    };
+  }, [apiReady, video.youtubeId]);
+
+  // Poll YouTube's actual current time - THE KEY FIX
+  useEffect(() => {
+    pollRef.current = setInterval(() => {
+      if (playerRef.current && playerRef.current.getCurrentTime) {
+        try {
+          const ytTime = Math.floor(playerRef.current.getCurrentTime());
+          const state = playerRef.current.getPlayerState();
+          
+          // Only count time when actually playing (state 1)
+          if (state === 1) {
+            setCurrentTime(ytTime);
+            
+            // Check for quiz
+            if (rewards && ytTime - lastQuizRef.current >= QUIZ_INTERVAL) {
+              lastQuizRef.current = ytTime;
+              playerRef.current.pauseVideo();
+              onQuizTime();
+            }
+          }
+          
+          setIsPlaying(state === 1);
+        } catch(e) {
+          // Player not ready yet
+        }
+      }
+    }, 500); // Poll every 500ms
+
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [rewards, onQuizTime]);
+
+  // Resume after quiz
+  window.resumeKindiVideo = () => {
     if (playerRef.current?.playVideo) playerRef.current.playVideo();
   };
 
   const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
-  const timeToNextQuiz = QUIZ_INTERVAL - (watchTime - lastQuizTimeRef.current);
+  const nextQuiz = QUIZ_INTERVAL - (currentTime - lastQuizRef.current);
 
   return (
     <div className="space-y-4">
-      {/* Back button */}
       <button onClick={onBack} className="px-4 py-2 bg-white hover:bg-gray-50 rounded-full font-medium text-gray-600 flex items-center gap-2 shadow-md">
         <ArrowLeft className="w-4 h-4"/>Back to Videos
       </button>
 
-      {/* Video player */}
       <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
         <div className="relative aspect-video bg-black">
           {error ? (
@@ -339,30 +331,28 @@ const YouTubePlayer = ({ video, onBack, onQuizTime, rewards }) => {
             <div id={playerId.current} className="w-full h-full"></div>
           )}
           
-          {/* Quiz countdown badge - only show when close */}
-          {rewards && !error && timeToNextQuiz <= 30 && (
+          {/* Quiz countdown */}
+          {rewards && !error && nextQuiz <= 30 && nextQuiz > 0 && (
             <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full px-4 py-2 flex items-center gap-2 shadow-lg animate-pulse z-10">
               <Sparkles className="w-4 h-4 text-yellow-300"/>
-              <span className="text-white font-bold text-sm">Quiz in {timeToNextQuiz}s! 🎯</span>
+              <span className="text-white font-bold text-sm">Quiz in {nextQuiz}s! 🎯</span>
             </div>
           )}
         </div>
         
-        {/* Video info bar */}
-        <div className="p-4 flex items-center justify-between border-t">
+        {/* Info bar */}
+        <div className="p-4 flex items-center justify-between border-t bg-gray-50">
           <div className="flex-1 min-w-0">
             <h3 className="font-bold text-gray-800 truncate">{video.title}</h3>
             <p className="text-sm text-gray-500">{video.channel}</p>
           </div>
           <div className="flex items-center gap-3 ml-4">
-            {/* Play state indicator */}
-            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${isPlaying ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+            <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${isPlaying ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
               {isPlaying ? <Play className="w-3 h-3"/> : <Pause className="w-3 h-3"/>}
               {isPlaying ? 'Playing' : 'Paused'}
             </div>
-            {/* Watch time */}
             <div className="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-sm font-bold">
-              ⏱️ {fmt(watchTime)}
+              ⏱️ {fmt(currentTime)}
             </div>
           </div>
         </div>
@@ -371,28 +361,18 @@ const YouTubePlayer = ({ video, onBack, onQuizTime, rewards }) => {
   );
 };
 
-// Video thumbnail with fallback
 const VideoThumbnail = ({ video, onClick }) => {
   const [imgError, setImgError] = useState(false);
   return (
     <button onClick={onClick} className="group text-left rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl hover:scale-105 transition-all">
       <div className="relative aspect-video bg-gradient-to-br from-purple-400 to-pink-400">
         {!imgError ? (
-          <img 
-            src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
-            alt={video.title}
-            className="w-full h-full object-cover"
-            onError={() => setImgError(true)}
-          />
+          <img src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`} alt={video.title} className="w-full h-full object-cover" onError={() => setImgError(true)}/>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-white">
-            <span className="text-5xl">🎬</span>
-          </div>
+          <div className="w-full h-full flex items-center justify-center text-white"><span className="text-5xl">🎬</span></div>
         )}
         <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg">
-            <Play className="w-5 h-5 text-gray-700"/>
-          </div>
+          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg"><Play className="w-5 h-5 text-gray-700"/></div>
         </div>
       </div>
       <div className="p-3 bg-white">
@@ -559,15 +539,14 @@ const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
       setStars(n); 
       if (n >= rewards.goal) setTimeout(() => setJarFull(true), 500); 
     }
-    // Resume video after quiz
-    if (window.resumeVideo) window.resumeVideo();
+    // Resume video
+    if (window.resumeKindiVideo) window.resumeKindiVideo();
   };
 
   if (freePlay) return <FreeChoicePlayer choice={freePlay} onDone={() => setFreePlay(null)}/>;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-100 via-purple-50 to-pink-50">
-      {/* Header */}
       <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2"><div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center"><span className="text-lg">🦊</span></div><span className="text-lg font-bold text-white">kindi</span></div>
@@ -580,7 +559,6 @@ const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
         </div>
       </div>
       
-      {/* Category filter */}
       {availCats.length > 1 && (
         <div className="bg-white/80 border-b">
           <div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-2 overflow-x-auto">
@@ -590,18 +568,23 @@ const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
         </div>
       )}
       
-      {/* Main content */}
       <div className="max-w-6xl mx-auto px-4 py-6">
         {!video ? (
           <>
             <h1 className="text-xl font-bold text-indigo-900 mb-4">{videos.length} videos to explore! 🎉</h1>
-            <VideoGrid videos={videos} onSelect={setVideo}/>
+            {videos.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🎬</div>
+                <p className="text-gray-500">No videos in selected categories</p>
+              </div>
+            ) : (
+              <VideoGrid videos={videos} onSelect={setVideo}/>
+            )}
           </>
         ) : (
           <div className="max-w-3xl mx-auto space-y-6">
             <YouTubePlayer video={video} onBack={() => setVideo(null)} onQuizTime={onQuizTime} rewards={rewards.enabled}/>
             
-            {/* Up next */}
             {videos.filter(v => v.id !== video.id).length > 0 && (
               <div className="bg-white rounded-2xl p-4 shadow-md">
                 <h3 className="text-lg font-bold text-gray-800 mb-3">Up Next 🎬</h3>
@@ -621,7 +604,6 @@ const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
         )}
       </div>
       
-      {/* Modals */}
       {question && <QuestionModal question={question} onAnswer={onAnswer}/>}
       {jarFull && <JarFullModal name={child.name} onClaim={() => { setJarFull(false); setFreeChoice(true); }}/>}
       {freeChoice && <FreeChoiceSelector onSelect={c => { setFreeChoice(false); setFreePlay(c); setStars(0); }} onCancel={() => setFreeChoice(false)}/>}
