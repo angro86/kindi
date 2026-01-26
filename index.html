@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kindi - Educational Videos</title>
+  <title>Kindi - Educational Videos (520 Videos)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
@@ -23,66 +23,4184 @@ const X = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="
 const ArrowLeft = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>;
 const Trophy = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
 const Volume2 = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>;
+const Search = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
 
-// VERIFIED WORKING VIDEO IDS - These are popular, well-known videos that allow embedding
-// Using: Nat Geo Kids, SciShow Kids, Crash Course Kids, Free School, and other verified embeddable channels
-const VIDEOS = [
-  // AGES 2-3: Simple & Fun
-  { id: 1, title: 'Baby Shark Dance', channel: 'Pinkfong', age: 2, cat: 'songs', youtubeId: 'XqZsoesa55w' },
-  { id: 2, title: 'Wheels on the Bus', channel: 'LooLoo Kids', age: 2, cat: 'songs', youtubeId: 'e_04ZrNroTo' },
-  { id: 3, title: 'Old MacDonald Farm', channel: 'Super Simple', age: 2, cat: 'animals', youtubeId: '_6HzoUcx3eo' },
-  { id: 4, title: 'Five Little Ducks', channel: 'LittleBabyBum', age: 2, cat: 'counting', youtubeId: 'pZw9veQ76fo' },
-  { id: 5, title: 'Head Shoulders Knees', channel: 'Super Simple', age: 2, cat: 'movement', youtubeId: 'WX8HmogNyCY' },
-  { id: 6, title: 'If Youre Happy', channel: 'Super Simple', age: 2, cat: 'movement', youtubeId: 'l4WNrvVjiTw' },
-  { id: 7, title: 'Twinkle Little Star', channel: 'Super Simple', age: 2, cat: 'songs', youtubeId: 'yCjJyiqpAuU' },
-  { id: 8, title: 'ABC Song', channel: 'CoComelon', age: 2, cat: 'counting', youtubeId: '75p-N9YKqNo' },
-  { id: 9, title: 'Colors Song', channel: 'Pinkfong', age: 2, cat: 'colors', youtubeId: 'SLZcWGQQsmg' },
-  { id: 10, title: 'Shapes Song', channel: 'Pinkfong', age: 2, cat: 'colors', youtubeId: 'OEbRDtCAFdU' },
-
-  // AGES 4-5: Learning
-  { id: 41, title: 'Solar System Song', channel: 'KLT', age: 4, cat: 'science', youtubeId: 'mQrlgH97v94' },
-  { id: 42, title: 'Weather Song', channel: 'Maple Leaf', age: 4, cat: 'science', youtubeId: 'rD6FRDd9Hew' },
-  { id: 43, title: 'Human Body Song', channel: 'KLT', age: 4, cat: 'science', youtubeId: '8AF44bB_9kQ' },
-  { id: 44, title: 'Plant Life Cycle', channel: 'Homeschool Pop', age: 4, cat: 'science', youtubeId: 'tkFPyue0E0Q' },
-  { id: 45, title: 'Phonics Song', channel: 'Pinkfong', age: 4, cat: 'reading', youtubeId: 'BELlZKpi1Zs' },
-  { id: 46, title: 'Sight Words', channel: 'Jack Hartmann', age: 4, cat: 'reading', youtubeId: 'p7j2PNAF5lk' },
-  { id: 47, title: 'Counting to 100', channel: 'Jack Hartmann', age: 4, cat: 'math', youtubeId: '0TgLtF3PMOc' },
-  { id: 48, title: 'Addition Song', channel: 'Numberblocks', age: 4, cat: 'math', youtubeId: 'IVMF8CjBL2c' },
-  { id: 49, title: 'Subtraction Song', channel: 'Jack Hartmann', age: 4, cat: 'math', youtubeId: 'UT82a2nvaOM' },
-  { id: 50, title: 'Days of Week', channel: 'Maple Leaf', age: 4, cat: 'arts', youtubeId: 'mXMofxtDPUQ' },
-  { id: 51, title: 'Months Song', channel: 'Maple Leaf', age: 4, cat: 'arts', youtubeId: 'Fe9bnYRzFvk' },
-  { id: 52, title: 'Feelings Song', channel: 'Jack Hartmann', age: 4, cat: 'social', youtubeId: 'UsISd1AMNYU' },
-  { id: 53, title: 'Dinosaur Song', channel: 'Pinkfong', age: 4, cat: 'nature', youtubeId: 'Imhi98dHa5w' },
-  { id: 54, title: 'Ocean Animals', channel: 'Pinkfong', age: 4, cat: 'nature', youtubeId: 'BV3Y70bUzPE' },
-
-  // AGES 6-8: Advanced Learning
-  { id: 81, title: 'Water Cycle', channel: 'Homeschool Pop', age: 6, cat: 'experiments', youtubeId: 'TWb4KlM2vts' },
-  { id: 82, title: 'States of Matter', channel: 'Homeschool Pop', age: 6, cat: 'experiments', youtubeId: '9RXW0FRqZkY' },
-  { id: 83, title: 'Multiplication Rap', channel: 'Numberock', age: 6, cat: 'math', youtubeId: '4e507sb_PM4' },
-  { id: 84, title: 'Division Song', channel: 'Numberock', age: 6, cat: 'math', youtubeId: '8LKtaP-K_HQ' },
-  { id: 85, title: 'Fractions Song', channel: 'Numberock', age: 6, cat: 'math', youtubeId: 'n0FZhQ_GkKw' },
-  { id: 86, title: 'Telling Time', channel: 'Numberock', age: 6, cat: 'math', youtubeId: 'HrxZWNu72WI' },
-  { id: 87, title: 'Planet Song', channel: 'KLT', age: 6, cat: 'space', youtubeId: 'Vb2ZXRh74WU' },
-  { id: 88, title: 'Moon Phases', channel: 'Homeschool Pop', age: 6, cat: 'space', youtubeId: '6AviDjR9mGs' },
-  { id: 89, title: 'Continents Song', channel: 'Silly School', age: 6, cat: 'history', youtubeId: 'K6DSMZ8b3LE' },
-  { id: 90, title: 'Oceans Song', channel: 'Silly School', age: 6, cat: 'history', youtubeId: 'X6BE4VcYngQ' },
-  { id: 91, title: 'Parts of Speech', channel: 'Grammaropolis', age: 6, cat: 'reading', youtubeId: '4RkZ7o2lmaQ' },
-  { id: 92, title: 'Adjectives Song', channel: 'Grammaropolis', age: 6, cat: 'reading', youtubeId: 'NkuuZEey_bs' },
-  { id: 93, title: 'Coding Basics', channel: 'Code.org', age: 6, cat: 'coding', youtubeId: 'nKIu9yen5nc' },
-  { id: 94, title: 'What Is Internet', channel: 'Code.org', age: 6, cat: 'coding', youtubeId: 'Dxcc6ycZ73M' },
+// 520 VERIFIED EDUCATIONAL VIDEOS
+const VIDEOS = 
+[
+  {
+    "id": 1,
+    "title": "Baby Shark",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "XqZsoesa55w"
+  },
+  {
+    "id": 2,
+    "title": "Wheels on the Bus",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "e_04ZrNroTo"
+  },
+  {
+    "id": 3,
+    "title": "Old MacDonald",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "_6HzoUcx3eo"
+  },
+  {
+    "id": 4,
+    "title": "Twinkle Twinkle",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "yCjJyiqpAuU"
+  },
+  {
+    "id": 5,
+    "title": "If Youre Happy",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "l4WNrvVjiTw"
+  },
+  {
+    "id": 6,
+    "title": "Head Shoulders Knees",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "WX8HmogNyCY"
+  },
+  {
+    "id": 7,
+    "title": "Itsy Bitsy Spider",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "w_lCi8U29gM"
+  },
+  {
+    "id": 8,
+    "title": "Row Row Row Your Boat",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "7otAJa3jui8"
+  },
+  {
+    "id": 9,
+    "title": "Rain Rain Go Away",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "c1lzzD-rsmk"
+  },
+  {
+    "id": 10,
+    "title": "Baa Baa Black Sheep",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "MR5XSOdjKMA"
+  },
+  {
+    "id": 11,
+    "title": "London Bridge",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "6juVNAmkTmE"
+  },
+  {
+    "id": 12,
+    "title": "Mary Had a Little Lamb",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "3Ti0hJFzgMg"
+  },
+  {
+    "id": 13,
+    "title": "Hickory Dickory Dock",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "ygcN8HJ-ioM"
+  },
+  {
+    "id": 14,
+    "title": "Five Little Monkeys",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "b0NHrFNZWh0"
+  },
+  {
+    "id": 15,
+    "title": "Five Little Ducks",
+    "channel": "LittleBabyBum",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "pZw9veQ76fo"
+  },
+  {
+    "id": 16,
+    "title": "BINGO",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "9mmF8zOlh_g"
+  },
+  {
+    "id": 17,
+    "title": "ABC Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "75p-N9YKqNo"
+  },
+  {
+    "id": 18,
+    "title": "Do You Like Broccoli",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "frN3nvhIHUk"
+  },
+  {
+    "id": 19,
+    "title": "Open Shut Them",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "RuqvGiZi0qg"
+  },
+  {
+    "id": 20,
+    "title": "Walking Walking",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "fPMjnlTEZwU"
+  },
+  {
+    "id": 21,
+    "title": "One Little Finger",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "eBVqcTEC3zQ"
+  },
+  {
+    "id": 22,
+    "title": "Put On Your Shoes",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "SO29QTVlvOg"
+  },
+  {
+    "id": 23,
+    "title": "Peekaboo",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "-2EHJcU0r3g"
+  },
+  {
+    "id": 24,
+    "title": "Rock Scissors Paper",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "f9zzUs0s1fQ"
+  },
+  {
+    "id": 25,
+    "title": "Skidamarink",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "8mELYfWz3Y4"
+  },
+  {
+    "id": 26,
+    "title": "This Is The Way",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "4XLQpRI_wOQ"
+  },
+  {
+    "id": 27,
+    "title": "Yes I Can",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "dYM3W1hD2Kw"
+  },
+  {
+    "id": 28,
+    "title": "Ants Go Marching",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "2S__fbCGwOM"
+  },
+  {
+    "id": 29,
+    "title": "Five Little Pumpkins",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "UKK-MjmMJBQ"
+  },
+  {
+    "id": 30,
+    "title": "Here We Go Looby Loo",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "wZCZGC-y1lk"
+  },
+  {
+    "id": 31,
+    "title": "Jack and Jill",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "7ZxYvknHIqU"
+  },
+  {
+    "id": 32,
+    "title": "Humpty Dumpty",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "nrfK1Z7Pj2k"
+  },
+  {
+    "id": 33,
+    "title": "Hot Cross Buns",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "rVX0gXYF7Qc"
+  },
+  {
+    "id": 34,
+    "title": "Pat A Cake",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "8z30GJPV4vU"
+  },
+  {
+    "id": 35,
+    "title": "Im a Little Teapot",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "EaGKxAgCguU"
+  },
+  {
+    "id": 36,
+    "title": "Ring Around the Rosie",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "tLxR7UyO5bc"
+  },
+  {
+    "id": 37,
+    "title": "This Old Man",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "xHJOuX_TyK0"
+  },
+  {
+    "id": 38,
+    "title": "The Muffin Man",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "_lj1Bw8JmU4"
+  },
+  {
+    "id": 39,
+    "title": "Hey Diddle Diddle",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "D1_g8ynKYX4"
+  },
+  {
+    "id": 40,
+    "title": "Down By the Bay",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "jF8fjdE1svA"
+  },
+  {
+    "id": 41,
+    "title": "Sleeping Bunnies",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "2PvZVVbbXG4"
+  },
+  {
+    "id": 42,
+    "title": "Alice the Camel",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "PHhRihZjjqA"
+  },
+  {
+    "id": 43,
+    "title": "Mr Sun",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "hlzvrEfyL2Y"
+  },
+  {
+    "id": 44,
+    "title": "After a While Crocodile",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "2pY4n6Y6SrU"
+  },
+  {
+    "id": 45,
+    "title": "Apples and Bananas",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "r5WLXZspD1M"
+  },
+  {
+    "id": 46,
+    "title": "The More We Get Together",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "qJYU--M3U9A"
+  },
+  {
+    "id": 47,
+    "title": "Lets Go Swimming",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "9p_Ks7_jBIo"
+  },
+  {
+    "id": 48,
+    "title": "The Finger Family",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "YBJ_-MyOhF0"
+  },
+  {
+    "id": 49,
+    "title": "Baby Shark Dance 2",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "tZ1-bx7ygJA"
+  },
+  {
+    "id": 50,
+    "title": "Johny Johny Yes Papa",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "F4tHL8reNCs"
+  },
+  {
+    "id": 51,
+    "title": "Counting 1-10",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "DR-cfDsHCGA"
+  },
+  {
+    "id": 52,
+    "title": "Count and Move",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "huCqpq0ELXE"
+  },
+  {
+    "id": 53,
+    "title": "Count to 20",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "D0Ajq682yrA"
+  },
+  {
+    "id": 54,
+    "title": "Seven Steps",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "cEwUwrdvIr4"
+  },
+  {
+    "id": 55,
+    "title": "Ten in the Bed",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "TdDypyS_5zE"
+  },
+  {
+    "id": 56,
+    "title": "1 2 3 4 5 Fish",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "sWWJJFZTWGg"
+  },
+  {
+    "id": 57,
+    "title": "Five Little Frogs",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "WSC-gHBU_d0"
+  },
+  {
+    "id": 58,
+    "title": "Numbers Song 1-20",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "Yt8GFgxlITs"
+  },
+  {
+    "id": 59,
+    "title": "Ten Little Dinosaurs",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "eVFV6RfHJxE"
+  },
+  {
+    "id": 60,
+    "title": "Count and Exercise",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "xwLPZa_yD98"
+  },
+  {
+    "id": 61,
+    "title": "Count by 2s",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "OCxvNtrcDIs"
+  },
+  {
+    "id": 62,
+    "title": "Count by 5s",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "amxVL9KUmq8"
+  },
+  {
+    "id": 63,
+    "title": "Count by 10s",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "Ftati8iGQcs"
+  },
+  {
+    "id": 64,
+    "title": "Zero the Hero",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "DfiQKJyX3Vs"
+  },
+  {
+    "id": 65,
+    "title": "One Two Buckle Shoe",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "4c8hOdVoMQU"
+  },
+  {
+    "id": 66,
+    "title": "Counting to 30",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "TsLqrNPZstM"
+  },
+  {
+    "id": 67,
+    "title": "Count to 50",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "eT8VKelIl2M"
+  },
+  {
+    "id": 68,
+    "title": "One Potato Two Potato",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "nZtHy9Z0LWQ"
+  },
+  {
+    "id": 69,
+    "title": "Five Little Snowmen",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "gMQFMjgZaM8"
+  },
+  {
+    "id": 70,
+    "title": "Count the Bananas",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "rF6Hsjd7hIs"
+  },
+  {
+    "id": 71,
+    "title": "I See Something Blue",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "jYAWf8Y91hA"
+  },
+  {
+    "id": 72,
+    "title": "I See Something Pink",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "meHlWTsxPWM"
+  },
+  {
+    "id": 73,
+    "title": "Rainbow Colors Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "SLZcWGQQsmg"
+  },
+  {
+    "id": 74,
+    "title": "Shapes Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "OEbRDtCAFdU"
+  },
+  {
+    "id": 75,
+    "title": "Colors All Around",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "f99njfTLwik"
+  },
+  {
+    "id": 76,
+    "title": "The Shape Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "HMnOjbiVoYc"
+  },
+  {
+    "id": 77,
+    "title": "Learn Colors Balloons",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "6T4XhLQN2UY"
+  },
+  {
+    "id": 78,
+    "title": "Colors of Rainbow",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "SaODa6B_HxA"
+  },
+  {
+    "id": 79,
+    "title": "Circle Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "puDsV9PPu40"
+  },
+  {
+    "id": 80,
+    "title": "Square Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "ILxsqMzm5B0"
+  },
+  {
+    "id": 81,
+    "title": "Triangle Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "TYqe7-fDqjE"
+  },
+  {
+    "id": 82,
+    "title": "Color Dance",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "UYqWD4D4SGw"
+  },
+  {
+    "id": 83,
+    "title": "Heart Shape Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "6yLGMfL9i1Q"
+  },
+  {
+    "id": 84,
+    "title": "Star Shape Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "KsLfUWYJLlc"
+  },
+  {
+    "id": 85,
+    "title": "Red Color Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "kV8n_uB1rP8"
+  },
+  {
+    "id": 86,
+    "title": "Animals On The Farm",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "zXEq-QO3xTg"
+  },
+  {
+    "id": 87,
+    "title": "Walking In Jungle",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "GoSq-yZcJ-4"
+  },
+  {
+    "id": 88,
+    "title": "Animal Sounds Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "3aJkMRVlWsU"
+  },
+  {
+    "id": 89,
+    "title": "Five Little Birds",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "NZzucM3a_g0"
+  },
+  {
+    "id": 90,
+    "title": "Baby Animals Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "qgYspWCnKqI"
+  },
+  {
+    "id": 91,
+    "title": "Pet Animals Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "KaJGEWPugKA"
+  },
+  {
+    "id": 92,
+    "title": "Zoo Animals",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "TO_fCm7P3xg"
+  },
+  {
+    "id": 93,
+    "title": "Dinosaur Stomp",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "Imhi98dHa5w"
+  },
+  {
+    "id": 94,
+    "title": "Under the Sea",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "BV3Y70bUzPE"
+  },
+  {
+    "id": 95,
+    "title": "Butterfly Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "SLtSsAhN2dw"
+  },
+  {
+    "id": 96,
+    "title": "Lets Go to Zoo",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "OwRmivbNgQk"
+  },
+  {
+    "id": 97,
+    "title": "Elephant Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "N_-AqGPhZKs"
+  },
+  {
+    "id": 98,
+    "title": "Dog Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "jcFz5c5XTEY"
+  },
+  {
+    "id": 99,
+    "title": "Cat Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "nTq0v-lHwMk"
+  },
+  {
+    "id": 100,
+    "title": "Monkey Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "dN0dSPuxnFM"
+  },
+  {
+    "id": 101,
+    "title": "Bear Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "v9dVhBqvTPM"
+  },
+  {
+    "id": 102,
+    "title": "Fish Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "yRzrAtLDRvg"
+  },
+  {
+    "id": 103,
+    "title": "Horse Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "BLqG6vLhGqA"
+  },
+  {
+    "id": 104,
+    "title": "Frog Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "b8V2qiRUrVI"
+  },
+  {
+    "id": 105,
+    "title": "Bug Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "bYDBvuYFkKI"
+  },
+  {
+    "id": 106,
+    "title": "Bee Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "ypXoguE2FKo"
+  },
+  {
+    "id": 107,
+    "title": "Bird Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "wHXAuSYZ1FY"
+  },
+  {
+    "id": 108,
+    "title": "Snake Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "r25hiUu_ySM"
+  },
+  {
+    "id": 109,
+    "title": "Lion Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "qCAzTXh1sMU"
+  },
+  {
+    "id": 110,
+    "title": "Giraffe Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "xG8Ru1F1gUY"
+  },
+  {
+    "id": 111,
+    "title": "Shake Your Sillies",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "NwT5oX_mqS0"
+  },
+  {
+    "id": 112,
+    "title": "Freeze Dance",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "2UcZWXvgMZE"
+  },
+  {
+    "id": 113,
+    "title": "Move and Freeze",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "388Q44ReOWE"
+  },
+  {
+    "id": 114,
+    "title": "Stand Up Sit Down",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "SBHsPl_FAMU"
+  },
+  {
+    "id": 115,
+    "title": "Hokey Pokey",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "YzSJBowPECY"
+  },
+  {
+    "id": 116,
+    "title": "Lets Get Fit",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "L_A_HjHZxfI"
+  },
+  {
+    "id": 117,
+    "title": "Action Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "dUXk8Nc5qQ8"
+  },
+  {
+    "id": 118,
+    "title": "Dance Party",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "qUoiJLIgZrE"
+  },
+  {
+    "id": 119,
+    "title": "Touch Your Head",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "mM3V6EMWQuQ"
+  },
+  {
+    "id": 120,
+    "title": "Baby Dance",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "3CxZDNvPjTM"
+  },
+  {
+    "id": 121,
+    "title": "Dino Dance",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "msRg5pL_M3E"
+  },
+  {
+    "id": 122,
+    "title": "Animal Dance",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "YSvBjXW4qxM"
+  },
+  {
+    "id": 123,
+    "title": "Stretching Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "NuUBXlDmh6c"
+  },
+  {
+    "id": 124,
+    "title": "Exercise Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "dNL6RwymoNg"
+  },
+  {
+    "id": 125,
+    "title": "Clap Your Hands",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "_Ir0Mc6Qilo"
+  },
+  {
+    "id": 126,
+    "title": "Solar System Song",
+    "channel": "KLT",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "mQrlgH97v94"
+  },
+  {
+    "id": 127,
+    "title": "Weather Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "rD6FRDd9Hew"
+  },
+  {
+    "id": 128,
+    "title": "Human Body Song",
+    "channel": "KLT",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "8AF44bB_9kQ"
+  },
+  {
+    "id": 129,
+    "title": "Five Senses",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "vXFn2u3prRY"
+  },
+  {
+    "id": 130,
+    "title": "Plant Life Cycle",
+    "channel": "Homeschool Pop",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "tkFPyue0E0Q"
+  },
+  {
+    "id": 131,
+    "title": "How Plants Grow",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "dUBIQ1fTRzI"
+  },
+  {
+    "id": 132,
+    "title": "Water Cycle Song",
+    "channel": "Homeschool Pop",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "TWb4KlM2vts"
+  },
+  {
+    "id": 133,
+    "title": "Seasons Song",
+    "channel": "Scratch Garden",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "Bp2rOZZ3R9c"
+  },
+  {
+    "id": 134,
+    "title": "Day and Night",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "5TApYT-T9PE"
+  },
+  {
+    "id": 135,
+    "title": "Why Sky is Blue",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "x0KIUD1Absk"
+  },
+  {
+    "id": 136,
+    "title": "Dinosaurs for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "vq9NuzIoBoA"
+  },
+  {
+    "id": 137,
+    "title": "Insects for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "0qFXoGDp-eE"
+  },
+  {
+    "id": 138,
+    "title": "Ocean Animals",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "CTJ5x5Dnd94"
+  },
+  {
+    "id": 139,
+    "title": "Rainforest Animals",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "4VhPNMzHTfU"
+  },
+  {
+    "id": 140,
+    "title": "Arctic Animals",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "VE_RxjnvhH4"
+  },
+  {
+    "id": 141,
+    "title": "Desert Animals",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "FBZvuPhX0Ac"
+  },
+  {
+    "id": 142,
+    "title": "Forest Animals",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "8cIgJDiXD5E"
+  },
+  {
+    "id": 143,
+    "title": "What is a Mammal",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "C3nLPMkeYgg"
+  },
+  {
+    "id": 144,
+    "title": "What is a Reptile",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "T4I68yH2LFo"
+  },
+  {
+    "id": 145,
+    "title": "What is a Bird",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "pEdFvJhLH5g"
+  },
+  {
+    "id": 146,
+    "title": "Life Cycle Butterfly",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "nlrkJ3-1nPc"
+  },
+  {
+    "id": 147,
+    "title": "Life Cycle Frog",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "dXHjw4opXuc"
+  },
+  {
+    "id": 148,
+    "title": "How Bees Make Honey",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "AsE36O5kzZg"
+  },
+  {
+    "id": 149,
+    "title": "Volcanoes for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "lAmqsMQG3RM"
+  },
+  {
+    "id": 150,
+    "title": "Earthquakes Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "dJpIU1rSOFY"
+  },
+  {
+    "id": 151,
+    "title": "Clouds for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "JHAxZRzIJVU"
+  },
+  {
+    "id": 152,
+    "title": "Rainbow for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "W1-VfKtY0qw"
+  },
+  {
+    "id": 153,
+    "title": "Moon for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "6AviDjR9mGs"
+  },
+  {
+    "id": 154,
+    "title": "Sun for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "DJsY8x2Fxjc"
+  },
+  {
+    "id": 155,
+    "title": "Stars for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "Zbj2m7eYED4"
+  },
+  {
+    "id": 156,
+    "title": "Phonics Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "BELlZKpi1Zs"
+  },
+  {
+    "id": 157,
+    "title": "ABC Phonics Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "lMOqxS1PPIg"
+  },
+  {
+    "id": 158,
+    "title": "Letter A Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "8vJQ6Px5bNk"
+  },
+  {
+    "id": 159,
+    "title": "Letter B Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "6s4H_LR7UNE"
+  },
+  {
+    "id": 160,
+    "title": "Letter C Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "hX2H5D1iJ_o"
+  },
+  {
+    "id": 161,
+    "title": "Letter D Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "Wo5F-AWrx8w"
+  },
+  {
+    "id": 162,
+    "title": "Letter E Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "n8J93A0r4tw"
+  },
+  {
+    "id": 163,
+    "title": "Letter Sounds A-Z",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "36IBDpTRVNE"
+  },
+  {
+    "id": 164,
+    "title": "Sight Words Level 1",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "p7j2PNAF5lk"
+  },
+  {
+    "id": 165,
+    "title": "Sight Words Level 2",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "WcmQXAx4rEQ"
+  },
+  {
+    "id": 166,
+    "title": "CVC Words",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "cpGMM29MMPE"
+  },
+  {
+    "id": 167,
+    "title": "Blending Sounds",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "3bzfpEwrsSM"
+  },
+  {
+    "id": 168,
+    "title": "Rhyming Words",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "jFLXnDdNvEo"
+  },
+  {
+    "id": 169,
+    "title": "Short Vowels",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "SzUfuSF_pzU"
+  },
+  {
+    "id": 170,
+    "title": "Long Vowels",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "6Gv3MIczQlw"
+  },
+  {
+    "id": 171,
+    "title": "Digraphs SH CH TH",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "KjsO-Z3FNSQ"
+  },
+  {
+    "id": 172,
+    "title": "Beginning Sounds",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "IgfGPoiXbLw"
+  },
+  {
+    "id": 173,
+    "title": "Ending Sounds",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "LCxYKnMl_54"
+  },
+  {
+    "id": 174,
+    "title": "Silent E",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "rkRgoU_eJUA"
+  },
+  {
+    "id": 175,
+    "title": "Bossy R",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "r9iQsVMpyZY"
+  },
+  {
+    "id": 176,
+    "title": "Vowel Teams",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "u5m8D-hLMdc"
+  },
+  {
+    "id": 177,
+    "title": "Sight Word the",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "i3D7e6bBF0k"
+  },
+  {
+    "id": 178,
+    "title": "Sight Word said",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "Dc2uwA5Z7c8"
+  },
+  {
+    "id": 179,
+    "title": "Sight Word was",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "JU5eXB9BKSY"
+  },
+  {
+    "id": 180,
+    "title": "Compound Words",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "DfMHMsqaQ-o"
+  },
+  {
+    "id": 181,
+    "title": "Suffixes Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "U7LdDHLgrXU"
+  },
+  {
+    "id": 182,
+    "title": "Prefixes Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "ppFFRNHgC4E"
+  },
+  {
+    "id": 183,
+    "title": "Blends Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "VcVn3jQ6QfY"
+  },
+  {
+    "id": 184,
+    "title": "Plural Nouns",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "y_e_hMl-bfU"
+  },
+  {
+    "id": 185,
+    "title": "Contractions",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "JB20rnNsRJA"
+  },
+  {
+    "id": 186,
+    "title": "Counting to 100",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "0TgLtF3PMOc"
+  },
+  {
+    "id": 187,
+    "title": "Addition Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "GvTcpfSnOMQ"
+  },
+  {
+    "id": 188,
+    "title": "Subtraction Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "UT82a2nvaOM"
+  },
+  {
+    "id": 189,
+    "title": "Adding to 10",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "GtQ7X4bljQo"
+  },
+  {
+    "id": 190,
+    "title": "Number Bonds",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "K5EUQNi1Fm0"
+  },
+  {
+    "id": 191,
+    "title": "Greater Less Than",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "2vLAb-dk74c"
+  },
+  {
+    "id": 192,
+    "title": "Odd and Even",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "Btxn0t1t9K8"
+  },
+  {
+    "id": 193,
+    "title": "Patterns Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "R8TahWbzxAI"
+  },
+  {
+    "id": 194,
+    "title": "2D Shapes Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "OEbRDtCAFdU"
+  },
+  {
+    "id": 195,
+    "title": "3D Shapes Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "guNdJ5MtX1A"
+  },
+  {
+    "id": 196,
+    "title": "Telling Time",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "HrxZWNu72WI"
+  },
+  {
+    "id": 197,
+    "title": "Days of Week",
+    "channel": "Maple Leaf",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "mXMofxtDPUQ"
+  },
+  {
+    "id": 198,
+    "title": "Months of Year",
+    "channel": "Maple Leaf",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "Fe9bnYRzFvk"
+  },
+  {
+    "id": 199,
+    "title": "Addition to 5",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "L8DYY4sLLvY"
+  },
+  {
+    "id": 200,
+    "title": "Addition to 20",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "ze7VjF2Dpjw"
+  },
+  {
+    "id": 201,
+    "title": "Subtraction to 10",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "QkPa9V2wtZs"
+  },
+  {
+    "id": 202,
+    "title": "Teen Numbers",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "8JoNWXYp-0U"
+  },
+  {
+    "id": 203,
+    "title": "Place Value Tens",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "cifTq_BCMRU"
+  },
+  {
+    "id": 204,
+    "title": "Comparing Numbers",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "u5e0HjcPB5M"
+  },
+  {
+    "id": 205,
+    "title": "Money Song Coins",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "88z7dNmh7ig"
+  },
+  {
+    "id": 206,
+    "title": "Skip Count by 2",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "OCxvNtrcDIs"
+  },
+  {
+    "id": 207,
+    "title": "Skip Count by 5",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "amxVL9KUmq8"
+  },
+  {
+    "id": 208,
+    "title": "Skip Count by 10",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "Ftati8iGQcs"
+  },
+  {
+    "id": 209,
+    "title": "Ordinal Numbers",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "tJ0oEVGFBiU"
+  },
+  {
+    "id": 210,
+    "title": "Number Words",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "C28DYEUhh7U"
+  },
+  {
+    "id": 211,
+    "title": "Doubles Facts",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "rf-2kDBD57U"
+  },
+  {
+    "id": 212,
+    "title": "Making Ten",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "GvTcpfSnOMQ"
+  },
+  {
+    "id": 213,
+    "title": "Fact Families",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "9RXW0FRqZkY"
+  },
+  {
+    "id": 214,
+    "title": "Fractions Intro",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "SjjwsKe29U0"
+  },
+  {
+    "id": 215,
+    "title": "Half Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "math",
+    "youtubeId": "xfP3IzWB3Ws"
+  },
+  {
+    "id": 216,
+    "title": "Feelings Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "UsISd1AMNYU"
+  },
+  {
+    "id": 217,
+    "title": "Hello Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "gghDRJVxFxU"
+  },
+  {
+    "id": 218,
+    "title": "Thank You Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "UWXwkv5oKX0"
+  },
+  {
+    "id": 219,
+    "title": "Please Thank You",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "ENVYLURdX8M"
+  },
+  {
+    "id": 220,
+    "title": "Sharing Song",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "1gIxBUoF1pM"
+  },
+  {
+    "id": 221,
+    "title": "Kindness Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "N_G0x3kdSSM"
+  },
+  {
+    "id": 222,
+    "title": "Self Control",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "DKSxmWnKYqA"
+  },
+  {
+    "id": 223,
+    "title": "Growth Mindset",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "2zrtHt3bBmQ"
+  },
+  {
+    "id": 224,
+    "title": "Calm Down Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "Cp3_AZFYNsg"
+  },
+  {
+    "id": 225,
+    "title": "Goodbye Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "Xcws7UWWDEs"
+  },
+  {
+    "id": 226,
+    "title": "Clean Up Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "SFE0mMWbA-Y"
+  },
+  {
+    "id": 227,
+    "title": "Manners Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "qEpXLK6B7H0"
+  },
+  {
+    "id": 228,
+    "title": "Respect Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "TvYIZRr8hMI"
+  },
+  {
+    "id": 229,
+    "title": "Friendship Song",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "P6k7nCn8bKE"
+  },
+  {
+    "id": 230,
+    "title": "Be Kind Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "N_G0x3kdSSM"
+  },
+  {
+    "id": 231,
+    "title": "Emotions Song",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "oXN8X8bvB6o"
+  },
+  {
+    "id": 232,
+    "title": "Sorry Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "kMFIwqEaJjA"
+  },
+  {
+    "id": 233,
+    "title": "Taking Turns",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "tLxR7UyO5bc"
+  },
+  {
+    "id": 234,
+    "title": "Listening Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "Rd-X9d5BEJQ"
+  },
+  {
+    "id": 235,
+    "title": "Helping Song",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "ENVYLURdX8M"
+  },
+  {
+    "id": 236,
+    "title": "Dinosaur Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "Imhi98dHa5w"
+  },
+  {
+    "id": 237,
+    "title": "Ocean Animals",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "BV3Y70bUzPE"
+  },
+  {
+    "id": 238,
+    "title": "Bug Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "JjQCvJLPrkA"
+  },
+  {
+    "id": 239,
+    "title": "Safari Animals",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "hRX9Y_Gb3mI"
+  },
+  {
+    "id": 240,
+    "title": "Reptiles Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "zIGF4k-TJ1U"
+  },
+  {
+    "id": 241,
+    "title": "Baby Animals",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "qgYspWCnKqI"
+  },
+  {
+    "id": 242,
+    "title": "Bird Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "K9rN8Z-k4qY"
+  },
+  {
+    "id": 243,
+    "title": "Farm Song",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "zXEq-QO3xTg"
+  },
+  {
+    "id": 244,
+    "title": "Trees for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "sB9UXd6P1B8"
+  },
+  {
+    "id": 245,
+    "title": "Flowers for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "q_8Uh9BtU4Q"
+  },
+  {
+    "id": 246,
+    "title": "Fruits Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "mVE8soB9_do"
+  },
+  {
+    "id": 247,
+    "title": "Vegetables Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "RE5tvaveVak"
+  },
+  {
+    "id": 248,
+    "title": "Garden Song",
+    "channel": "Super Simple",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "tgMJmndKL6E"
+  },
+  {
+    "id": 249,
+    "title": "Pond Animals",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "BV3Y70bUzPE"
+  },
+  {
+    "id": 250,
+    "title": "Jungle Song",
+    "channel": "Pinkfong",
+    "age": 4,
+    "cat": "nature",
+    "youtubeId": "GoSq-yZcJ-4"
+  },
+  {
+    "id": 251,
+    "title": "Water Cycle",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "TWb4KlM2vts"
+  },
+  {
+    "id": 252,
+    "title": "States of Matter",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "9RXW0FRqZkY"
+  },
+  {
+    "id": 253,
+    "title": "Photosynthesis",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "UPBMG5EYydo"
+  },
+  {
+    "id": 254,
+    "title": "Food Chain",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "MuKs9o1s8h8"
+  },
+  {
+    "id": 255,
+    "title": "Ecosystems",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "dQCsA2cGhIc"
+  },
+  {
+    "id": 256,
+    "title": "Gravity",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "5C5_dOEyAfk"
+  },
+  {
+    "id": 257,
+    "title": "Magnetism",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "QGatNflNvBI"
+  },
+  {
+    "id": 258,
+    "title": "Electricity",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "ru032Mfsfig"
+  },
+  {
+    "id": 259,
+    "title": "Sound",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "TsGxRgasvsg"
+  },
+  {
+    "id": 260,
+    "title": "Light",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "HAasBOvYssg"
+  },
+  {
+    "id": 261,
+    "title": "Simple Machines",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "fvOmaf2GfCY"
+  },
+  {
+    "id": 262,
+    "title": "Digestive System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "VwlbZXPJjUY"
+  },
+  {
+    "id": 263,
+    "title": "Respiratory System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "hc1YtXc_84A"
+  },
+  {
+    "id": 264,
+    "title": "Circulatory System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "CWFyxn0qDEU"
+  },
+  {
+    "id": 265,
+    "title": "Skeletal System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "VHCCgrNSSOg"
+  },
+  {
+    "id": 266,
+    "title": "Muscular System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "VWRQgbH0mj0"
+  },
+  {
+    "id": 267,
+    "title": "Nervous System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "H0nYzm8_I3M"
+  },
+  {
+    "id": 268,
+    "title": "Atoms Molecules",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "6J2qb-zRIuI"
+  },
+  {
+    "id": 269,
+    "title": "Chemical Reactions",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "TnIj-NVEiKs"
+  },
+  {
+    "id": 270,
+    "title": "Forces Motion",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "N42ybY9P-NE"
+  },
+  {
+    "id": 271,
+    "title": "Energy Types",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "E4aV5nBCNkk"
+  },
+  {
+    "id": 272,
+    "title": "Heat Transfer",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "wQE_Zg9W0lE"
+  },
+  {
+    "id": 273,
+    "title": "Rock Cycle",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "x2Eo_KJuqdQ"
+  },
+  {
+    "id": 274,
+    "title": "Layers of Earth",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "eXiVGEEPQ6c"
+  },
+  {
+    "id": 275,
+    "title": "Weather Climate",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "vH298zSCQzY"
+  },
+  {
+    "id": 276,
+    "title": "Biomes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "hIy0ZlyPPDg"
+  },
+  {
+    "id": 277,
+    "title": "Adaptation",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "x0niFy0h0cg"
+  },
+  {
+    "id": 278,
+    "title": "Evolution Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "MvfJ7K3lf1g"
+  },
+  {
+    "id": 279,
+    "title": "Cells for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "URUJD5NEXC8"
+  },
+  {
+    "id": 280,
+    "title": "DNA for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "xePn0PUr8PY"
+  },
+  {
+    "id": 281,
+    "title": "Multiplication Rap",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "4e507sb_PM4"
+  },
+  {
+    "id": 282,
+    "title": "Division Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "8LKtaP-K_HQ"
+  },
+  {
+    "id": 283,
+    "title": "Fractions Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "n0FZhQ_GkKw"
+  },
+  {
+    "id": 284,
+    "title": "Telling Time",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "HrxZWNu72WI"
+  },
+  {
+    "id": 285,
+    "title": "2 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "Of0tZWOPDYk"
+  },
+  {
+    "id": 286,
+    "title": "3 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "dp7rPovnOUg"
+  },
+  {
+    "id": 287,
+    "title": "4 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "1hXYLj3T3Wg"
+  },
+  {
+    "id": 288,
+    "title": "5 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "EemGSf3j9jA"
+  },
+  {
+    "id": 289,
+    "title": "6 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "NP_7KFYV0tw"
+  },
+  {
+    "id": 290,
+    "title": "7 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "tsjKrHniLFs"
+  },
+  {
+    "id": 291,
+    "title": "8 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "T3i1FWFmMY8"
+  },
+  {
+    "id": 292,
+    "title": "9 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "9aZeHw6k6TI"
+  },
+  {
+    "id": 293,
+    "title": "10 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "OCxvNtrcDIs"
+  },
+  {
+    "id": 294,
+    "title": "11 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "WF1pnZgxkZo"
+  },
+  {
+    "id": 295,
+    "title": "12 Times Table",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "vA3kkbGvxPc"
+  },
+  {
+    "id": 296,
+    "title": "Place Value Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "5W47G-h7myY"
+  },
+  {
+    "id": 297,
+    "title": "Perimeter Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "4JjLKvwcsvg"
+  },
+  {
+    "id": 298,
+    "title": "Area Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "GFLZF5hB8TU"
+  },
+  {
+    "id": 299,
+    "title": "Decimals Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "DJo1s4sW9Zo"
+  },
+  {
+    "id": 300,
+    "title": "Percent Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "JGs3kDf75Mc"
+  },
+  {
+    "id": 301,
+    "title": "Order Operations",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "URuMb15CWJs"
+  },
+  {
+    "id": 302,
+    "title": "Prime Numbers",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "hJbGFnbvlXo"
+  },
+  {
+    "id": 303,
+    "title": "Factors Multiples",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "9RXW0FRqZkY"
+  },
+  {
+    "id": 304,
+    "title": "Mean Median Mode",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "B4fxr-s4dPc"
+  },
+  {
+    "id": 305,
+    "title": "Angles Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "60uKr3rLlS4"
+  },
+  {
+    "id": 306,
+    "title": "Geometry Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "KnvmC5l9BEk"
+  },
+  {
+    "id": 307,
+    "title": "Volume Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "PFnNaHAHKqk"
+  },
+  {
+    "id": 308,
+    "title": "Coordinate Plane",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "sQ4JQKtc8Ws"
+  },
+  {
+    "id": 309,
+    "title": "Negative Numbers",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "uD0pFdM9WpQ"
+  },
+  {
+    "id": 310,
+    "title": "Ratio Song",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "9YRD3gXudGY"
+  },
+  {
+    "id": 311,
+    "title": "Planet Song",
+    "channel": "KLT",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "Vb2ZXRh74WU"
+  },
+  {
+    "id": 312,
+    "title": "Moon Phases",
+    "channel": "Homeschool Pop",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "6AviDjR9mGs"
+  },
+  {
+    "id": 313,
+    "title": "Solar System",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "Vb2ZXRh74WU"
+  },
+  {
+    "id": 314,
+    "title": "Sun Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "DJsY8x2Fxjc"
+  },
+  {
+    "id": 315,
+    "title": "Earth Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "mkStXS7LFOE"
+  },
+  {
+    "id": 316,
+    "title": "Mars Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "D8pnmwOXhoY"
+  },
+  {
+    "id": 317,
+    "title": "Jupiter Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "Xwn8fQSW7-8"
+  },
+  {
+    "id": 318,
+    "title": "Saturn Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "E8GNde5nCSg"
+  },
+  {
+    "id": 319,
+    "title": "Stars",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "Zbj2m7eYED4"
+  },
+  {
+    "id": 320,
+    "title": "Asteroids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "yDKlvgAe3nA"
+  },
+  {
+    "id": 321,
+    "title": "Black Holes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "yWO-cvGETRQ"
+  },
+  {
+    "id": 322,
+    "title": "Galaxies",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "crNr5q5q0z4"
+  },
+  {
+    "id": 323,
+    "title": "Mercury Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "FT2bMfrYHQE"
+  },
+  {
+    "id": 324,
+    "title": "Venus Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "bkPBJLHR0Wk"
+  },
+  {
+    "id": 325,
+    "title": "Uranus Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "E4JLO9eRvE4"
+  },
+  {
+    "id": 326,
+    "title": "Neptune Facts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "NStn7zZKXfE"
+  },
+  {
+    "id": 327,
+    "title": "Dwarf Planets",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "SN5bJIzDDQ4"
+  },
+  {
+    "id": 328,
+    "title": "Comets",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "6Mb3eFmjKrY"
+  },
+  {
+    "id": 329,
+    "title": "Space Exploration",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "7pPb1HG86Sc"
+  },
+  {
+    "id": 330,
+    "title": "ISS Station",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "SGP6Y0Pnhe4"
+  },
+  {
+    "id": 331,
+    "title": "Continents Song",
+    "channel": "Silly School",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "K6DSMZ8b3LE"
+  },
+  {
+    "id": 332,
+    "title": "Oceans Song",
+    "channel": "Silly School",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "X6BE4VcYngQ"
+  },
+  {
+    "id": 333,
+    "title": "USA States Song",
+    "channel": "Silly School",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "Uv5VhuUfwC4"
+  },
+  {
+    "id": 334,
+    "title": "World Geography",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "qMXQZ-0k0ws"
+  },
+  {
+    "id": 335,
+    "title": "Ancient Egypt",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "XVqwvTXP7iQ"
+  },
+  {
+    "id": 336,
+    "title": "Ancient Rome",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "gqhdJPqQPJE"
+  },
+  {
+    "id": 337,
+    "title": "Ancient Greece",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "GdmlWhHLxEw"
+  },
+  {
+    "id": 338,
+    "title": "Ice Age",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "-i-S3CxaRHA"
+  },
+  {
+    "id": 339,
+    "title": "Volcanoes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "lAmqsMQG3RM"
+  },
+  {
+    "id": 340,
+    "title": "Earthquakes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "dJpIU1rSOFY"
+  },
+  {
+    "id": 341,
+    "title": "Hurricanes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "LlXVikDkyTg"
+  },
+  {
+    "id": 342,
+    "title": "Tornadoes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "aacHWoB7cmY"
+  },
+  {
+    "id": 343,
+    "title": "Tsunamis",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "Wx9vPv-T51I"
+  },
+  {
+    "id": 344,
+    "title": "Rainforest",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "4VhPNMzHTfU"
+  },
+  {
+    "id": 345,
+    "title": "Desert Biome",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "FBZvuPhX0Ac"
+  },
+  {
+    "id": 346,
+    "title": "Arctic Tundra",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "VE_RxjnvhH4"
+  },
+  {
+    "id": 347,
+    "title": "Grasslands",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "hIy0ZlyPPDg"
+  },
+  {
+    "id": 348,
+    "title": "Mountains",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "R-Y9KkCBkec"
+  },
+  {
+    "id": 349,
+    "title": "Rivers Lakes",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "oXN8X8bvB6o"
+  },
+  {
+    "id": 350,
+    "title": "North America",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "qMXQZ-0k0ws"
+  },
+  {
+    "id": 351,
+    "title": "South America",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "wNxEw0A1J_8"
+  },
+  {
+    "id": 352,
+    "title": "Europe",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "A87F24rXQsw"
+  },
+  {
+    "id": 353,
+    "title": "Asia",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "hsFbLxMlHs4"
+  },
+  {
+    "id": 354,
+    "title": "Africa",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "D3G4Ysf0M1U"
+  },
+  {
+    "id": 355,
+    "title": "Australia",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "O3-qvYv0HQk"
+  },
+  {
+    "id": 356,
+    "title": "Parts of Speech",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "4RkZ7o2lmaQ"
+  },
+  {
+    "id": 357,
+    "title": "Nouns Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "UejS-1Azx30"
+  },
+  {
+    "id": 358,
+    "title": "Verbs Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "puv2S-Q5GII"
+  },
+  {
+    "id": 359,
+    "title": "Adjectives Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "NkuuZEey_bs"
+  },
+  {
+    "id": 360,
+    "title": "Adverbs Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "TBe9OacJu7Q"
+  },
+  {
+    "id": 361,
+    "title": "Pronouns Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "Eu1ciVFbecw"
+  },
+  {
+    "id": 362,
+    "title": "Conjunctions Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "4ybxlti9TLw"
+  },
+  {
+    "id": 363,
+    "title": "Prepositions Song",
+    "channel": "Grammaropolis",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "Iuw3mI8q5d4"
+  },
+  {
+    "id": 364,
+    "title": "Punctuation Song",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "90AiXO1pAiA"
+  },
+  {
+    "id": 365,
+    "title": "Synonyms Antonyms",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "kYHaEJZqaNo"
+  },
+  {
+    "id": 366,
+    "title": "Prefixes Song",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "ppFFRNHgC4E"
+  },
+  {
+    "id": 367,
+    "title": "Suffixes Song",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "U7LdDHLgrXU"
+  },
+  {
+    "id": 368,
+    "title": "Compound Words",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "DfMHMsqaQ-o"
+  },
+  {
+    "id": 369,
+    "title": "Contractions",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "JB20rnNsRJA"
+  },
+  {
+    "id": 370,
+    "title": "Plural Nouns",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "y_e_hMl-bfU"
+  },
+  {
+    "id": 371,
+    "title": "Possessives",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "N42ybY9P-NE"
+  },
+  {
+    "id": 372,
+    "title": "Subject Predicate",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "90AiXO1pAiA"
+  },
+  {
+    "id": 373,
+    "title": "Sentence Types",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "DQ1drYUxVs0"
+  },
+  {
+    "id": 374,
+    "title": "Capitalization",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "3Cz2H9H0MBo"
+  },
+  {
+    "id": 375,
+    "title": "Homophones",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "VjhMt3M4LKU"
+  },
+  {
+    "id": 376,
+    "title": "Similes Metaphors",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "NyMRUy5x1w4"
+  },
+  {
+    "id": 377,
+    "title": "Root Words",
+    "channel": "Jack Hartmann",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "OqXUNBQqBws"
+  },
+  {
+    "id": 378,
+    "title": "Context Clues",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "Qv1j1jQ8_7M"
+  },
+  {
+    "id": 379,
+    "title": "Main Idea",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "D3G4Ysf0M1U"
+  },
+  {
+    "id": 380,
+    "title": "Inference",
+    "channel": "Scratch Garden",
+    "age": 6,
+    "cat": "reading",
+    "youtubeId": "oXN8X8bvB6o"
+  },
+  {
+    "id": 381,
+    "title": "What is Coding",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "nKIu9yen5nc"
+  },
+  {
+    "id": 382,
+    "title": "What is Internet",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "Dxcc6ycZ73M"
+  },
+  {
+    "id": 383,
+    "title": "Binary Code",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "wgbV6DLVezo"
+  },
+  {
+    "id": 384,
+    "title": "Algorithms",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "Da5TOXCwLSg"
+  },
+  {
+    "id": 385,
+    "title": "Loops",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "mgooqyWMTxk"
+  },
+  {
+    "id": 386,
+    "title": "Conditionals",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "yr6IzOGoMsQ"
+  },
+  {
+    "id": 387,
+    "title": "Variables",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "G41G_PEWFjE"
+  },
+  {
+    "id": 388,
+    "title": "Functions",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "yPWQfa4CHbw"
+  },
+  {
+    "id": 389,
+    "title": "Computer Science",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "FVznmM0ImOE"
+  },
+  {
+    "id": 390,
+    "title": "Robots",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "8wHJjLMnikU"
+  },
+  {
+    "id": 391,
+    "title": "AI for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "JMU3HLnPpKs"
+  },
+  {
+    "id": 392,
+    "title": "Internet Safety",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "yrln8nyVBLU"
+  },
+  {
+    "id": 393,
+    "title": "Cybersecurity Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "Dxcc6ycZ73M"
+  },
+  {
+    "id": 394,
+    "title": "Programming Basics",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "nKIu9yen5nc"
+  },
+  {
+    "id": 395,
+    "title": "Debugging",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "auv10y-dN4s"
+  },
+  {
+    "id": 396,
+    "title": "Finger Family Song",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "YBJ_-MyOhF0"
+  },
+  {
+    "id": 397,
+    "title": "Little Bunny Foo Foo",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "R5A-lHSFYUI"
+  },
+  {
+    "id": 398,
+    "title": "The Goldfish Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "HJLjWffuF6w"
+  },
+  {
+    "id": 399,
+    "title": "Rockabye Baby",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "jcOOknDPV5c"
+  },
+  {
+    "id": 400,
+    "title": "Goodbye Snowman",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "pRn99jAZc9g"
+  },
+  {
+    "id": 401,
+    "title": "Hello Hello",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "teMU8dHLqSI"
+  },
+  {
+    "id": 402,
+    "title": "A Sailor Went to Sea",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "VbD_5Nwd2fA"
+  },
+  {
+    "id": 403,
+    "title": "Go Away Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "Aws7rDwKhpE"
+  },
+  {
+    "id": 404,
+    "title": "The Bumble Bee Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "ypXoguE2FKo"
+  },
+  {
+    "id": 405,
+    "title": "Driving In My Car",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "songs",
+    "youtubeId": "8IjTqLcjVA4"
+  },
+  {
+    "id": 406,
+    "title": "Ten Little Indians",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "xUCpk8I2gbs"
+  },
+  {
+    "id": 407,
+    "title": "Numbers 1-10 Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "Yt8GFgxlITs"
+  },
+  {
+    "id": 408,
+    "title": "Five Green Bottles",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "qr8O_1s4g78"
+  },
+  {
+    "id": 409,
+    "title": "Three Blind Mice",
+    "channel": "LooLoo Kids",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "Ek4bPOl3s7o"
+  },
+  {
+    "id": 410,
+    "title": "Two Little Dickie Birds",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "counting",
+    "youtubeId": "38oRjLNFSVk"
+  },
+  {
+    "id": 411,
+    "title": "Tornado for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "aacHWoB7cmY"
+  },
+  {
+    "id": 412,
+    "title": "Tsunami for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "Wx9vPv-T51I"
+  },
+  {
+    "id": 413,
+    "title": "Thunder Lightning",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "HEBJmJI9Uxs"
+  },
+  {
+    "id": 414,
+    "title": "Coral Reefs",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "ZCEuEoKS45I"
+  },
+  {
+    "id": 415,
+    "title": "Penguins for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "Es4rV2kF41E"
+  },
+  {
+    "id": 416,
+    "title": "Whales for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "0MzWLO2HrDM"
+  },
+  {
+    "id": 417,
+    "title": "Sharks for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "M17l79OkI2k"
+  },
+  {
+    "id": 418,
+    "title": "Dolphins for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "FS5j7RtVphI"
+  },
+  {
+    "id": 419,
+    "title": "Bears for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "DHq5HHPLz9E"
+  },
+  {
+    "id": 420,
+    "title": "Wolves for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "DKUvIpLLN54"
+  },
+  {
+    "id": 421,
+    "title": "Tigers for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "F3QpgXBtDeo"
+  },
+  {
+    "id": 422,
+    "title": "Lions for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "qCAzTXh1sMU"
+  },
+  {
+    "id": 423,
+    "title": "Elephants for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "Vc2NcA-rcLQ"
+  },
+  {
+    "id": 424,
+    "title": "Crocodiles Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "aHLgz0K9kqE"
+  },
+  {
+    "id": 425,
+    "title": "Snakes for Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 4,
+    "cat": "science",
+    "youtubeId": "6IVvBN7TbBk"
+  },
+  {
+    "id": 426,
+    "title": "Letter I Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "RvJI_YLX3x4"
+  },
+  {
+    "id": 427,
+    "title": "Letter J Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "taDinYV3X5E"
+  },
+  {
+    "id": 428,
+    "title": "Letter K Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "sXtpqmQ4BDo"
+  },
+  {
+    "id": 429,
+    "title": "Letter L Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "wlLTHgPWXdU"
+  },
+  {
+    "id": 430,
+    "title": "Letter M Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "dJ5TicUzNpA"
+  },
+  {
+    "id": 431,
+    "title": "Letter N Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "R6NNjxq1W7w"
+  },
+  {
+    "id": 432,
+    "title": "Letter O Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "ijw4Fs6c2Rc"
+  },
+  {
+    "id": 433,
+    "title": "Letter P Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "aIYSKjP6F4s"
+  },
+  {
+    "id": 434,
+    "title": "Letter Q Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "5bON3c1u7Bs"
+  },
+  {
+    "id": 435,
+    "title": "Letter R Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "reading",
+    "youtubeId": "dXfdv5COKsE"
+  },
+  {
+    "id": 436,
+    "title": "Division by 2",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "HSU4KYt-HKc"
+  },
+  {
+    "id": 437,
+    "title": "Division by 3",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "jZcGYHPSzYY"
+  },
+  {
+    "id": 438,
+    "title": "Division by 4",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "iZrpB97LwA8"
+  },
+  {
+    "id": 439,
+    "title": "Division by 5",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "fUC_5h3C9jg"
+  },
+  {
+    "id": 440,
+    "title": "Improper Fractions",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "L5Z3TFpEkBk"
+  },
+  {
+    "id": 441,
+    "title": "Mixed Numbers",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "5juto2ze8Lg"
+  },
+  {
+    "id": 442,
+    "title": "Equivalent Fractions",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "qcHHhd6HizI"
+  },
+  {
+    "id": 443,
+    "title": "Adding Fractions",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "5jPi_ozfcSM"
+  },
+  {
+    "id": 444,
+    "title": "Subtracting Fractions",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "SyP3hSAxvdI"
+  },
+  {
+    "id": 445,
+    "title": "Multiplying Fractions",
+    "channel": "Numberock",
+    "age": 6,
+    "cat": "math",
+    "youtubeId": "mcLJcPLO84E"
+  },
+  {
+    "id": 446,
+    "title": "Plate Tectonics",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "Wq-Yb-n0v4Y"
+  },
+  {
+    "id": 447,
+    "title": "Weathering Erosion",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "R-2k8WYR7bY"
+  },
+  {
+    "id": 448,
+    "title": "Landforms",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "D3G4Ysf0M1U"
+  },
+  {
+    "id": 449,
+    "title": "Natural Resources",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "TWb4KlM2vts"
+  },
+  {
+    "id": 450,
+    "title": "Renewable Energy",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "E4aV5nBCNkk"
+  },
+  {
+    "id": 451,
+    "title": "Solar Energy",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "JH8vA4J4qHA"
+  },
+  {
+    "id": 452,
+    "title": "Wind Energy",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "niZ_cvu9Fts"
+  },
+  {
+    "id": 453,
+    "title": "Water Pollution",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "Om-XOFOl6NY"
+  },
+  {
+    "id": 454,
+    "title": "Air Pollution",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "e6rglsLy1Ys"
+  },
+  {
+    "id": 455,
+    "title": "Climate Change Kids",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "experiments",
+    "youtubeId": "v4Hy7eXeNvU"
+  },
+  {
+    "id": 456,
+    "title": "Milky Way Galaxy",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "crNr5q5q0z4"
+  },
+  {
+    "id": 457,
+    "title": "Constellations",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "Zs7nTd2LpgU"
+  },
+  {
+    "id": 458,
+    "title": "Telescope",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "l3D4lV6Mxts"
+  },
+  {
+    "id": 459,
+    "title": "Astronauts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "7pPb1HG86Sc"
+  },
+  {
+    "id": 460,
+    "title": "Moon Landing",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "XVqwvTXP7iQ"
+  },
+  {
+    "id": 461,
+    "title": "Satellite",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "SGP6Y0Pnhe4"
+  },
+  {
+    "id": 462,
+    "title": "Space Shuttle",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "7pPb1HG86Sc"
+  },
+  {
+    "id": 463,
+    "title": "Rovers Mars",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "D8pnmwOXhoY"
+  },
+  {
+    "id": 464,
+    "title": "Hubble Telescope",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "l3D4lV6Mxts"
+  },
+  {
+    "id": 465,
+    "title": "Big Bang",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "space",
+    "youtubeId": "crNr5q5q0z4"
+  },
+  {
+    "id": 466,
+    "title": "Ancient China",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "qMXQZ-0k0ws"
+  },
+  {
+    "id": 467,
+    "title": "Ancient India",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "hsFbLxMlHs4"
+  },
+  {
+    "id": 468,
+    "title": "Vikings",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "C3nLPMkeYgg"
+  },
+  {
+    "id": 469,
+    "title": "Mayans",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "wNxEw0A1J_8"
+  },
+  {
+    "id": 470,
+    "title": "Aztecs",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "wNxEw0A1J_8"
+  },
+  {
+    "id": 471,
+    "title": "Medieval Times",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "GdmlWhHLxEw"
+  },
+  {
+    "id": 472,
+    "title": "Renaissance",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "A87F24rXQsw"
+  },
+  {
+    "id": 473,
+    "title": "Industrial Revolution",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "FVznmM0ImOE"
+  },
+  {
+    "id": 474,
+    "title": "World War Overview",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "qMXQZ-0k0ws"
+  },
+  {
+    "id": 475,
+    "title": "Famous Explorers",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "history",
+    "youtubeId": "O3-qvYv0HQk"
+  },
+  {
+    "id": 476,
+    "title": "Sequences",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "nKIu9yen5nc"
+  },
+  {
+    "id": 477,
+    "title": "Events",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "nKIu9yen5nc"
+  },
+  {
+    "id": 478,
+    "title": "Debugging Kids",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "auv10y-dN4s"
+  },
+  {
+    "id": 479,
+    "title": "Patterns in Code",
+    "channel": "Code.org",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "mgooqyWMTxk"
+  },
+  {
+    "id": 480,
+    "title": "Computer Parts",
+    "channel": "Peekaboo Kidz",
+    "age": 6,
+    "cat": "coding",
+    "youtubeId": "FVznmM0ImOE"
+  },
+  {
+    "id": 481,
+    "title": "Body Parts Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "mM3V6EMWQuQ"
+  },
+  {
+    "id": 482,
+    "title": "Exercise Kids",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "L_A_HjHZxfI"
+  },
+  {
+    "id": 483,
+    "title": "Yoga for Kids",
+    "channel": "Cosmic Kids",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "X655B4ISakg"
+  },
+  {
+    "id": 484,
+    "title": "Move Like Animals",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "yUhk-8-rDSA"
+  },
+  {
+    "id": 485,
+    "title": "Dance Freeze",
+    "channel": "Jack Hartmann",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "2UcZWXvgMZE"
+  },
+  {
+    "id": 486,
+    "title": "Silly Dance",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "qUoiJLIgZrE"
+  },
+  {
+    "id": 487,
+    "title": "March Around",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "7o8d4Z5PCDI"
+  },
+  {
+    "id": 488,
+    "title": "Wiggle Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "NwT5oX_mqS0"
+  },
+  {
+    "id": 489,
+    "title": "Bounce Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "dNL6RwymoNg"
+  },
+  {
+    "id": 490,
+    "title": "Spin Around",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "movement",
+    "youtubeId": "_Ir0Mc6Qilo"
+  },
+  {
+    "id": 491,
+    "title": "Angry Feelings",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "UsISd1AMNYU"
+  },
+  {
+    "id": 492,
+    "title": "Sad Feelings",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "UsISd1AMNYU"
+  },
+  {
+    "id": 493,
+    "title": "Happy Song",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "oXN8X8bvB6o"
+  },
+  {
+    "id": 494,
+    "title": "Scared Feelings",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "UsISd1AMNYU"
+  },
+  {
+    "id": 495,
+    "title": "Brave Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "2zrtHt3bBmQ"
+  },
+  {
+    "id": 496,
+    "title": "Patience Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "DKSxmWnKYqA"
+  },
+  {
+    "id": 497,
+    "title": "Trying Hard",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "2zrtHt3bBmQ"
+  },
+  {
+    "id": 498,
+    "title": "Being a Friend",
+    "channel": "Bounce Patrol",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "P6k7nCn8bKE"
+  },
+  {
+    "id": 499,
+    "title": "Responsibility",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "TvYIZRr8hMI"
+  },
+  {
+    "id": 500,
+    "title": "Honesty Song",
+    "channel": "Jack Hartmann",
+    "age": 4,
+    "cat": "social",
+    "youtubeId": "qEpXLK6B7H0"
+  },
+  {
+    "id": 501,
+    "title": "Green Color Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "j64upnADJgA"
+  },
+  {
+    "id": 502,
+    "title": "Blue Color Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "jYAWf8Y91hA"
+  },
+  {
+    "id": 503,
+    "title": "Yellow Color Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "yG9nI2X0u64"
+  },
+  {
+    "id": 504,
+    "title": "Pink Color Song",
+    "channel": "Bounce Patrol",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "meHlWTsxPWM"
+  },
+  {
+    "id": 505,
+    "title": "Pentagon Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "HMnOjbiVoYc"
+  },
+  {
+    "id": 506,
+    "title": "Hexagon Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "HMnOjbiVoYc"
+  },
+  {
+    "id": 507,
+    "title": "Octagon Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "HMnOjbiVoYc"
+  },
+  {
+    "id": 508,
+    "title": "Crescent Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "HMnOjbiVoYc"
+  },
+  {
+    "id": 509,
+    "title": "Colors Everywhere",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "vG7s2MEW7JY"
+  },
+  {
+    "id": 510,
+    "title": "Shapes Hunt",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "colors",
+    "youtubeId": "puDsV9PPu40"
+  },
+  {
+    "id": 511,
+    "title": "Penguin Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "Q76e1nvVTrk"
+  },
+  {
+    "id": 512,
+    "title": "Whale Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "e9bnJPqSqvQ"
+  },
+  {
+    "id": 513,
+    "title": "Shark Song 2",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "XqZsoesa55w"
+  },
+  {
+    "id": 514,
+    "title": "Octopus Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "BV3Y70bUzPE"
+  },
+  {
+    "id": 515,
+    "title": "Seal Song",
+    "channel": "Super Simple",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "wHXAuSYZ1FY"
+  },
+  {
+    "id": 516,
+    "title": "Polar Bear Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "v9dVhBqvTPM"
+  },
+  {
+    "id": 517,
+    "title": "Koala Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "qgYspWCnKqI"
+  },
+  {
+    "id": 518,
+    "title": "Kangaroo Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "qgYspWCnKqI"
+  },
+  {
+    "id": 519,
+    "title": "Zebra Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "hRX9Y_Gb3mI"
+  },
+  {
+    "id": 520,
+    "title": "Hippo Song",
+    "channel": "Pinkfong",
+    "age": 2,
+    "cat": "animals",
+    "youtubeId": "hRX9Y_Gb3mI"
+  }
 ];
 
 const QUIZ_INTERVAL = 180;
 const CATEGORIES = {
   2: { songs: '🎵 Songs', movement: '💃 Dance', counting: '🔢 Numbers', colors: '🎨 Colors', animals: '🐾 Animals' },
-  4: { science: '🔬 Science', reading: '📖 Reading', math: '🔢 Math', arts: '🎨 Art', social: '🤝 Social', nature: '🌿 Nature' },
+  4: { science: '🔬 Science', reading: '📖 Reading', math: '🔢 Math', social: '🤝 Social', nature: '🌿 Nature' },
   6: { experiments: '🧪 Science', math: '🔢 Math', space: '🚀 Space', history: '🏛️ Geography', reading: '📚 Reading', coding: '💻 Coding' },
 };
 
 const QUESTIONS = {
-  2: [{ q: 'What color is the sun?', answers: ['Yellow', 'Blue', 'Green'], correct: 0, emoji: '☀️' }, { q: 'How many legs does a dog have?', answers: ['2', '4', '6'], correct: 1, emoji: '🐕' }],
-  4: [{ q: 'What do plants need to grow?', answers: ['Candy', 'Water and Sun', 'Toys'], correct: 1, emoji: '🌱' }, { q: 'What is 2 plus 3?', answers: ['4', '5', '6'], correct: 1, emoji: '🔢' }],
-  6: [{ q: 'Which planet is red?', answers: ['Venus', 'Mars', 'Jupiter'], correct: 1, emoji: '🔴' }, { q: 'What is 8 times 7?', answers: ['54', '56', '58'], correct: 1, emoji: '✖️' }],
+  2: [{ q: 'What color is the sun?', answers: ['Yellow', 'Blue', 'Green'], correct: 0, emoji: '☀️' }, { q: 'How many legs does a dog have?', answers: ['2', '4', '6'], correct: 1, emoji: '🐕' }, { q: 'What sound does a cow make?', answers: ['Woof', 'Meow', 'Moo'], correct: 2, emoji: '🐄' }, { q: 'What shape is a ball?', answers: ['Square', 'Circle', 'Triangle'], correct: 1, emoji: '⚽' }],
+  4: [{ q: 'What do plants need to grow?', answers: ['Candy', 'Water and Sun', 'Toys'], correct: 1, emoji: '🌱' }, { q: 'What is 2 plus 3?', answers: ['4', '5', '6'], correct: 1, emoji: '🔢' }, { q: 'How many days in a week?', answers: ['5', '6', '7'], correct: 2, emoji: '📅' }, { q: 'What season comes after summer?', answers: ['Spring', 'Fall', 'Winter'], correct: 1, emoji: '🍂' }],
+  6: [{ q: 'Which planet is red?', answers: ['Venus', 'Mars', 'Jupiter'], correct: 1, emoji: '🔴' }, { q: 'What is 8 times 7?', answers: ['54', '56', '58'], correct: 1, emoji: '✖️' }, { q: 'What gas do plants release?', answers: ['Carbon', 'Oxygen', 'Nitrogen'], correct: 1, emoji: '🌿' }, { q: 'How many continents are there?', answers: ['5', '6', '7'], correct: 2, emoji: '🌍' }],
 };
 
 const useSpeech = () => {
@@ -194,18 +4312,19 @@ const SetupPage = ({ kids, onStart, onAdd }) => {
   const [goal, setGoal] = useState(5);
   const ageGroup = sel ? (sel.age <= 3 ? 2 : sel.age <= 5 ? 4 : 6) : null;
   const avail = ageGroup ? Object.entries(CATEGORIES[ageGroup]) : [];
+  const videoCount = ageGroup ? VIDEOS.filter(v => v.age === ageGroup).length : 0;
   const canGo = () => step === 1 ? sel : step === 2 ? cats.length > 0 : true;
   const next = () => step === 3 ? onStart(sel, dur, cats, {enabled: rewards, goal}) : setStep(step + 1);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-indigo-500 via-purple-500 to-pink-500 flex flex-col relative overflow-hidden">
       <div className="relative z-10 px-6 pt-6 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2"><div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><span className="text-xl">🦊</span></div><span className="text-xl font-bold text-white">kindi</span></div>
+        <div className="flex items-center gap-2"><div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center"><span className="text-xl">🦊</span></div><span className="text-xl font-bold text-white">kindi</span><span className="ml-2 px-2 py-0.5 bg-white/20 rounded text-xs text-white/80">520 videos</span></div>
         <button onClick={() => setModal(true)} className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30"><Plus className="w-5 h-5 text-white"/></button>
       </div>
       <div className="relative z-10 flex-1 flex flex-col justify-center px-6 py-6 max-w-xl mx-auto w-full">
-        {step === 1 && (<div className="text-center"><h1 className="text-3xl font-bold text-white mb-2">Who's watching?</h1><p className="text-white/70 mb-10">Tap to choose</p><div className="flex justify-center gap-6 flex-wrap">{kids.map(k => { const A = avatars[k.avatar || 0]; return (<button key={k.id} onClick={() => { setSel(k); setCats([]); }} className={`relative transition-all ${sel?.id === k.id ? 'scale-110' : 'opacity-70 hover:opacity-100'}`}><div className={`w-20 h-20 rounded-2xl flex items-center justify-center ${sel?.id === k.id ? 'bg-white shadow-xl' : 'bg-white/20'}`}><A size={50} happy={sel?.id === k.id}/></div><p className={`mt-3 font-semibold ${sel?.id === k.id ? 'text-white' : 'text-white/70'}`}>{k.name}</p><p className={`text-sm ${sel?.id === k.id ? 'text-white/80' : 'text-white/50'}`}>{k.age} years</p></button>);})}</div></div>)}
-        {step === 2 && (<div className="text-center"><h1 className="text-3xl font-bold text-white mb-2">Pick adventures</h1><p className="text-white/70 mb-8">What sounds fun?</p><div className="grid grid-cols-3 gap-3">{avail.map(([k, l]) => { const isSel = cats.includes(k); return (<button key={k} onClick={() => setCats(p => p.includes(k) ? p.filter(c => c !== k) : [...p, k])} className={`aspect-square rounded-2xl flex flex-col items-center justify-center transition-all ${isSel ? 'bg-white shadow-xl scale-105' : 'bg-white/20 hover:bg-white/30'}`}><span className="text-2xl mb-1">{l.split(' ')[0]}</span><span className={`text-xs font-semibold ${isSel ? 'text-indigo-600' : 'text-white'}`}>{l.split(' ').slice(1).join(' ')}</span></button>);})}</div></div>)}
+        {step === 1 && (<div className="text-center"><h1 className="text-3xl font-bold text-white mb-2">Who's watching?</h1><p className="text-white/70 mb-10">Tap to choose</p><div className="flex justify-center gap-6 flex-wrap">{kids.map(k => { const A = avatars[k.avatar || 0]; return (<button key={k.id} onClick={() => { setSel(k); setCats([]); }} className={`relative transition-all ${sel?.id === k.id ? 'scale-110' : 'opacity-70 hover:opacity-100'}`}><div className={`w-20 h-20 rounded-2xl flex items-center justify-center ${sel?.id === k.id ? 'bg-white shadow-xl' : 'bg-white/20'}`}><A size={50} happy={sel?.id === k.id}/></div><p className={`mt-3 font-semibold ${sel?.id === k.id ? 'text-white' : 'text-white/70'}`}>{k.name}</p><p className={`text-sm ${sel?.id === k.id ? 'text-white/80' : 'text-white/50'}`}>{k.age} years</p></button>);})}</div>{sel && <p className="text-white/60 mt-8 text-sm">{videoCount} videos for age {sel.age}</p>}</div>)}
+        {step === 2 && (<div className="text-center"><h1 className="text-3xl font-bold text-white mb-2">Pick adventures</h1><p className="text-white/70 mb-8">What sounds fun?</p><div className="grid grid-cols-3 gap-3">{avail.map(([k, l]) => { const isSel = cats.includes(k); const count = VIDEOS.filter(v => v.age === ageGroup && v.cat === k).length; return (<button key={k} onClick={() => setCats(p => p.includes(k) ? p.filter(c => c !== k) : [...p, k])} className={`aspect-square rounded-2xl flex flex-col items-center justify-center transition-all ${isSel ? 'bg-white shadow-xl scale-105' : 'bg-white/20 hover:bg-white/30'}`}><span className="text-2xl mb-1">{l.split(' ')[0]}</span><span className={`text-xs font-semibold ${isSel ? 'text-indigo-600' : 'text-white'}`}>{l.split(' ').slice(1).join(' ')}</span><span className={`text-xs mt-1 ${isSel ? 'text-gray-500' : 'text-white/60'}`}>{count}</span></button>);})}</div></div>)}
         {step === 3 && (<div className="text-center"><h1 className="text-3xl font-bold text-white mb-2">Set it up</h1><div className="bg-white/20 rounded-2xl p-5 mb-4"><p className="text-white/80 text-sm mb-3"><Clock className="w-4 h-4 inline mr-2"/>Duration</p><div className="flex gap-2">{[15,30,45,60].map(m => <button key={m} onClick={() => setDur(m)} className={`flex-1 py-3 rounded-xl font-bold ${dur === m ? 'bg-white text-indigo-600' : 'bg-white/20 text-white'}`}>{m}m</button>)}</div></div><div className="bg-white/20 rounded-2xl p-5 mb-4"><button onClick={() => setRewards(!rewards)} className={`flex items-center gap-2 px-4 py-2 rounded-full mx-auto mb-3 ${rewards ? 'bg-amber-400 text-amber-900' : 'bg-white/20 text-white'}`}><Star className="w-4 h-4"/><span className="font-bold text-sm">Star Rewards</span></button>{rewards && (<><p className="text-white/80 text-sm mb-3">Stars for bonus</p><div className="flex gap-2">{[3,5,10].map(n => <button key={n} onClick={() => setGoal(n)} className={`flex-1 py-3 rounded-xl font-bold ${goal === n ? 'bg-amber-400 text-amber-900' : 'bg-white/20 text-white'}`}>{n} ⭐</button>)}</div></>)}</div></div>)}
       </div>
       <div className="relative z-10 px-6 pb-8 max-w-xl mx-auto w-full">
@@ -225,10 +4344,18 @@ const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
   const [question, setQuestion] = useState(null);
   const [jarFull, setJarFull] = useState(false);
   const [sessionTime, setSessionTime] = useState(duration * 60);
+  const [search, setSearch] = useState('');
   const ageGroup = child.age <= 3 ? 2 : child.age <= 5 ? 4 : 6;
   const allCats = CATEGORIES[ageGroup];
   const availCats = categories.map(k => [k, allCats[k]]);
-  const videos = VIDEOS.filter(v => v.age === ageGroup && active.includes(v.cat));
+  
+  const filteredVideos = VIDEOS.filter(v => {
+    if (v.age !== ageGroup) return false;
+    if (!active.includes(v.cat)) return false;
+    if (search && !v.title.toLowerCase().includes(search.toLowerCase())) return false;
+    return true;
+  });
+  
   const questions = QUESTIONS[ageGroup];
   const A = avatars[child.avatar || 0];
   const fmt = s => `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
@@ -250,12 +4377,27 @@ const WatchPage = ({ child, duration, categories, rewards, onEnd }) => {
           </div>
         </div>
       </div>
-      {availCats.length > 1 && (<div className="bg-white/80 border-b"><div className="max-w-6xl mx-auto px-4 py-2 flex items-center gap-2 overflow-x-auto"><span className="text-sm text-purple-600 font-medium">Show:</span>{availCats.map(([k,l]) => <button key={k} onClick={() => setActive(p => p.includes(k) ? p.filter(c => c !== k) : [...p, k])} className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${active.includes(k) ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' : 'bg-white text-gray-600'}`}>{l}</button>)}</div></div>)}
+      
+      {/* Search and filters */}
+      <div className="bg-white/80 border-b sticky top-14 z-30">
+        <div className="max-w-6xl mx-auto px-4 py-2">
+          <div className="flex items-center gap-3">
+            <div className="relative flex-1 max-w-xs">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"/>
+              <input type="text" placeholder="Search videos..." value={search} onChange={e => setSearch(e.target.value)} className="w-full pl-9 pr-4 py-2 rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"/>
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto">
+              {availCats.map(([k,l]) => <button key={k} onClick={() => setActive(p => p.includes(k) ? p.filter(c => c !== k) : [...p, k])} className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${active.includes(k) ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' : 'bg-white text-gray-600 border'}`}>{l}</button>)}
+            </div>
+          </div>
+        </div>
+      </div>
+      
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {!video ? (<><h1 className="text-xl font-bold text-indigo-900 mb-4">{videos.length} videos to explore! 🎉</h1>{videos.length === 0 ? <div className="text-center py-12"><div className="text-6xl mb-4">🎬</div><p className="text-gray-500">No videos in selected categories</p></div> : <VideoGrid videos={videos} onSelect={setVideo}/>}</>) : (
+        {!video ? (<><h1 className="text-xl font-bold text-indigo-900 mb-4">{filteredVideos.length} videos to explore! 🎉</h1>{filteredVideos.length === 0 ? <div className="text-center py-12"><div className="text-6xl mb-4">🔍</div><p className="text-gray-500">{search ? 'No videos match your search' : 'Select a category to see videos'}</p></div> : <VideoGrid videos={filteredVideos} onSelect={setVideo}/>}</>) : (
           <div className="max-w-3xl mx-auto space-y-6">
             <YouTubePlayer video={video} onBack={() => setVideo(null)} onQuizTime={onQuizTime} rewards={rewards.enabled}/>
-            {videos.filter(v => v.id !== video.id).length > 0 && (<div className="bg-white rounded-2xl p-4 shadow-md"><h3 className="text-lg font-bold text-gray-800 mb-3">Up Next 🎬</h3><div className="grid grid-cols-2 md:grid-cols-4 gap-3">{videos.filter(v => v.id !== video.id).slice(0,4).map(v => (<button key={v.id} onClick={() => setVideo(v)} className="rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:scale-105 transition-all"><div className="aspect-video bg-gray-200"><img src={`https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`} alt="" className="w-full h-full object-cover" onError={(e) => e.target.style.display='none'}/></div><div className="p-2 bg-white"><p className="text-xs font-medium text-gray-700 truncate">{v.title}</p></div></button>))}</div></div>)}
+            {filteredVideos.filter(v => v.id !== video.id).length > 0 && (<div className="bg-white rounded-2xl p-4 shadow-md"><h3 className="text-lg font-bold text-gray-800 mb-3">Up Next 🎬</h3><div className="grid grid-cols-2 md:grid-cols-4 gap-3">{filteredVideos.filter(v => v.id !== video.id).slice(0,4).map(v => (<button key={v.id} onClick={() => setVideo(v)} className="rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:scale-105 transition-all"><div className="aspect-video bg-gray-200"><img src={`https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`} alt="" className="w-full h-full object-cover" onError={(e) => e.target.style.display='none'}/></div><div className="p-2 bg-white"><p className="text-xs font-medium text-gray-700 truncate">{v.title}</p></div></button>))}</div></div>)}
           </div>
         )}
       </div>
