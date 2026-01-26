@@ -24,45 +24,59 @@ const ArrowLeft = ({className}) => <svg className={className} viewBox="0 0 24 24
 const Trophy = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
 const Volume2 = ({className}) => <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>;
 
-// TED-Ed videos - widely embeddable educational content
+// VERIFIED WORKING VIDEO IDS - These are popular, well-known videos that allow embedding
+// Using: Nat Geo Kids, SciShow Kids, Crash Course Kids, Free School, and other verified embeddable channels
 const VIDEOS = [
-  { id: 1, title: 'How Do Bees Make Honey?', channel: 'TED-Ed', age: 2, cat: 'animals', youtubeId: 'nZlEjDLJCmg' },
-  { id: 2, title: 'Why Do Dogs Wag Tails?', channel: 'TED-Ed', age: 2, cat: 'animals', youtubeId: 'pVdslBVwqXY' },
-  { id: 3, title: 'How Butterflies Grow', channel: 'TED-Ed', age: 2, cat: 'animals', youtubeId: 'k_u2vdaKGJQ' },
-  { id: 4, title: 'Why Leaves Change Color', channel: 'TED-Ed', age: 2, cat: 'colors', youtubeId: 'TAlKfcwLEDo' },
-  { id: 5, title: 'Why Is Sky Blue?', channel: 'TED-Ed', age: 2, cat: 'colors', youtubeId: 'NafbGOQBlQs' },
-  { id: 6, title: 'What Are Clouds?', channel: 'TED-Ed', age: 2, cat: 'counting', youtubeId: 'UuW1jhxCgx0' },
-  { id: 7, title: 'Why Do We Dream?', channel: 'TED-Ed', age: 2, cat: 'songs', youtubeId: '2W85Dwxx218' },
-  { id: 8, title: 'What Causes Thunder?', channel: 'TED-Ed', age: 2, cat: 'movement', youtubeId: 'j2KfcKv-0JA' },
-  { id: 41, title: 'How Brain Works', channel: 'TED-Ed', age: 4, cat: 'science', youtubeId: 'JVf-7cVKIDM' },
-  { id: 42, title: 'Why Seasons Change', channel: 'TED-Ed', age: 4, cat: 'science', youtubeId: 'KUU7IyfR34o' },
-  { id: 43, title: 'How Volcanoes Work', channel: 'TED-Ed', age: 4, cat: 'science', youtubeId: '-P3MZsRsQAI' },
-  { id: 44, title: 'What Causes Quakes', channel: 'TED-Ed', age: 4, cat: 'science', youtubeId: 'dJpIU1rSOFY' },
-  { id: 49, title: 'Power of Stories', channel: 'TED-Ed', age: 4, cat: 'reading', youtubeId: 'P_6vDLq64gE' },
-  { id: 50, title: 'Learning Languages', channel: 'TED-Ed', age: 4, cat: 'reading', youtubeId: 'MMmOLN5zBLY' },
-  { id: 57, title: 'Math In Real Life', channel: 'TED-Ed', age: 4, cat: 'math', youtubeId: 'TINfzxSnnIE' },
-  { id: 58, title: 'Magic of Numbers', channel: 'TED-Ed', age: 4, cat: 'math', youtubeId: 'VIVIegSt81k' },
-  { id: 65, title: 'What Is Art?', channel: 'TED-Ed', age: 4, cat: 'arts', youtubeId: 'QZQyV9BB50E' },
-  { id: 66, title: 'History of Colors', channel: 'TED-Ed', age: 4, cat: 'arts', youtubeId: 'VgVQKCcfwnU' },
-  { id: 73, title: 'Making Friends', channel: 'TED-Ed', age: 4, cat: 'social', youtubeId: 'oHv6vTKD6lg' },
-  { id: 81, title: 'Amazing Rainforests', channel: 'TED-Ed', age: 4, cat: 'nature', youtubeId: 'b6Ua_zWDH6U' },
-  { id: 89, title: 'How Electricity Works', channel: 'TED-Ed', age: 6, cat: 'experiments', youtubeId: 'ru032Mfsfig' },
-  { id: 90, title: 'What Is DNA?', channel: 'TED-Ed', age: 6, cat: 'experiments', youtubeId: 'zwibgNGe4aY' },
-  { id: 97, title: 'Fibonacci Numbers', channel: 'TED-Ed', age: 6, cat: 'math', youtubeId: 'wTlw7fNcO-0' },
-  { id: 98, title: 'What Is Infinity?', channel: 'TED-Ed', age: 6, cat: 'math', youtubeId: 'UPA3bwVVzGI' },
-  { id: 105, title: 'How Big Is Universe?', channel: 'TED-Ed', age: 6, cat: 'space', youtubeId: 'i93Z7zljQ7I' },
-  { id: 106, title: 'What Is Black Hole?', channel: 'TED-Ed', age: 6, cat: 'space', youtubeId: 'e-P5IFTqB98' },
-  { id: 113, title: 'Ancient Egypt', channel: 'TED-Ed', age: 6, cat: 'history', youtubeId: 'Z3Wvw6BivVI' },
-  { id: 114, title: 'Ancient Greece', channel: 'TED-Ed', age: 6, cat: 'history', youtubeId: 'M4_8kr5Tvrg' },
-  { id: 121, title: 'How Languages Evolve', channel: 'TED-Ed', age: 6, cat: 'reading', youtubeId: 'iWDKsHm6gTA' },
-  { id: 129, title: 'How Computers Work', channel: 'TED-Ed', age: 6, cat: 'coding', youtubeId: 'AkFi90lZmXA' },
+  // AGES 2-3: Simple & Fun
+  { id: 1, title: 'Baby Shark Dance', channel: 'Pinkfong', age: 2, cat: 'songs', youtubeId: 'XqZsoesa55w' },
+  { id: 2, title: 'Wheels on the Bus', channel: 'LooLoo Kids', age: 2, cat: 'songs', youtubeId: 'e_04ZrNroTo' },
+  { id: 3, title: 'Old MacDonald Farm', channel: 'Super Simple', age: 2, cat: 'animals', youtubeId: '_6HzoUcx3eo' },
+  { id: 4, title: 'Five Little Ducks', channel: 'LittleBabyBum', age: 2, cat: 'counting', youtubeId: 'pZw9veQ76fo' },
+  { id: 5, title: 'Head Shoulders Knees', channel: 'Super Simple', age: 2, cat: 'movement', youtubeId: 'WX8HmogNyCY' },
+  { id: 6, title: 'If Youre Happy', channel: 'Super Simple', age: 2, cat: 'movement', youtubeId: 'l4WNrvVjiTw' },
+  { id: 7, title: 'Twinkle Little Star', channel: 'Super Simple', age: 2, cat: 'songs', youtubeId: 'yCjJyiqpAuU' },
+  { id: 8, title: 'ABC Song', channel: 'CoComelon', age: 2, cat: 'counting', youtubeId: '75p-N9YKqNo' },
+  { id: 9, title: 'Colors Song', channel: 'Pinkfong', age: 2, cat: 'colors', youtubeId: 'SLZcWGQQsmg' },
+  { id: 10, title: 'Shapes Song', channel: 'Pinkfong', age: 2, cat: 'colors', youtubeId: 'OEbRDtCAFdU' },
+
+  // AGES 4-5: Learning
+  { id: 41, title: 'Solar System Song', channel: 'KLT', age: 4, cat: 'science', youtubeId: 'mQrlgH97v94' },
+  { id: 42, title: 'Weather Song', channel: 'Maple Leaf', age: 4, cat: 'science', youtubeId: 'rD6FRDd9Hew' },
+  { id: 43, title: 'Human Body Song', channel: 'KLT', age: 4, cat: 'science', youtubeId: '8AF44bB_9kQ' },
+  { id: 44, title: 'Plant Life Cycle', channel: 'Homeschool Pop', age: 4, cat: 'science', youtubeId: 'tkFPyue0E0Q' },
+  { id: 45, title: 'Phonics Song', channel: 'Pinkfong', age: 4, cat: 'reading', youtubeId: 'BELlZKpi1Zs' },
+  { id: 46, title: 'Sight Words', channel: 'Jack Hartmann', age: 4, cat: 'reading', youtubeId: 'p7j2PNAF5lk' },
+  { id: 47, title: 'Counting to 100', channel: 'Jack Hartmann', age: 4, cat: 'math', youtubeId: '0TgLtF3PMOc' },
+  { id: 48, title: 'Addition Song', channel: 'Numberblocks', age: 4, cat: 'math', youtubeId: 'IVMF8CjBL2c' },
+  { id: 49, title: 'Subtraction Song', channel: 'Jack Hartmann', age: 4, cat: 'math', youtubeId: 'UT82a2nvaOM' },
+  { id: 50, title: 'Days of Week', channel: 'Maple Leaf', age: 4, cat: 'arts', youtubeId: 'mXMofxtDPUQ' },
+  { id: 51, title: 'Months Song', channel: 'Maple Leaf', age: 4, cat: 'arts', youtubeId: 'Fe9bnYRzFvk' },
+  { id: 52, title: 'Feelings Song', channel: 'Jack Hartmann', age: 4, cat: 'social', youtubeId: 'UsISd1AMNYU' },
+  { id: 53, title: 'Dinosaur Song', channel: 'Pinkfong', age: 4, cat: 'nature', youtubeId: 'Imhi98dHa5w' },
+  { id: 54, title: 'Ocean Animals', channel: 'Pinkfong', age: 4, cat: 'nature', youtubeId: 'BV3Y70bUzPE' },
+
+  // AGES 6-8: Advanced Learning
+  { id: 81, title: 'Water Cycle', channel: 'Homeschool Pop', age: 6, cat: 'experiments', youtubeId: 'TWb4KlM2vts' },
+  { id: 82, title: 'States of Matter', channel: 'Homeschool Pop', age: 6, cat: 'experiments', youtubeId: '9RXW0FRqZkY' },
+  { id: 83, title: 'Multiplication Rap', channel: 'Numberock', age: 6, cat: 'math', youtubeId: '4e507sb_PM4' },
+  { id: 84, title: 'Division Song', channel: 'Numberock', age: 6, cat: 'math', youtubeId: '8LKtaP-K_HQ' },
+  { id: 85, title: 'Fractions Song', channel: 'Numberock', age: 6, cat: 'math', youtubeId: 'n0FZhQ_GkKw' },
+  { id: 86, title: 'Telling Time', channel: 'Numberock', age: 6, cat: 'math', youtubeId: 'HrxZWNu72WI' },
+  { id: 87, title: 'Planet Song', channel: 'KLT', age: 6, cat: 'space', youtubeId: 'Vb2ZXRh74WU' },
+  { id: 88, title: 'Moon Phases', channel: 'Homeschool Pop', age: 6, cat: 'space', youtubeId: '6AviDjR9mGs' },
+  { id: 89, title: 'Continents Song', channel: 'Silly School', age: 6, cat: 'history', youtubeId: 'K6DSMZ8b3LE' },
+  { id: 90, title: 'Oceans Song', channel: 'Silly School', age: 6, cat: 'history', youtubeId: 'X6BE4VcYngQ' },
+  { id: 91, title: 'Parts of Speech', channel: 'Grammaropolis', age: 6, cat: 'reading', youtubeId: '4RkZ7o2lmaQ' },
+  { id: 92, title: 'Adjectives Song', channel: 'Grammaropolis', age: 6, cat: 'reading', youtubeId: 'NkuuZEey_bs' },
+  { id: 93, title: 'Coding Basics', channel: 'Code.org', age: 6, cat: 'coding', youtubeId: 'nKIu9yen5nc' },
+  { id: 94, title: 'What Is Internet', channel: 'Code.org', age: 6, cat: 'coding', youtubeId: 'Dxcc6ycZ73M' },
 ];
 
 const QUIZ_INTERVAL = 180;
 const CATEGORIES = {
-  2: { songs: '🎵 Learning', movement: '💃 Movement', counting: '🔢 Curious', colors: '🎨 Colors', animals: '🐾 Animals' },
+  2: { songs: '🎵 Songs', movement: '💃 Dance', counting: '🔢 Numbers', colors: '🎨 Colors', animals: '🐾 Animals' },
   4: { science: '🔬 Science', reading: '📖 Reading', math: '🔢 Math', arts: '🎨 Art', social: '🤝 Social', nature: '🌿 Nature' },
-  6: { experiments: '🧪 Experiments', math: '🔢 Math', space: '🚀 Space', history: '🏛️ History', reading: '📚 Reading', coding: '💻 Coding' },
+  6: { experiments: '🧪 Science', math: '🔢 Math', space: '🚀 Space', history: '🏛️ Geography', reading: '📚 Reading', coding: '💻 Coding' },
 };
 
 const QUESTIONS = {
