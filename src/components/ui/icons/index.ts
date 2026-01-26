@@ -1,0 +1,9 @@
+export { Play } from './Play';
+export { Clock } from './Clock';
+export { Star } from './Star';
+export { Plus } from './Plus';
+export { X } from './X';
+export { ArrowLeft } from './ArrowLeft';
+export { Trophy } from './Trophy';
+export { Volume2 } from './Volume2';
+export { Search } from './Search';
