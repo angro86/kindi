@@ -151,7 +151,7 @@ export const VIDEOS: Video[] = [
   {"id":148,"title":"Gravity","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"EwY6p-r_hyU"},
   {"id":149,"title":"Food Chains","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"MuKs9o1s8h8"},
   {"id":150,"title":"Water Cycle","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"z5G4NCwWUxY"},
-  {"id":151,"title":"Weathering","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"R-2k8WYR7bY"},
+  {"id":151,"title":"Weathering","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"R-Iak3Wvh9c"},
   {"id":152,"title":"Resources","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"xmnkXXBtGsw"},
   {"id":153,"title":"Engineering","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"owHF9iLyxic"},
   {"id":154,"title":"Light","channel":"Crash Course Kids","age":6,"cat":"science","youtubeId":"HAqN5hxpqHs"},
