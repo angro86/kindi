@@ -246,8 +246,8 @@ export const VIDEOS: Video[] = [
   {"id":243,"title":"Ancient Rome","channel":"Simple History","age":8,"cat":"history","youtubeId":"gqhdJPqQPJE"},
   {"id":244,"title":"Vikings","channel":"Simple History","age":8,"cat":"history","youtubeId":"Wc5g4CR_dfc"},
   {"id":245,"title":"Knights","channel":"Simple History","age":8,"cat":"history","youtubeId":"Y5_ksmITlrE"},
-  {"id":246,"title":"Leonardo da Vinci","channel":"Free School","age":8,"cat":"history","youtubeId":"S-v-H9VCaRc"},
-  {"id":247,"title":"Vincent van Gogh","channel":"Free School","age":8,"cat":"history","youtubeId":"5Z4q_w0v89M"},
-  {"id":248,"title":"Mozart","channel":"Free School","age":8,"cat":"history","youtubeId":"Rb0UmrCXxVA"},
-  {"id":249,"title":"Beethoven","channel":"Free School","age":8,"cat":"history","youtubeId":"4NZBqj4-vH4"}
+  {"id":246,"title":"Leonardo da Vinci","channel":"Free School","age":8,"cat":"history","youtubeId":"PMrbDEj8U0w"},
+  {"id":247,"title":"Vincent van Gogh","channel":"Free School","age":8,"cat":"history","youtubeId":"qv8TANh8djI"},
+  {"id":248,"title":"Mozart","channel":"Free School","age":8,"cat":"history","youtubeId":"UyB4-6g-Vbg"},
+  {"id":249,"title":"Beethoven","channel":"Free School","age":8,"cat":"history","youtubeId":"ms9tyNKtjcs"}
 ];
