@@ -55,7 +55,7 @@ export function SetupPage({ kids, onStart, onAdd }: SetupPageProps) {
       <div className="relative z-10 flex-1 flex flex-col justify-center px-6 py-6 max-w-xl mx-auto w-full">
         {step === 1 && (
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">Who&apos;s watching?</h1>
+            <h1 className="text-3xl font-bold text-white mb-2">Who is watching?</h1>
             <p className="text-white/70 mb-10">Tap to choose</p>
             <div className="flex justify-center gap-6 flex-wrap">
               {kids.map((k) => {
