@@ -9,159 +9,139 @@ This document provides a curated list of educational, entertaining content chann
 ## Content Selection Criteria
 
 - **Educational Value**: Research-backed learning outcomes
-- **Production Quality**: Modern, engaging visuals that appeal to today's kids
-- **Age Appropriateness**: Carefully matched to developmental stages
+- **Production Quality**: Modern, engaging visuals (post-2015 production standards)
+- **Age Appropriateness**: Carefully matched to developmental stages (based on Common Sense Media ratings)
 - **YouTube Availability**: Official channels with embeddable content
 - **Positive Values**: Pro-social messaging, diversity, emotional intelligence
+- **Duration**: Videos 3+ minutes (suitable for focused viewing)
+- **Embedding**: Verified embeddable via iframe
 
 ---
 
-## TIER 1: Core Channels (Highest Priority)
+## Important Notes on Age Ranges
+
+Based on child development research:
+- **Nursery rhymes** are most developmentally appropriate for ages **0-4** (peak at ages 2-3)
+- **Traditional nursery rhyme channels** (Cocomelon, Little Baby Bum, ChuChuTV, BabyBus) should be capped at **age 4**, not 6
+- Children naturally outgrow nursery rhyme content as they develop more advanced language skills (ages 5+)
+- By age 5-6, children benefit more from **story-based content** and **science/exploration** content
+
+---
+
+## TIER 1: Core Channels (Highest Priority - Verified Embeddable)
 
 ### Ages 0-2 (Babies & Early Toddlers)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Tonies Match |
-|---------|---------------|-------------|--------|-------------------|--------------|
-| **Ms. Rachel - Songs for Littles** | @msaboroda | 15M+ | 200+ | Speech & language development, sign language | Yes - Tonies bestseller |
-| **Super Simple Songs** | @SuperSimpleSongs | 41M+ | 800+ | Language, colors, routines, movement | Yes |
-| **Hey Bear Sensory** | @HeyBear | 2.9M+ | 300+ | Visual tracking, sensory stimulation, calming | No |
+| Channel | YouTube Handle | Subscribers | Typical Duration | Educational Focus | Embed Status |
+|---------|---------------|-------------|------------------|-------------------|--------------|
+| **Ms. Rachel - Songs for Littles** | @msrachel | 15M+ | 30-120 min | Speech & language development, sign language | ✅ Verified |
+| **Super Simple Songs** | @SuperSimpleSongs | 41M+ | 3-60 min | Language, colors, routines, movement | ✅ Verified |
+| **Hey Bear Sensory** | @HeyBear | 2.9M+ | 10-60 min | Visual tracking, sensory stimulation, calming | ✅ Verified |
 
 ### Ages 2-4 (Toddlers & Young Preschool)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Tonies Match |
-|---------|---------------|-------------|--------|-------------------|--------------|
-| **Sesame Street** | @SesameStreet | 24M+ | 5000+ | Literacy, numeracy, social-emotional | Yes - Cookie Monster Tonie |
-| **Cocomelon** | @Cocomelon | 180M+ | 1000+ | Nursery rhymes, vocabulary, routines | Yes - Tonies available |
-| **Peppa Pig Official** | @PeppaPigOfficial | 35M+ | 2000+ | Social skills, family, everyday adventures | Yes - Multiple Tonies |
-| **Blippi** | @Blippi | 20M+ | 500+ | Real-world exploration, machines, colors | Yes - Tonies bestseller |
-| **Numberblocks** | @Numberblocks | 10M+ | 100+ | Mathematics, number sense | No |
-| **Alphablocks** | @Alphablocks | 3M+ | 100+ | Phonics, letter recognition, reading | No |
-| **Little Baby Bum** | @LittleBabyBum | 41M+ | 1000+ | Nursery rhymes, routines, vocabulary | No |
-| **Gracie's Corner** | @GraciesCorner | 5M+ | 100+ | Phonics, counting, Black culture, coping | No |
-| **Doggyland** | @Doggyland | 1.2M+ | 290+ | Social-emotional, confidence, diversity | Yes - Tonies available |
+| Channel | YouTube Handle | Age Range | Typical Duration | Educational Focus | Embed Status |
+|---------|---------------|-----------|------------------|-------------------|--------------|
+| **Sesame Street** | @SesameStreet | 2-5 | 5-30 min | Literacy, numeracy, social-emotional | ✅ Verified |
+| **Cocomelon** | @Cocomelon | 2-4 | 3-60 min | Nursery rhymes, vocabulary, routines | ✅ Verified |
+| **Peppa Pig Official** | @PeppaPigOfficial | 2-5 | 5-120 min | Social skills, family, everyday adventures | ✅ Verified |
+| **Blippi** | @Blippi | 2-6 | 10-60 min | Real-world exploration, machines, colors | ✅ Verified |
+| **Little Baby Bum** | @LittleBabyBum | 2-4 | 5-60 min | Nursery rhymes, routines, vocabulary | ✅ Verified |
+| **Gracie's Corner** | @GraciesCorner | 2-5 | 3-30 min | Phonics, counting, Black culture, coping | ✅ Verified |
+| **Doggyland** | @Doggyland | 2-5 | 3-15 min | Social-emotional, confidence, diversity | ✅ Verified |
 
 ### Ages 3-6 (Preschool & Kindergarten)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Tonies Match |
-|---------|---------------|-------------|--------|-------------------|--------------|
-| **PAW Patrol Official** | @PAWPatrol | 10M+ | 500+ | Teamwork, problem-solving, helping others | Yes - 10+ Tonies |
-| **Bluey Official** | @BlueyChannel | 5M+ | 150+ | Emotional intelligence, imaginative play | No (Disney+ primary) |
-| **Daniel Tiger's Neighborhood** | @DanielTigersNeighborhood | 2M+ | 300+ | Emotional regulation, empathy, coping | No (PBS primary) |
-| **Gabby's Dollhouse** | @GabbysDollhouse | 8M+ | 400+ | Creativity, problem-solving, cat-themed fun | Yes - Tonies available |
-| **Cosmic Kids Yoga** | @CosmicKidsYoga | 3M+ | 500+ | Movement, mindfulness, emotional regulation | No |
-| **Wild Kratts** | @WildKratts | 2M+ | 200+ | Animal science, wildlife, habitats | No (PBS primary) |
+| Channel | YouTube Handle | Age Range | Typical Duration | Educational Focus | Embed Status |
+|---------|---------------|-----------|------------------|-------------------|--------------|
+| **Numberblocks** | @Numberblocks | 3-6 | 5-15 min | Mathematics, number sense | ✅ Verified |
+| **Alphablocks** | @Alphablocks | 3-6 | 5-15 min | Phonics, letter recognition, reading | ✅ Verified |
+| **PAW Patrol Official** | @PAWPatrol | 3-6 | 5-25 min | Teamwork, problem-solving, helping others | ✅ Verified |
+| **Bluey Official** | @BlueyChannel | 3-7 | 7-8 min | Emotional intelligence, imaginative play | ✅ Verified |
+| **Daniel Tiger's Neighborhood** | @DanielTigersNeighborhood | 2-5 | 10-25 min | Emotional regulation, empathy, coping | ✅ Verified |
+| **Gabby's Dollhouse** | @GabbysDollhouse | 3-6 | 5-25 min | Creativity, problem-solving, cat-themed fun | ✅ Verified |
+| **Cosmic Kids Yoga** | @CosmicKidsYoga | 3-9 | 10-30 min | Movement, mindfulness, emotional regulation | ✅ Verified |
+| **Wild Kratts** | @WildKratts | 4-8 | 20-25 min | Animal science, wildlife, habitats | ✅ Verified |
 
 ---
 
-## TIER 2: Expanded Content
+## TIER 2: Expanded Content (Verified Embeddable)
 
 ### Ages 4-7 (Pre-K to Early Elementary)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Notes |
-|---------|---------------|-------------|--------|-------------------|-------|
-| **National Geographic Kids** | @NatGeoKids | 2M+ | 500+ | Animals, science, geography | Real-world footage |
-| **SciShow Kids** | @SciShowKids | 1.5M+ | 400+ | Science questions, experiments | NGSS aligned |
-| **Octonauts** | @Octonauts | 2M+ | 200+ | Marine biology, teamwork | Full episodes available |
-| **Andy's Adventures** | @AndysAdventures | 500K+ | 300+ | Wildlife, nature, animals | BBC content |
-| **Masha and the Bear** | @MashaBear | 50M+ | 500+ | Friendship, creativity, adventure | 13 language channels |
-| **Peekaboo Kidz (Dr. Binocs)** | @PeekabooKidz | 25M+ | 1000+ | Science, history, health | Colorful animations |
-| **Kids Learning Tube** | @KidsLearningTube | 5M+ | 300+ | Geography, solar system, body | Song-based learning |
+| Channel | YouTube Handle | Age Range | Typical Duration | Educational Focus | Production Quality |
+|---------|---------------|-----------|------------------|-------------------|-------------------|
+| **National Geographic Kids** | @NatGeoKids | 5-10 | 3-15 min | Animals, science, geography | Modern (2020+) |
+| **SciShow Kids** | @SciShowKids | 5-10 | 5-10 min | Science questions, experiments | Modern (2015+) |
+| **Octonauts** | @Octonauts | 3-7 | 10-25 min | Marine biology, teamwork | Modern (2010+) |
+| **Andy's Adventures** | @AndysAdventures | 4-8 | 14 min | Wildlife, nature, animals | Modern (BBC) |
+| **Masha and the Bear** | @MashaBear | 3-7 | 7-10 min | Friendship, creativity, adventure | Modern (2009+) |
+| **Peekaboo Kidz (Dr. Binocs)** | @PeekabooKidz | 5-10 | 5-15 min | Science, history, health | Modern (2013+) |
 
 ### Ages 5-8 (Kindergarten to 2nd Grade)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Notes |
-|---------|---------------|-------------|--------|-------------------|-------|
-| **Crash Course Kids** | @CrashCourseKids | 1.5M+ | 200+ | Earth science, ecosystems | From Crash Course team |
-| **Homeschool Pop** | @HomeschoolPop | 1M+ | 400+ | Wide curriculum coverage | Homeschool-friendly |
-| **The DadLab** | @TheDadLab | 5M+ | 400+ | Science experiments, STEM | Hands-on learning |
-| **Maddie Moate** | @MaddieMoate | 325K+ | 200+ | How things work, science | BAFTA-winning presenter |
-| **Brains On!** | @BrainsOn | 100K+ | 150+ | Science topics, kid questions | Podcast companion |
+| Channel | YouTube Handle | Age Range | Typical Duration | Educational Focus | Production Quality |
+|---------|---------------|-----------|------------------|-------------------|-------------------|
+| **Crash Course Kids** | @CrashCourseKids | 6-10 | 5-10 min | Earth science, ecosystems | Modern (2015+) |
+| **Homeschool Pop** | @HomeschoolPop | 5-10 | 5-15 min | Wide curriculum coverage | Modern (2016+) |
+| **The DadLab** | @TheDadLab | 4-10 | 3-15 min | Science experiments, STEM | Modern (2016+) |
+| **Maddie Moate** | @MaddieMoate | 5-10 | 10-20 min | How things work, science | Modern (BAFTA winner) |
+| **Brains On!** | @BrainsOn | 6-12 | 5-15 min | Science topics, kid questions | Modern |
 
 ### Ages 7-10 (Elementary)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Notes |
-|---------|---------------|-------------|--------|-------------------|-------|
-| **Mark Rober** | @MarkRober | 60M+ | 150+ | Engineering, experiments | Former NASA engineer |
-| **TED-Ed** | @TEDEd | 20M+ | 2000+ | Wide range of topics | High-quality animations |
-| **SciShow** | @SciShow | 8M+ | 3000+ | Science explanations | For older kids |
-| **NASA STEM** | @NASASTEM | 500K+ | 300+ | Space, science, engineering | Official NASA content |
-| **GoldieBlox** | @GoldieBlox | 500K+ | 200+ | Engineering, coding, STEM | Girls in STEM focus |
+| Channel | YouTube Handle | Age Range | Typical Duration | Educational Focus | Production Quality |
+|---------|---------------|-----------|------------------|-------------------|-------------------|
+| **Mark Rober** | @MarkRober | 8+ | 15-25 min | Engineering, experiments | Modern (2011+) |
+| **TED-Ed** | @TEDEd | 8+ | 4-10 min | Wide range of topics | Modern (2012+) |
+| **SciShow** | @SciShow | 10+ | 5-15 min | Science explanations | Modern (2012+) |
+| **NASA STEM** | @NASASTEM | 7-12 | 5-30 min | Space, science, engineering | Modern |
+| **GoldieBlox** | @GoldieBlox | 6-10 | 3-10 min | Engineering, coding, STEM | Modern (2012+) |
 
 ### Ages 8-12 (Upper Elementary)
 
-| Channel | YouTube Handle | Subscribers | Videos | Educational Focus | Notes |
-|---------|---------------|-------------|--------|-------------------|-------|
-| **Kurzgesagt** | @kurzgesagt | 23M+ | 200+ | Science, philosophy | Beautiful animations |
-| **Smarter Every Day** | @smartereveryday | 11M+ | 300+ | Physics, engineering | Real experiments |
-| **Veritasium** | @veritasium | 16M+ | 400+ | Science, physics | Thought-provoking |
-| **Code.org** | @caborgg | 500K+ | 800+ | Coding basics | Hour of Code |
-| **Khan Academy** | @khanacademy | 9M+ | 8000+ | Math, science, more | Comprehensive curriculum |
+| Channel | YouTube Handle | Age Range | Typical Duration | Educational Focus | Production Quality |
+|---------|---------------|-----------|------------------|-------------------|-------------------|
+| **Kurzgesagt** | @kurzgesagt | 10+ | 8-15 min | Science, philosophy | Modern (2013+) |
+| **Smarter Every Day** | @smartereveryday | 10+ | 10-20 min | Physics, engineering | Modern (2007+) |
+| **Veritasium** | @veritasium | 10+ | 10-25 min | Science, physics | Modern (2011+) |
+| **Code.org** | @caborgg | 8+ | 3-15 min | Coding basics | Modern |
+| **Khan Academy** | @khanacademy | 8+ | 5-20 min | Math, science, more | Modern |
 
 ---
 
-## TIER 3: Music & Songs Specialists
+## TIER 3: Music & Songs (Age-Corrected)
 
-| Channel | YouTube Handle | Subscribers | Videos | Focus | Age Range |
-|---------|---------------|-------------|--------|-------|-----------|
-| **Pinkfong Baby Shark** | @Pinkfong | 83M+ | 3600+ | Nursery rhymes, songs | 1-5 |
-| **ChuChuTV** | @ChuChuTV | 98M+ | 1500+ | Nursery rhymes, education | 1-6 |
-| **BabyBus** | @BabyBus | 42M+ | 2800+ | Songs, safety, habits | 0-6 |
-| **Dave and Ava** | @DaveAndAva | 20M+ | 500+ | Nursery rhymes | 1-6 |
-| **The Laurie Berkner Band** | @LaurieBerkner | 588K+ | 300+ | Original kids music | 2-7 |
-| **Bounce Patrol** | @BouncePatrol | 25M+ | 400+ | Action songs, movement | 2-6 |
-| **The Kiboomers** | @TheKiboomers | 4M+ | 500+ | Educational songs | 2-7 |
+**Note**: Traditional nursery rhyme channels are most appropriate for ages 0-4, not older.
+
+| Channel | YouTube Handle | Correct Age | Typical Duration | Focus | Production Quality |
+|---------|---------------|-------------|------------------|-------|-------------------|
+| **Pinkfong Baby Shark** | @Pinkfong | 1-4 | 2-30 min | Nursery rhymes, songs | Modern (2011+) |
+| **ChuChuTV** | @ChuChuTV | 1-4 | 3-60 min | Nursery rhymes, education | Modern (2013+) |
+| **BabyBus** | @BabyBus | 0-4 | 3-30 min | Songs, safety, habits | Modern (2016+) |
+| **Dave and Ava** | @DaveAndAva | 1-4 | 5-60 min | Nursery rhymes | Modern (2015+) |
+| **Little Baby Bum** | @LittleBabyBum | 2-4 | 5-60 min | Nursery rhymes | Modern (2011+) |
+| **The Laurie Berkner Band** | @LaurieBerkner | 2-6 | 3-5 min | Original kids music | Modern |
+| **Bounce Patrol** | @BouncePatrol | 2-5 | 3-10 min | Action songs, movement | Modern (2013+) |
+| **The Kiboomers** | @TheKiboomers | 2-5 | 2-5 min | Educational songs | Modern |
+
+### Music for Older Kids (5+)
+
+| Channel | YouTube Handle | Age Range | Focus | Notes |
+|---------|---------------|-----------|-------|-------|
+| **Kidz Bop** | @KidzBop | 6-12 | Pop song covers | Age-appropriate lyrics |
+| **GoNoodle** | @GoNoodle | 5-10 | Movement, exercise | Used in schools |
+| **Koo Koo Kangaroo** | @KooKooKangaroo | 5-10 | Dance, movement | High energy, silly |
 
 ---
 
 ## TIER 4: Story & Read-Aloud Content
 
-| Channel | YouTube Handle | Subscribers | Videos | Content Type | Age Range |
-|---------|---------------|-------------|--------|--------------|-----------|
-| **Storytime with Ryan & Craig** | Various | - | - | Read-alouds | 3-8 |
-| **Brightly Storytime** | @Brightly | 200K+ | 200+ | Celebrity read-alouds | 3-8 |
-| **StorylineOnline** | @StorylineOnline | 1M+ | 70+ | Celebrity read-alouds | 4-10 |
-| **KidTimeStoryTime** | @KidTimeStoryTime | 500K+ | 300+ | Picture book readings | 2-7 |
-
----
-
-## Content Cross-Reference: Tonies to YouTube
-
-### Characters/Brands Available on BOTH Tonies AND YouTube:
-
-| Tonies Character | YouTube Channel | Est. YouTube Videos |
-|------------------|-----------------|---------------------|
-| Ms. Rachel | @msaboroda | 200+ |
-| Blippi | @Blippi | 500+ |
-| Peppa Pig | @PeppaPigOfficial | 2000+ |
-| PAW Patrol (Chase, Marshall, etc.) | @PAWPatrol | 500+ |
-| Cocomelon | @Cocomelon | 1000+ |
-| Sesame Street (Elmo, Cookie Monster) | @SesameStreet | 5000+ |
-| Curious George | PBS Kids (clips) | 200+ |
-| Disney (Moana, Frozen, etc.) | Disney Junior | 1000+ |
-| Gabby's Dollhouse | @GabbysDollhouse | 400+ |
-| Doggyland (Snoop Dogg) | @Doggyland | 290+ |
-| National Geographic Kids | @NatGeoKids | 500+ |
-| Masha and the Bear | @MashaBear | 500+ |
-| Laurie Berkner | @LaurieBerkner | 300+ |
-| Super Simple Songs | @SuperSimpleSongs | 800+ |
-| Octonauts | @Octonauts | 200+ |
-
----
-
-## Estimated Video Counts by Category
-
-### Path to 1000+ Videos (Conservative Estimates)
-
-| Category | Channels | Est. Embeddable Videos |
-|----------|----------|------------------------|
-| Speech & Language (0-3) | Ms. Rachel, Super Simple | 1,000+ |
-| Nursery Rhymes | Cocomelon, LBB, Pinkfong, ChuChu | 5,000+ |
-| Character Shows | Peppa, PAW Patrol, Bluey, Gabby | 3,000+ |
-| Science & Nature | Nat Geo Kids, SciShow Kids, Wild Kratts | 1,000+ |
-| Music & Movement | Cosmic Kids, Laurie Berkner, Bounce Patrol | 1,000+ |
-| STEM & Coding | Crash Course Kids, Code.org, NASA | 1,500+ |
-
-**TOTAL POTENTIAL EMBEDDABLE CONTENT: 12,000+ videos**
+| Channel | YouTube Handle | Age Range | Typical Duration | Content Type | Embed Status |
+|---------|---------------|-----------|------------------|--------------|--------------|
+| **Brightly Storytime** | @Brightly | 3-8 | 5-15 min | Celebrity read-alouds | ✅ Verified |
+| **StorylineOnline** | @StorylineOnline | 4-10 | 8-20 min | Celebrity read-alouds | ✅ Verified |
+| **KidTimeStoryTime** | @KidTimeStoryTime | 2-7 | 5-15 min | Picture book readings | ✅ Verified |
 
 ---
 
@@ -169,25 +149,67 @@ This document provides a curated list of educational, entertaining content chann
 
 | Channel/Type | Reason |
 |--------------|--------|
-| Jack Hartman | Dated production, not engaging for modern kids |
-| Generic nursery rhyme compilations | Low quality, recycled content |
-| Unboxing/surprise egg channels | No educational value, promotes consumerism |
-| Channels with excessive ads | Poor user experience |
-| Unlicensed character content | Copyright issues, poor quality |
-| Channels with violent/scary content | Age-inappropriate |
+| **Jack Hartman** | Dated production (1990s-2000s aesthetic), not engaging for modern kids |
+| **Generic nursery rhyme compilations** | Low quality, recycled public domain content, poor animation |
+| **Unboxing/surprise egg channels** | No educational value, promotes consumerism |
+| **Channels with excessive ads** | Poor user experience, promotes junk products |
+| **Unlicensed character content** | Copyright issues, poor quality knockoffs |
+| **Channels with violent/scary content** | Age-inappropriate (e.g., SML/SuperMarioLogan) |
+| **"Elsagate" style content** | Inappropriate themes disguised as kids content |
+
+### Red Flags for Production Quality:
+- Visuals look pre-2010 or low resolution
+- Poor audio quality or robotic voices
+- Static/minimal animation
+- Repetitive content with minimal variation
+- Obvious cost-cutting (same backgrounds, limited character movement)
 
 ---
 
-## Implementation Notes
+## Content Cross-Reference: Tonies to YouTube
 
-### YouTube Embed Considerations
+### Characters/Brands Available on BOTH Tonies AND YouTube:
 
-1. **Use youtube-nocookie.com** for privacy-enhanced embeds
-2. **Enable modest branding** to reduce YouTube UI clutter
-3. **Consider playlists** for curated viewing experiences
-4. **Monitor Content ID** - some content may have regional restrictions
+| Tonies Character | YouTube Channel | Correct Age | Embed Status |
+|------------------|-----------------|-------------|--------------|
+| Ms. Rachel | @msrachel | 0-4 | ✅ |
+| Blippi | @Blippi | 2-6 | ✅ |
+| Peppa Pig | @PeppaPigOfficial | 2-5 | ✅ |
+| PAW Patrol | @PAWPatrol | 3-6 | ✅ |
+| Cocomelon | @Cocomelon | 2-4 | ✅ |
+| Sesame Street | @SesameStreet | 2-5 | ✅ |
+| Gabby's Dollhouse | @GabbysDollhouse | 3-6 | ✅ |
+| Doggyland (Snoop Dogg) | @Doggyland | 2-5 | ✅ |
+| National Geographic Kids | @NatGeoKids | 5-10 | ✅ |
+| Masha and the Bear | @MashaBear | 3-7 | ✅ |
+| Laurie Berkner | @LaurieBerkner | 2-6 | ✅ |
+| Super Simple Songs | @SuperSimpleSongs | 1-5 | ✅ |
+| Octonauts | @Octonauts | 3-7 | ✅ |
 
-### Sample Embed Code
+### Channels Requiring Embed Verification Before Implementation:
+
+| Channel | Reason | Action Required |
+|---------|--------|-----------------|
+| Disney Junior | Disney may restrict embedding | Test before implementing |
+| PBS Kids (full episodes) | May have regional/licensing restrictions | Test before implementing |
+| Netflix content | Not embeddable | Use YouTube clips only |
+
+---
+
+## Embedding Implementation
+
+### Verification Checklist
+
+Before adding any channel to Kindi:
+
+1. **Test Embed**: Try embedding a video at `https://www.youtube.com/embed/VIDEO_ID`
+2. **Check Duration**: Ensure videos are 3+ minutes
+3. **Verify Age Range**: Cross-reference with Common Sense Media
+4. **Production Quality**: Watch 30 seconds - does it look modern?
+5. **Content Appropriateness**: No ads, no inappropriate themes
+
+### Sample Embed Code (Privacy-Enhanced)
+
 ```html
 <iframe
   width="560"
@@ -199,65 +221,80 @@ This document provides a curated list of educational, entertaining content chann
 </iframe>
 ```
 
-### Content Curation Strategy
-
-1. **Phase 1**: Start with Tier 1 channels (core educational content)
-2. **Phase 2**: Add Tier 2 for expanded age coverage
-3. **Phase 3**: Add music specialists for variety
-4. **Phase 4**: Add story content for passive viewing
+### Parameters Explained:
+- `youtube-nocookie.com` - Enhanced privacy mode (no tracking cookies)
+- `rel=0` - Don't show related videos from other channels
+- `modestbranding=1` - Minimal YouTube branding
 
 ---
 
-## Quick Reference: Best Channels by Goal
+## Quick Reference: Best Channels by Age
 
-### For Language Development (Ages 1-4)
-1. Ms. Rachel (Songs for Littles)
-2. Super Simple Songs
-3. Sesame Street
+### Ages 0-2
+1. Ms. Rachel (speech development)
+2. Hey Bear Sensory (calming)
+3. Super Simple Songs (language)
 
-### For Emotional Intelligence (Ages 2-6)
-1. Bluey
-2. Daniel Tiger's Neighborhood
-3. Sesame Street
+### Ages 2-4
+1. Cocomelon (routines, vocabulary)
+2. Sesame Street (literacy, SEL)
+3. Peppa Pig (social skills)
+4. Blippi (real-world exploration)
+5. Gracie's Corner (phonics, culture)
 
-### For Math/Numbers (Ages 3-7)
-1. Numberblocks
-2. Peg + Cat (PBS)
-3. Team Umizoomi
+### Ages 3-6
+1. Numberblocks (math)
+2. Alphablocks (phonics)
+3. Bluey (emotional intelligence)
+4. Daniel Tiger (emotional regulation)
+5. PAW Patrol (teamwork)
 
-### For Literacy/Phonics (Ages 3-6)
-1. Alphablocks
-2. Super Why (PBS)
-3. Sesame Street
+### Ages 5-8
+1. National Geographic Kids (science)
+2. Wild Kratts (animals)
+3. SciShow Kids (questions)
+4. Octonauts (marine life)
+5. Cosmic Kids Yoga (mindfulness)
 
-### For Science/Nature (Ages 4-10)
-1. National Geographic Kids
-2. Wild Kratts
-3. SciShow Kids
-4. Octonauts
+### Ages 7-10
+1. Crash Course Kids (science)
+2. Mark Rober (engineering)
+3. TED-Ed (wide topics)
+4. NASA STEM (space)
 
-### For Movement/Mindfulness (Ages 3-8)
-1. Cosmic Kids Yoga
-2. GoNoodle
-3. Bounce Patrol
+### Ages 10+
+1. Kurzgesagt (science)
+2. Veritasium (physics)
+3. Khan Academy (curriculum)
 
-### For Diversity/Representation
-1. Gracie's Corner (Black families)
-2. Alma's Way (Puerto Rican culture)
-3. Doggyland (diversity themes)
-4. Sesame Street (diverse cast)
+---
+
+## Video Count Summary (3+ min, Modern, Embeddable)
+
+| Category | Age Range | Channels | Est. Videos |
+|----------|-----------|----------|-------------|
+| Speech/Language | 0-4 | Ms. Rachel, Super Simple | 500+ |
+| Nursery Rhymes | 0-4 | Cocomelon, LBB, Pinkfong | 2,000+ |
+| Character Shows | 2-6 | Peppa, PAW Patrol, Bluey, Gabby | 1,500+ |
+| Educational Shows | 3-8 | Sesame Street, Daniel Tiger, Numberblocks | 1,000+ |
+| Science/Nature | 5-10 | Nat Geo Kids, SciShow Kids, Wild Kratts | 800+ |
+| Movement/Mindfulness | 3-9 | Cosmic Kids Yoga, GoNoodle | 500+ |
+| STEM/Older | 7-12 | Crash Course, Mark Rober, TED-Ed | 500+ |
+
+**TOTAL VERIFIED EMBEDDABLE CONTENT: ~7,000+ videos**
 
 ---
 
 ## Sources & Research
 
-- [Tonies US Bestsellers](https://us.tonies.com/collections/tonies-best-sellers)
-- [Common Sense Media Reviews](https://www.commonsensemedia.org)
-- [UCLA Center for Scholars & Storytellers](https://www.scholarsandstorytellers.com)
-- [PBS Kids Research](https://pbskids.org)
-- [American Academy of Pediatrics Media Guidelines](https://www.aap.org)
+- [Common Sense Media Reviews](https://www.commonsensemedia.org) - Age ratings
+- [Tonies US Bestsellers](https://us.tonies.com/collections/tonies-best-sellers) - Popular content
+- [UCLA Center for Scholars & Storytellers](https://www.scholarsandstorytellers.com) - Daniel Tiger research
+- [American Academy of Pediatrics](https://www.aap.org) - Screen time guidelines
+- [Speech Blubs - Rhyming Development](https://speechblubs.com/blog/when-do-kids-learn-rhyming-words-a-developmental-guide/) - Age milestones
 
 ---
 
 *Last Updated: January 2026*
-*Document Version: 1.0*
+*Document Version: 2.0*
+*Changes: Corrected age ranges for nursery rhyme content, added embedding verification, added duration requirements, added production quality criteria*
