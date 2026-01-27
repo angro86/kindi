@@ -26,7 +26,7 @@ export const VIDEOS: Video[] = [
   {"id":23,"title":"Light","channel":"Peekaboo Kidz","age":5,"cat":"science","youtubeId":"d7yTlp4gBTI"},
   {"id":24,"title":"Weather","channel":"Peekaboo Kidz","age":4,"cat":"science","youtubeId":"8mH3SjzjH-w"},
   {"id":25,"title":"Seasons","channel":"Peekaboo Kidz","age":4,"cat":"science","youtubeId":"LTv9bxWDxoc"},
-  {"id":26,"title":"Rainbow","channel":"Peekaboo Kidz","age":4,"cat":"science","youtubeId":"gNMAEnIiM3Y"},
+  {"id":26,"title":"Rainbow","channel":"Peekaboo Kidz","age":4,"cat":"science","youtubeId":"nCPPLhPTAIk"},
   {"id":27,"title":"Clouds","channel":"Peekaboo Kidz","age":4,"cat":"science","youtubeId":"UuW1jhxCgx0"},
   {"id":28,"title":"Ocean","channel":"Peekaboo Kidz","age":5,"cat":"science","youtubeId":"X6BE4VcYngQ"},
   {"id":29,"title":"Desert","channel":"Peekaboo Kidz","age":5,"cat":"science","youtubeId":"FBZvuPhX0Ac"},
