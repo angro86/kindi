@@ -186,5 +186,35 @@ export const VIDEOS: Video[] = [
   {"id":74,"title":"Hidden Science of Fireworks","channel":"Veritasium","age":8,"cat":"science","youtubeId":"lfkjm2YRG-Q"},
 
   // OverSimplified (verified)
-  {"id":75,"title":"WW1 Oversimplified","channel":"OverSimplified","age":8,"cat":"history","youtubeId":"dHSQAEam2yc"}
+  {"id":75,"title":"WW1 Oversimplified","channel":"OverSimplified","age":8,"cat":"history","youtubeId":"dHSQAEam2yc"},
+
+  // HALIDON Music (verified)
+  {"id":77,"title":"The Best of Mozart","channel":"HALIDON Music","age":8,"cat":"history","youtubeId":"Rb0UmrCXxVA"},
+
+  // Earth: The Operators' Manual (verified)
+  {"id":78,"title":"CO2 in the Ice Core Record","channel":"Earth: The Operators' Manual","age":8,"cat":"science","youtubeId":"oHzADl-XID8"},
+
+  // Kurzgesagt (verified)
+  {"id":79,"title":"What's Hiding in the Deep Sea","channel":"Kurzgesagt","age":6,"cat":"nature","youtubeId":"PaErPyEnDvk"},
+
+  // === Additional restored verified videos ===
+
+  // Scratch Garden (verified - was misattributed)
+  {"id":80,"title":"Counting by Tens Song","channel":"Scratch Garden","age":4,"cat":"math","youtubeId":"Ftati8iGQcs"},
+
+  // Have Fun Teaching (verified)
+  {"id":81,"title":"Alphabet Song","channel":"Have Fun Teaching","age":2,"cat":"songs","youtubeId":"36IBDpTRVNE"},
+
+  // KidsTV123 (verified)
+  {"id":82,"title":"Phonics Song 2","channel":"KidsTV123","age":3,"cat":"reading","youtubeId":"BELlZKpi1Zs"},
+  {"id":83,"title":"The Feelings Song","channel":"KidsTV123","age":3,"cat":"social","youtubeId":"UsISd1AMNYU"},
+
+  // The Learning Station (verified)
+  {"id":84,"title":"Freeze Dance","channel":"The Learning Station","age":2,"cat":"movement","youtubeId":"388Q44ReOWE"},
+
+  // The Singing Walrus (verified)
+  {"id":85,"title":"Shapes Song","channel":"The Singing Walrus","age":3,"cat":"math","youtubeId":"OEbRDtCAFdU"},
+
+  // Little BoBo Nursery Rhymes (verified)
+  {"id":86,"title":"Five Little Monkeys","channel":"Little BoBo Nursery Rhymes","age":2,"cat":"songs","youtubeId":"b0NHrFNZWh0"}
 ];
