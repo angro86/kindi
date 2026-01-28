@@ -1,17 +1,82 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { YouTubePlayerProps } from '@/types';
 import { ArrowLeft, Play, Star } from '@/components/ui/icons';
 import { QUIZ_INTERVAL } from '@/lib/constants';
 import { formatTime } from '@/lib/utils';
 
-export function YouTubePlayer({ video, onBack, onQuizTime, rewards }: YouTubePlayerProps) {
+declare global {
+  interface Window {
+    YT: typeof YT;
+    onYouTubeIframeAPIReady: (() => void) | undefined;
+  }
+}
+
+export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }: YouTubePlayerProps) {
   const [watchTime, setWatchTime] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const lastQuizRef = useRef(0);
+  const playerRef = useRef<YT.Player | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
+  // Load YouTube IFrame API
   useEffect(() => {
+    if (window.YT && window.YT.Player) return;
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  }, []);
+
+  // Initialize player when API is ready
+  useEffect(() => {
+    const init = () => {
+      if (!containerRef.current) return;
+      playerRef.current = new window.YT.Player(containerRef.current, {
+        videoId: video.youtubeId,
+        playerVars: { autoplay: 1, rel: 0, modestbranding: 1 },
+        width: '100%',
+        height: '100%',
+      });
+    };
+
+    if (window.YT && window.YT.Player) {
+      init();
+    } else {
+      window.onYouTubeIframeAPIReady = init;
+    }
+
+    return () => {
+      playerRef.current?.destroy();
+      playerRef.current = null;
+    };
+  }, [video.youtubeId]);
+
+  // Pause/resume on quiz
+  useEffect(() => {
+    const player = playerRef.current;
+    if (!player) return;
+    try {
+      if (quizActive) {
+        player.pauseVideo();
+      } else {
+        player.playVideo();
+      }
+    } catch {
+      // Player may not be ready yet
+    }
+  }, [quizActive]);
+
+  // Pause/resume timer on quiz
+  useEffect(() => {
+    if (quizActive) {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      return;
+    }
+
     const startDelay = setTimeout(() => {
       timerRef.current = setInterval(() => {
         setWatchTime((prev) => {
@@ -29,7 +94,7 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards }: YouTubePla
       clearTimeout(startDelay);
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [rewards, onQuizTime]);
+  }, [rewards, onQuizTime, quizActive]);
 
   const nextQuiz = QUIZ_INTERVAL - (watchTime - lastQuizRef.current);
 
@@ -44,12 +109,7 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards }: YouTubePla
       </button>
       <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
         <div className="relative aspect-video bg-black">
-          <iframe
-            src={`https://www.youtube.com/embed/${video.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          <div ref={containerRef} className="w-full h-full" />
           {rewards && nextQuiz <= 30 && nextQuiz > 0 && (
             <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full px-4 py-2 flex items-center gap-2 shadow-lg animate-pulse z-10">
               <Star className="w-4 h-4 text-yellow-300" />
@@ -65,7 +125,7 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards }: YouTubePla
           <div className="flex items-center gap-3 ml-4">
             <div className="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5">
               <Play className="w-3 h-3" />
-              Playing
+              {quizActive ? 'Paused' : 'Playing'}
             </div>
             <div className="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-sm font-bold">
               ⏱️ {formatTime(watchTime)}

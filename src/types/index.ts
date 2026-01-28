@@ -97,6 +97,7 @@ export interface YouTubePlayerProps {
   onBack: () => void;
   onQuizTime: (watchTime: number) => void;
   rewards: boolean;
+  quizActive: boolean;
 }
 
 export interface QuestionModalProps {

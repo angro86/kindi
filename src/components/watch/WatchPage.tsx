@@ -172,6 +172,7 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
               onBack={() => setVideo(null)}
               onQuizTime={onQuizTime}
               rewards={rewards.enabled}
+              quizActive={!!question}
             />
             {filteredVideos.filter((v) => v.id !== video.id).length > 0 && (
               <div className="bg-white rounded-2xl p-4 shadow-md">
