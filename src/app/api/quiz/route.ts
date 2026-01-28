@@ -1,10 +1,77 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { YoutubeTranscript } from 'youtube-transcript';
 
+/**
+ * Fetch transcript by scraping YouTube's video page for the captions URL,
+ * then fetching the timedtext XML directly.
+ */
 async function getTranscript(videoId: string, watchedSeconds: number): Promise<string> {
-  const items = await YoutubeTranscript.fetchTranscript(videoId);
-  const filtered = items.filter((item: { offset: number }) => item.offset / 1000 <= watchedSeconds);
-  return filtered.map((item: { text: string }) => item.text).join(' ').trim();
+  // Step 1: Fetch the YouTube video page to extract captions URL
+  const pageRes = await fetch(`https://www.youtube.com/watch?v=${videoId}`, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept-Language': 'en-US,en;q=0.9',
+    },
+  });
+
+  if (!pageRes.ok) {
+    throw new Error(`YouTube page fetch failed: ${pageRes.status}`);
+  }
+
+  const html = await pageRes.text();
+
+  // Step 2: Extract captions data from the page
+  const captionsMatch = html.match(/"captionTracks":\s*(\[.*?\])/);
+  if (!captionsMatch) {
+    throw new Error('No captions found for this video');
+  }
+
+  let captionTracks;
+  try {
+    captionTracks = JSON.parse(captionsMatch[1]);
+  } catch {
+    throw new Error('Failed to parse caption tracks');
+  }
+
+  // Pick English captions, or first available
+  const track = captionTracks.find((t: { languageCode: string }) =>
+    t.languageCode === 'en' || t.languageCode?.startsWith('en')
+  ) || captionTracks[0];
+
+  if (!track?.baseUrl) {
+    throw new Error('No usable caption track found');
+  }
+
+  // Step 3: Fetch the actual captions XML
+  const captionRes = await fetch(track.baseUrl);
+  if (!captionRes.ok) {
+    throw new Error(`Caption fetch failed: ${captionRes.status}`);
+  }
+
+  const xml = await captionRes.text();
+
+  // Step 4: Parse XML to extract timed text
+  const segments: { start: number; text: string }[] = [];
+  const regex = /<text start="([\d.]+)"[^>]*>(.*?)<\/text>/g;
+  let match;
+  while ((match = regex.exec(xml)) !== null) {
+    const start = parseFloat(match[1]);
+    // Decode HTML entities
+    const text = match[2]
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/\n/g, ' ')
+      .trim();
+    if (text) {
+      segments.push({ start, text });
+    }
+  }
+
+  // Step 5: Filter to only what was watched
+  const filtered = segments.filter(s => s.start <= watchedSeconds);
+  return filtered.map(s => s.text).join(' ').trim();
 }
 
 export async function POST(request: NextRequest) {
@@ -18,6 +85,9 @@ export async function POST(request: NextRequest) {
     try {
       transcript = await getTranscript(videoId, watchedSeconds);
       console.log(`[quiz] Transcript fetched: ${transcript.length} chars`);
+      if (transcript.length > 0) {
+        console.log(`[quiz] Transcript preview: ${transcript.substring(0, 100)}...`);
+      }
     } catch (e) {
       console.log('[quiz] Could not fetch transcript:', (e as Error).message);
     }
@@ -38,7 +108,7 @@ IMPORTANT: Base your question ONLY on specific facts, words, or topics mentioned
       contentContext = `Video title: "${videoTitle}"
 Channel: "${videoChannel}"
 
-No transcript available. Generate a specific question about the topic in the video title. Ask about a concrete fact related to the title topic, not a vague or generic question.`;
+No transcript available. The video title says "${videoTitle}". Generate a specific factual question about the topic of ${videoTitle}. For example, if the title mentions ears or hearing, ask a specific fact about ears or hearing.`;
     }
 
     const prompt = `You are generating a quiz question for a child aged ${age}. Create 1 simple, age-appropriate question.
@@ -53,8 +123,9 @@ Rules:
 - Use simple language appropriate for age ${age}
 - Pick a relevant emoji for the question's topic
 - Keep answers short (1-4 words each)
-- The question MUST be about a specific fact or detail, NOT a generic question like "What do scientists use?" or "What is this video about?"
-- ${hasTranscript ? 'Ask about something EXPLICITLY mentioned in the transcript' : 'Ask about a specific fact related to the video title topic'}`;
+- The question MUST be directly about the topic in the video title: "${videoTitle}"
+- NEVER ask generic science questions. Ask about the SPECIFIC topic: "${videoTitle}"
+- ${hasTranscript ? 'Ask about something EXPLICITLY mentioned in the transcript' : `Ask a specific fact about: ${videoTitle}`}`;
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
