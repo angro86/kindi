@@ -11,33 +11,37 @@ export async function POST(request: NextRequest) {
   try {
     const { videoId, videoTitle, videoChannel, age, watchedSeconds } = await request.json();
 
+    console.log(`[quiz] Generating for video="${videoTitle}" (${videoId}), videoTime=${watchedSeconds}s, age=${age}`);
+
     // Try to fetch transcript
     let transcript = '';
     try {
       transcript = await getTranscript(videoId, watchedSeconds);
+      console.log(`[quiz] Transcript fetched: ${transcript.length} chars`);
     } catch (e) {
-      console.log('Could not fetch transcript:', (e as Error).message);
+      console.log('[quiz] Could not fetch transcript:', (e as Error).message);
     }
 
+    const hasTranscript = transcript && transcript.length > 20;
     const minutesWatched = Math.max(1, Math.round(watchedSeconds / 60));
 
     let contentContext: string;
-    if (transcript && transcript.length > 20) {
+    if (hasTranscript) {
       contentContext = `Video title: "${videoTitle}"
 Channel: "${videoChannel}"
 
 EXACT TRANSCRIPT (what was shown/said in the first ${minutesWatched} minute(s)):
 "${transcript.substring(0, 2000)}"
 
-IMPORTANT: Base your question ONLY on what was actually said in the transcript above.`;
+IMPORTANT: Base your question ONLY on specific facts, words, or topics mentioned in the transcript above. Do NOT ask generic or broad questions.`;
     } else {
       contentContext = `Video title: "${videoTitle}"
 Channel: "${videoChannel}"
 
-No transcript available. Generate a question based on the video title and channel.`;
+No transcript available. Generate a specific question about the topic in the video title. Ask about a concrete fact related to the title topic, not a vague or generic question.`;
     }
 
-    const prompt = `You are generating a quiz question for a child aged ${age}. Based on this children's video content, create 1 simple, age-appropriate question about what was actually shown/said.
+    const prompt = `You are generating a quiz question for a child aged ${age}. Create 1 simple, age-appropriate question.
 
 ${contentContext}
 
@@ -49,7 +53,8 @@ Rules:
 - Use simple language appropriate for age ${age}
 - Pick a relevant emoji for the question's topic
 - Keep answers short (1-4 words each)
-- Make the question specific to what was actually said/shown in the video`;
+- The question MUST be about a specific fact or detail, NOT a generic question like "What do scientists use?" or "What is this video about?"
+- ${hasTranscript ? 'Ask about something EXPLICITLY mentioned in the transcript' : 'Ask about a specific fact related to the video title topic'}`;
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -70,12 +75,14 @@ Rules:
 
     if (!response.ok) {
       const err = await response.text();
-      console.error('Gemini API error:', err);
+      console.error('[quiz] Gemini API error:', err);
       return NextResponse.json({ error: 'LLM request failed' }, { status: 500 });
     }
 
     const data = await response.json();
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    console.log(`[quiz] Gemini response: ${text}`);
+
     // Strip markdown fences if present
     const jsonStr = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
     const question = JSON.parse(jsonStr);
@@ -87,7 +94,7 @@ Rules:
       emoji: question.emoji,
     });
   } catch (e) {
-    console.error('Quiz generation error:', (e as Error).message);
+    console.error('[quiz] Generation error:', (e as Error).message);
     return NextResponse.json({ error: 'Failed to generate question' }, { status: 500 });
   }
 }
