@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { YoutubeTranscript } from 'youtube-transcript';
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic();
 
 async function getTranscript(videoId: string, watchedSeconds: number): Promise<string> {
   const items = await YoutubeTranscript.fetchTranscript(videoId);
@@ -54,14 +51,34 @@ Rules:
 - Keep answers short (1-4 words each)
 - Make the question specific to what was actually said/shown in the video`;
 
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-20250414',
-      max_tokens: 300,
-      messages: [{ role: 'user', content: prompt }],
-    });
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: 'GEMINI_API_KEY not set' }, { status: 500 });
+    }
 
-    const text = response.content[0].type === 'text' ? response.content[0].text : '';
-    const question = JSON.parse(text);
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 300, temperature: 0.7 },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.text();
+      console.error('Gemini API error:', err);
+      return NextResponse.json({ error: 'LLM request failed' }, { status: 500 });
+    }
+
+    const data = await response.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    // Strip markdown fences if present
+    const jsonStr = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+    const question = JSON.parse(jsonStr);
 
     return NextResponse.json({
       q: question.q,
