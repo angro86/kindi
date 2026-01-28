@@ -18,6 +18,7 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
   const [playing, setPlaying] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const lastQuizRef = useRef(0);
+  const watchTimeRef = useRef(0);
   const playerRef = useRef<YT.Player | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const onQuizTimeRef = useRef(onQuizTime);
@@ -86,15 +87,14 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     }
 
     timerRef.current = setInterval(() => {
-      setWatchTime((prev) => {
-        const newTime = prev + 1;
-        if (rewards && newTime - lastQuizRef.current >= QUIZ_INTERVAL) {
-          lastQuizRef.current = newTime;
-          const currentVideoTime = playerRef.current?.getCurrentTime?.() ?? newTime;
-          onQuizTimeRef.current(newTime, Math.floor(currentVideoTime));
-        }
-        return newTime;
-      });
+      setWatchTime((prev) => prev + 1);
+      watchTimeRef.current += 1;
+      const newTime = watchTimeRef.current;
+      if (rewards && newTime - lastQuizRef.current >= QUIZ_INTERVAL) {
+        lastQuizRef.current = newTime;
+        const currentVideoTime = playerRef.current?.getCurrentTime?.() ?? newTime;
+        onQuizTimeRef.current(newTime, Math.floor(currentVideoTime));
+      }
     }, 1000);
 
     return () => {
