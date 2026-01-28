@@ -1,12 +1,14 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { WatchPageProps, Video, QuizQuestion } from '@/types';
 import { Clock, Star, Search } from '@/components/ui/icons';
 import { avatars } from '@/components/avatars';
 import { VIDEOS } from '@/data/videos';
 import { CATEGORIES } from '@/data/categories';
 import { QUESTIONS } from '@/data/questions';
+import { VIDEO_QUESTIONS } from '@/data/generated-questions';
+import { QUIZ_INTERVAL } from '@/lib/constants';
 import { formatTime, getFilteredVideos } from '@/lib/utils';
 import { VideoGrid } from './VideoGrid';
 import { YouTubePlayer } from './YouTubePlayer';
@@ -49,11 +51,24 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
     return () => clearInterval(t);
   }, []);
 
-  const onQuizTime = () => {
-    if (rewards.enabled) {
-      setQuestion(questions[Math.floor(Math.random() * questions.length)]);
+  const onQuizTime = useCallback((watchTime: number) => {
+    if (!rewards.enabled || !video) return;
+
+    // Find a video-specific question for the elapsed time window
+    const videoQs = VIDEO_QUESTIONS[video.youtubeId];
+    const chunkStart = watchTime - QUIZ_INTERVAL;
+
+    if (videoQs) {
+      const match = videoQs.find((tq) => tq.startSec >= chunkStart && tq.startSec < watchTime);
+      if (match) {
+        setQuestion(match.question);
+        return;
+      }
     }
-  };
+
+    // Fallback to static age-group questions
+    setQuestion(questions[Math.floor(Math.random() * questions.length)]);
+  }, [rewards.enabled, video, questions]);
 
   const onAnswer = (correct: boolean) => {
     setQuestion(null);
@@ -192,7 +207,7 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
       </div>
 
       {question && <QuestionModal question={question} onAnswer={onAnswer} />}
-      {jarFull && <JarFullModal name={child.name} onClaim={() => setJarFull(false)} />}
+      {jarFull && <JarFullModal name={child.name} onClaim={() => { setJarFull(false); setStars(0); }} />}
       {timeUp && <TimeUpModal name={child.name} duration={duration} onEnd={onEnd} />}
     </div>
   );

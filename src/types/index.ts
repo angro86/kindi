@@ -85,10 +85,17 @@ export interface VideoThumbnailProps {
   onClick: () => void;
 }
 
+export interface TimedQuestion {
+  startSec: number;
+  question: QuizQuestion;
+}
+
+export type VideoQuestions = Record<string, TimedQuestion[]>;
+
 export interface YouTubePlayerProps {
   video: Video;
   onBack: () => void;
-  onQuizTime: () => void;
+  onQuizTime: (watchTime: number) => void;
   rewards: boolean;
 }
 

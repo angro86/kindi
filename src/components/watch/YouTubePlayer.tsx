@@ -18,7 +18,7 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards }: YouTubePla
           const newTime = prev + 1;
           if (rewards && newTime - lastQuizRef.current >= QUIZ_INTERVAL) {
             lastQuizRef.current = newTime;
-            onQuizTime();
+            onQuizTime(newTime);
           }
           return newTime;
         });
