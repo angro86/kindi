@@ -19,7 +19,7 @@ export function SetupPage({ kids, onStart, onAdd }: SetupPageProps) {
 
   const ageGroup = sel ? (sel.age <= 3 ? 2 : sel.age <= 5 ? 4 : 6) : null;
   const avail = ageGroup ? Object.entries(CATEGORIES[ageGroup]) : [];
-  const videoCount = ageGroup ? VIDEOS.filter((v) => v.age === ageGroup).length : 0;
+  const videoCount = ageGroup ? VIDEOS.filter((v) => ageGroup >= v.ageMin && ageGroup <= v.ageMax).length : 0;
 
   const canGo = () => (step === 1 ? sel : step === 2 ? cats.length > 0 : true);
 
@@ -101,7 +101,7 @@ export function SetupPage({ kids, onStart, onAdd }: SetupPageProps) {
             <div className="grid grid-cols-3 gap-3">
               {avail.map(([k, l]) => {
                 const isSel = cats.includes(k);
-                const count = VIDEOS.filter((v) => v.age === ageGroup && v.cat === k).length;
+                const count = VIDEOS.filter((v) => ageGroup! >= v.ageMin && ageGroup! <= v.ageMax && v.cat === k).length;
                 return (
                   <button
                     key={k}

@@ -4,7 +4,8 @@ export interface Video {
   id: number;
   title: string;
   channel: string;
-  age: number;
+  ageMin: number;
+  ageMax: number;
   cat: Category;
   youtubeId: string;
 }

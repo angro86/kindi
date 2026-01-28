@@ -14,7 +14,7 @@ export function getFilteredVideos(
 ): Video[] {
   // Filter videos first
   const matchingVideos = videos.filter((v) => {
-    if (v.age !== ageGroup) return false;
+    if (ageGroup < v.ageMin || ageGroup > v.ageMax) return false;
     if (!activeCategories.includes(v.cat)) return false;
     if (search && !v.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
