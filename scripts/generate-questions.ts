@@ -1,143 +1,164 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { YoutubeTranscript } from 'youtube-transcript';
 import { writeFileSync } from 'fs';
 import { resolve } from 'path';
 
-// Import video data directly — tsx handles the path alias via tsconfig
 import { VIDEOS } from '../src/data/videos';
-import { QUIZ_INTERVAL } from '../src/lib/constants';
 import type { QuizQuestion, TimedQuestion } from '../src/types';
 
 const client = new Anthropic();
+const YT_API_KEY = process.env.YOUTUBE_API_KEY;
 
-interface TranscriptEntry {
-  text: string;
-  offset: number;
-  duration: number;
+if (!YT_API_KEY) {
+  console.error('Missing YOUTUBE_API_KEY environment variable');
+  process.exit(1);
 }
 
-function chunkTranscript(entries: TranscriptEntry[], intervalSec: number): { startSec: number; text: string }[] {
-  const chunks: { startSec: number; text: string }[] = [];
-  let currentChunkStart = 0;
-  let currentLines: string[] = [];
+interface VideoMetadata {
+  title: string;
+  description: string;
+  tags: string[];
+  durationSec: number;
+}
 
-  for (const entry of entries) {
-    const entrySec = entry.offset / 1000;
-    if (entrySec >= currentChunkStart + intervalSec && currentLines.length > 0) {
-      chunks.push({ startSec: currentChunkStart, text: currentLines.join(' ') });
-      currentChunkStart += intervalSec;
-      currentLines = [];
+function parseDuration(iso: string): number {
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  if (!match) return 0;
+  return (parseInt(match[1] || '0') * 3600) +
+         (parseInt(match[2] || '0') * 60) +
+         (parseInt(match[3] || '0'));
+}
+
+async function fetchMetadataBatch(videoIds: string[]): Promise<Record<string, VideoMetadata>> {
+  const result: Record<string, VideoMetadata> = {};
+  // API allows up to 50 IDs per request
+  for (let i = 0; i < videoIds.length; i += 50) {
+    const batch = videoIds.slice(i, i + 50);
+    const ids = batch.join(',');
+    const url = `https://www.googleapis.com/youtube/v3/videos?id=${ids}&part=snippet,contentDetails&key=${YT_API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.error) {
+      console.error('YouTube API error:', data.error.message);
+      continue;
     }
-    currentLines.push(entry.text);
-  }
 
-  if (currentLines.length > 0) {
-    chunks.push({ startSec: currentChunkStart, text: currentLines.join(' ') });
+    for (const item of (data.items || [])) {
+      result[item.id] = {
+        title: item.snippet.title || '',
+        description: (item.snippet.description || '').substring(0, 500),
+        tags: (item.snippet.tags || []).slice(0, 15),
+        durationSec: parseDuration(item.contentDetails.duration),
+      };
+    }
   }
-
-  return chunks;
+  return result;
 }
 
-async function generateQuestion(transcript: string, age: number): Promise<QuizQuestion | null> {
-  const prompt = `You are generating a quiz question for a child aged ${age}. Based ONLY on this transcript segment from a children's video, create one simple, age-appropriate question about what was discussed.
+async function generateQuestions(
+  meta: VideoMetadata,
+  age: number,
+  numQuestions: number
+): Promise<QuizQuestion[]> {
+  const prompt = `You are generating quiz questions for a child aged ${age}. Based on this children's video, create ${numQuestions} simple, age-appropriate question(s) about what the video teaches.
 
-Transcript:
-"""
-${transcript}
-"""
+Video title: "${meta.title}"
+Video description: "${meta.description}"
+Video tags: ${meta.tags.join(', ')}
 
-Respond with ONLY valid JSON, no markdown:
-{"q": "question text", "answers": ["option1", "option2", "option3"], "correct": 0, "emoji": "🔤"}
+Respond with ONLY a valid JSON array, no markdown:
+[{"q": "question text", "answers": ["option1", "option2", "option3"], "correct": 0, "emoji": "🔤"}]
 
 Rules:
 - "correct" must be the 0-based index of the correct answer (0, 1, or 2)
-- The question must be directly answerable from the transcript
+- Questions should be about the educational topic of the video
 - Use simple language appropriate for age ${age}
-- Pick a relevant emoji for the topic
-- Keep answers short (1-4 words each)`;
+- Pick a relevant emoji for each question's topic
+- Keep answers short (1-4 words each)
+- Each question should cover a different aspect of the video's topic
+- Make questions specific to what this video teaches, not generic`;
 
   try {
     const response = await client.messages.create({
       model: 'claude-haiku-4-20250414',
-      max_tokens: 200,
+      max_tokens: 400,
       messages: [{ role: 'user', content: prompt }],
     });
 
     const text = response.content[0].type === 'text' ? response.content[0].text : '';
     const parsed = JSON.parse(text);
-    return {
-      q: parsed.q,
-      answers: parsed.answers,
-      correct: parsed.correct,
-      emoji: parsed.emoji,
-    };
+    return (Array.isArray(parsed) ? parsed : [parsed]).map((q: any) => ({
+      q: q.q,
+      answers: q.answers,
+      correct: q.correct,
+      emoji: q.emoji,
+    }));
   } catch (e) {
     console.error('  Failed to generate question:', (e as Error).message);
-    return null;
+    return [];
   }
 }
 
 async function main() {
   const result: Record<string, TimedQuestion[]> = {};
-  let processed = 0;
-  let skipped = 0;
   let generated = 0;
+  let skipped = 0;
 
-  console.log(`Processing ${VIDEOS.length} videos...\n`);
+  console.log(`Fetching metadata for ${VIDEOS.length} videos...\n`);
 
-  for (const video of VIDEOS) {
-    processed++;
-    const age = video.ageMin;
-    console.log(`[${processed}/${VIDEOS.length}] ${video.title} (${video.youtubeId})`);
+  // Fetch all video metadata in batches
+  const allIds = VIDEOS.map(v => v.youtubeId);
+  const metadata = await fetchMetadataBatch(allIds);
+  console.log(`Got metadata for ${Object.keys(metadata).length} videos\n`);
 
-    let entries: TranscriptEntry[];
-    try {
-      entries = await YoutubeTranscript.fetchTranscript(video.youtubeId);
-    } catch {
-      console.log('  Skipped: no transcript available');
+  for (let i = 0; i < VIDEOS.length; i++) {
+    const video = VIDEOS[i];
+    const meta = metadata[video.youtubeId];
+
+    console.log(`[${i + 1}/${VIDEOS.length}] ${video.title} (${video.youtubeId})`);
+
+    if (!meta) {
+      console.log('  Skipped: no metadata');
       skipped++;
       continue;
     }
 
-    if (entries.length === 0) {
-      console.log('  Skipped: empty transcript');
-      skipped++;
-      continue;
-    }
-
-    const chunks = chunkTranscript(entries, QUIZ_INTERVAL);
-    const questions: TimedQuestion[] = [];
-
-    for (const chunk of chunks) {
-      if (chunk.text.trim().length < 30) {
-        console.log(`  Skipped chunk at ${chunk.startSec}s: too short`);
-        continue;
-      }
-
-      const question = await generateQuestion(chunk.text, age);
-      if (question) {
-        questions.push({ startSec: chunk.startSec, question });
-        generated++;
-        console.log(`  ✓ Question for ${chunk.startSec}s: ${question.q}`);
-      }
-    }
+    // Generate 1 question per 180s of video, minimum 1
+    const numQuestions = Math.max(1, Math.floor(meta.durationSec / 180));
+    const questions = await generateQuestions(meta, video.ageMin, numQuestions);
 
     if (questions.length > 0) {
-      result[video.youtubeId] = questions;
+      const timedQuestions: TimedQuestion[] = questions.map((q, idx) => ({
+        startSec: idx * 180,
+        question: q,
+      }));
+      result[video.youtubeId] = timedQuestions;
+      generated += questions.length;
+      for (const q of questions) {
+        console.log(`  ✓ ${q.q}`);
+      }
+    } else {
+      skipped++;
+    }
+
+    // Write incrementally every 20 videos
+    if ((i + 1) % 20 === 0) {
+      writeOutput(result);
+      console.log(`  [saved progress: ${generated} questions so far]`);
     }
   }
 
-  // Write output
+  writeOutput(result);
+  console.log(`\nDone! ${generated} questions generated for ${Object.keys(result).length} videos. ${skipped} skipped.`);
+}
+
+function writeOutput(result: Record<string, TimedQuestion[]>) {
   const output = `import { VideoQuestions } from '@/types';
 
 export const VIDEO_QUESTIONS: VideoQuestions = ${JSON.stringify(result, null, 2)};
 `;
-
   const outPath = resolve(__dirname, '../src/data/generated-questions.ts');
   writeFileSync(outPath, output, 'utf-8');
-
-  console.log(`\nDone! ${generated} questions generated, ${skipped} videos skipped.`);
-  console.log(`Output: ${outPath}`);
 }
 
 main().catch(console.error);
