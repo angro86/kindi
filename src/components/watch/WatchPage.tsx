@@ -53,10 +53,11 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
 
   const [quizLoading, setQuizLoading] = useState(false);
 
-  const onQuizTime = useCallback(async (watchTime: number) => {
+  const onQuizTime = useCallback(async (watchTime: number, videoTime: number) => {
     if (!rewards.enabled || !video) return;
 
     // Try transcript-based quiz generation via API
+    // Use videoTime (actual playback position in current video) not cumulative watchTime
     setQuizLoading(true);
     try {
       const res = await fetch('/api/quiz', {
@@ -67,7 +68,7 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
           videoTitle: video.title,
           videoChannel: video.channel,
           age: child.age,
-          watchedSeconds: watchTime,
+          watchedSeconds: videoTime,
         }),
       });
 

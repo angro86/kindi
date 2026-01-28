@@ -90,7 +90,8 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
         const newTime = prev + 1;
         if (rewards && newTime - lastQuizRef.current >= QUIZ_INTERVAL) {
           lastQuizRef.current = newTime;
-          onQuizTimeRef.current(newTime);
+          const currentVideoTime = playerRef.current?.getCurrentTime?.() ?? newTime;
+          onQuizTimeRef.current(newTime, Math.floor(currentVideoTime));
         }
         return newTime;
       });

@@ -95,7 +95,7 @@ export type VideoQuestions = Record<string, TimedQuestion[]>;
 export interface YouTubePlayerProps {
   video: Video;
   onBack: () => void;
-  onQuizTime: (watchTime: number) => void;
+  onQuizTime: (watchTime: number, videoTime: number) => void;
   rewards: boolean;
   quizActive: boolean;
 }
