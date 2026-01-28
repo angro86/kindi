@@ -1,4 +1,4 @@
-export const QUIZ_INTERVAL = 180; // seconds (3 minutes)
+export const QUIZ_INTERVAL = 60; // seconds (1 minute) — temporary for testing
 
 export const AVATAR_NAMES = ['Foxy', 'Bun Bun', 'Ollie', 'Pan Pan'] as const;
 
