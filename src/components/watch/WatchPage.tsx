@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { WatchPageProps, Video, QuizQuestion } from '@/types';
 import { Clock, Star, Search } from '@/components/ui/icons';
 import { avatars } from '@/components/avatars';
@@ -52,9 +52,12 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
   }, []);
 
   const [quizLoading, setQuizLoading] = useState(false);
+  const videoRef = useRef(video);
+  videoRef.current = video;
 
   const onQuizTime = useCallback(async (watchTime: number, videoTime: number) => {
-    if (!rewards.enabled || !video) return;
+    const currentVideo = videoRef.current;
+    if (!rewards.enabled || !currentVideo) return;
 
     // Try transcript-based quiz generation via API
     // Use videoTime (actual playback position in current video) not cumulative watchTime
@@ -64,9 +67,9 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          videoId: video.youtubeId,
-          videoTitle: video.title,
-          videoChannel: video.channel,
+          videoId: currentVideo.youtubeId,
+          videoTitle: currentVideo.title,
+          videoChannel: currentVideo.channel,
           age: child.age,
           watchedSeconds: videoTime,
         }),
@@ -87,7 +90,7 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
     setQuizLoading(false);
 
     // Fallback: video-specific pre-generated questions
-    const videoQs = VIDEO_QUESTIONS[video.youtubeId];
+    const videoQs = VIDEO_QUESTIONS[currentVideo.youtubeId];
     const chunkStart = watchTime - QUIZ_INTERVAL;
 
     if (videoQs) {
@@ -100,7 +103,7 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
 
     // Final fallback: static age-group questions
     setQuestion(questions[Math.floor(Math.random() * questions.length)]);
-  }, [rewards.enabled, video, questions, child.age]);
+  }, [rewards.enabled, questions, child.age]);
 
   const onAnswer = (correct: boolean) => {
     setQuestion(null);
