@@ -55,13 +55,20 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
   const videoRef = useRef(video);
   videoRef.current = video;
 
+  const quizLoadingRef = useRef(false);
+
   const onQuizTime = useCallback(async (watchTime: number, videoTime: number) => {
     const currentVideo = videoRef.current;
     if (!rewards.enabled || !currentVideo) return;
 
-    // Try transcript-based quiz generation via API
-    // Use videoTime (actual playback position in current video) not cumulative watchTime
+    // Prevent double-triggering while a quiz is already being generated
+    if (quizLoadingRef.current) return;
+    quizLoadingRef.current = true;
     setQuizLoading(true);
+
+    console.log('[quiz-client] Requesting quiz for:', currentVideo.title, 'videoTime:', videoTime);
+
+    // Try transcript-based quiz generation via API
     try {
       const res = await fetch('/api/quiz', {
         method: 'POST',
@@ -75,21 +82,30 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
         }),
       });
 
+      console.log('[quiz-client] Response status:', res.status);
+
       if (res.ok) {
         const q = await res.json();
+        console.log('[quiz-client] Got question:', q.q);
         if (q.q && q.answers && typeof q.correct === 'number') {
+          quizLoadingRef.current = false;
           setQuizLoading(false);
           setQuestion(q);
           return;
         }
+      } else {
+        const errText = await res.text();
+        console.log('[quiz-client] API error:', errText);
       }
     } catch (e) {
-      console.log('Transcript quiz failed, using fallback:', e);
+      console.log('[quiz-client] Fetch failed:', e);
     }
 
+    quizLoadingRef.current = false;
     setQuizLoading(false);
 
     // Fallback: video-specific pre-generated questions
+    console.log('[quiz-client] Using fallback questions');
     const videoQs = VIDEO_QUESTIONS[currentVideo.youtubeId];
     const chunkStart = watchTime - QUIZ_INTERVAL;
 
