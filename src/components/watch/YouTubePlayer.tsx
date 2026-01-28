@@ -21,7 +21,10 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
   const playerRef = useRef<YT.Player | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const onQuizTimeRef = useRef(onQuizTime);
-  onQuizTimeRef.current = onQuizTime;
+
+  useEffect(() => {
+    onQuizTimeRef.current = onQuizTime;
+  }, [onQuizTime]);
 
   // Load YouTube IFrame API
   useEffect(() => {
@@ -101,7 +104,13 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     };
   }, [playing, rewards]);
 
-  const nextQuiz = QUIZ_INTERVAL - (watchTime - lastQuizRef.current);
+  const [lastQuizTime, setLastQuizTime] = useState(0);
+
+  useEffect(() => {
+    setLastQuizTime(lastQuizRef.current);
+  }, [watchTime]);
+
+  const nextQuiz = QUIZ_INTERVAL - (watchTime - lastQuizTime);
 
   return (
     <div className="space-y-4">

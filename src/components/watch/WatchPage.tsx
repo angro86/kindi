@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import Image from 'next/image';
 import { WatchPageProps, Video, QuizQuestion } from '@/types';
 import { Clock, Star, Search } from '@/components/ui/icons';
 import { avatars } from '@/components/avatars';
@@ -187,12 +188,12 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
                         onClick={() => setVideo(v)}
                         className="rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:scale-105 transition-all"
                       >
-                        <div className="aspect-video bg-gray-200">
-                          <img
+                        <div className="relative aspect-video bg-gray-200">
+                          <Image
                             src={`https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`}
-                            alt=""
-                            className="w-full h-full object-cover"
-                            onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
+                            alt={v.title}
+                            fill
+                            className="object-cover"
                           />
                         </div>
                         <div className="p-2 bg-white">

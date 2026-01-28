@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { VideoThumbnailProps } from '@/types';
 import { Play } from '@/components/ui/icons';
 
@@ -14,10 +15,11 @@ export function VideoThumbnail({ video, onClick }: VideoThumbnailProps) {
     >
       <div className="relative aspect-video bg-gradient-to-br from-purple-400 to-pink-400">
         {!imgError ? (
-          <img
+          <Image
             src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
             alt={video.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
             onError={() => setImgError(true)}
           />
         ) : (

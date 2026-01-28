@@ -87,12 +87,12 @@ Rules:
 
     const text = response.content[0].type === 'text' ? response.content[0].text : '';
     const parsed = JSON.parse(text);
-    return (Array.isArray(parsed) ? parsed : [parsed]).map((q: any) => ({
+    return (Array.isArray(parsed) ? parsed : [parsed]).map((q: { q: string; answers: [string, string, string]; correct: 0 | 1 | 2; emoji: string }) => ({
       q: q.q,
       answers: q.answers,
       correct: q.correct,
       emoji: q.emoji,
-    }));
+    } satisfies QuizQuestion));
   } catch (e) {
     console.error('  Failed to generate question:', (e as Error).message);
     return [];
