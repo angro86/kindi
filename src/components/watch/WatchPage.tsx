@@ -51,10 +51,41 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
     return () => clearInterval(t);
   }, []);
 
-  const onQuizTime = useCallback((watchTime: number) => {
+  const [quizLoading, setQuizLoading] = useState(false);
+
+  const onQuizTime = useCallback(async (watchTime: number) => {
     if (!rewards.enabled || !video) return;
 
-    // Find a video-specific question for the elapsed time window
+    // Try transcript-based quiz generation via API
+    setQuizLoading(true);
+    try {
+      const res = await fetch('/api/quiz', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          videoId: video.youtubeId,
+          videoTitle: video.title,
+          videoChannel: video.channel,
+          age: child.age,
+          watchedSeconds: watchTime,
+        }),
+      });
+
+      if (res.ok) {
+        const q = await res.json();
+        if (q.q && q.answers && typeof q.correct === 'number') {
+          setQuizLoading(false);
+          setQuestion(q);
+          return;
+        }
+      }
+    } catch (e) {
+      console.log('Transcript quiz failed, using fallback:', e);
+    }
+
+    setQuizLoading(false);
+
+    // Fallback: video-specific pre-generated questions
     const videoQs = VIDEO_QUESTIONS[video.youtubeId];
     const chunkStart = watchTime - QUIZ_INTERVAL;
 
@@ -66,9 +97,9 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
       }
     }
 
-    // Fallback to static age-group questions
+    // Final fallback: static age-group questions
     setQuestion(questions[Math.floor(Math.random() * questions.length)]);
-  }, [rewards.enabled, video, questions]);
+  }, [rewards.enabled, video, questions, child.age]);
 
   const onAnswer = (correct: boolean) => {
     setQuestion(null);
@@ -172,7 +203,7 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
               onBack={() => setVideo(null)}
               onQuizTime={onQuizTime}
               rewards={rewards.enabled}
-              quizActive={!!question}
+              quizActive={!!question || quizLoading}
             />
             {filteredVideos.filter((v) => v.id !== video.id).length > 0 && (
               <div className="bg-white rounded-2xl p-4 shadow-md">
@@ -207,6 +238,14 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
         )}
       </div>
 
+      {quizLoading && (
+        <div className="fixed inset-0 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 flex items-center justify-center z-50 p-4">
+          <div className="text-center">
+            <div className="text-8xl mb-6 animate-bounce">🌟</div>
+            <h2 className="text-3xl font-bold text-white">Get ready...</h2>
+          </div>
+        </div>
+      )}
       {question && <QuestionModal question={question} onAnswer={onAnswer} />}
       {jarFull && <JarFullModal name={child.name} onClaim={() => { setJarFull(false); setStars(0); }} />}
       {timeUp && <TimeUpModal name={child.name} duration={duration} onEnd={onEnd} />}
