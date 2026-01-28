@@ -1,4 +1,5 @@
 export { Play } from './Play';
+export { Pause } from './Pause';
 export { Clock } from './Clock';
 export { Star } from './Star';
 export { Plus } from './Plus';
