@@ -8,20 +8,32 @@ import { QUESTIONS } from '@/data/questions';
 import { VIDEO_QUESTIONS } from '@/data/generated-questions';
 import { QUIZ_INTERVAL } from '@/lib/constants';
 import { formatTime, getFilteredVideos } from '@/lib/utils';
+import { storage, WatchEvent } from '@/lib/storage';
+import { newlyUnlocked, Sticker, stickersUnlockedFor } from '@/lib/stickers';
 import { VideoGrid } from './VideoGrid';
 import { YouTubePlayer } from './YouTubePlayer';
 import { QuestionModal } from '@/components/modals/QuestionModal';
 import { JarFullModal } from '@/components/modals/JarFullModal';
 import { TimeUpModal } from '@/components/modals/TimeUpModal';
+import { StickerUnlockModal } from '@/components/modals/StickerUnlockModal';
 import { Button, Chip, Icon, KindiAvatar, KindiLogo, Pill } from '@/components/ui';
+import { AchievementsScreen } from '@/components/screens/AchievementsScreen';
+import { BrowseScreen } from '@/components/screens/BrowseScreen';
+
+type View = 'home' | 'browse' | 'achievements';
 
 export function WatchPage({ child, duration, categories, rewards, onEnd }: WatchPageProps) {
   const [video, setVideo] = useState<Video | null>(null);
+  const [view, setView] = useState<View>('home');
   const [timeUp, setTimeUp] = useState(false);
   const [active, setActive] = useState<string[]>(categories);
-  const [stars, setStars] = useState(0);
+  const [sessionStars, setSessionStars] = useState(0);
+  const [totalStars, setTotalStars] = useState(0);
+  const [unlockedStickers, setUnlockedStickers] = useState<string[]>([]);
+  const [history, setHistory] = useState<WatchEvent[]>([]);
   const [question, setQuestion] = useState<QuizQuestion | null>(null);
   const [jarFull, setJarFull] = useState(false);
+  const [pendingSticker, setPendingSticker] = useState<Sticker | null>(null);
   const [sessionTime, setSessionTime] = useState(duration * 60);
   const [search, setSearch] = useState('');
 
@@ -33,7 +45,43 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
     return getFilteredVideos(VIDEOS, ageGroup, active, search);
   }, [ageGroup, active, search]);
 
+  const browseVideos = useMemo(() => {
+    return search
+      ? VIDEOS.filter(
+          (v) =>
+            ageGroup >= v.ageMin &&
+            ageGroup <= v.ageMax &&
+            v.title.toLowerCase().includes(search.toLowerCase()),
+        )
+      : [];
+  }, [ageGroup, search]);
+
+  const videosPerCat = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const v of VIDEOS) {
+      if (ageGroup < v.ageMin || ageGroup > v.ageMax) continue;
+      counts[v.cat] = (counts[v.cat] || 0) + 1;
+    }
+    return counts;
+  }, [ageGroup]);
+
+  const continueWatching = useMemo(() => {
+    if (!history.length) return [];
+    const ids = new Set(history.map((h) => h.videoId));
+    const lookup = new Map(VIDEOS.filter((v) => ids.has(v.id)).map((v) => [v.id, v]));
+    return history.map((h) => lookup.get(h.videoId)).filter((v): v is Video => !!v).slice(0, 6);
+  }, [history]);
+
   const questions = QUESTIONS[ageGroup as 2 | 4 | 6];
+
+  // hydrate persistent state
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setTotalStars(storage.getStars(child.id));
+    setUnlockedStickers(storage.getStickers(child.id));
+    setHistory(storage.getHistory(child.id));
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, [child.id]);
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -68,13 +116,36 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
 
   const onAnswer = (correct: boolean) => {
     setQuestion(null);
-    if (correct) {
-      const n = stars + 1;
-      setStars(n);
-      if (n >= rewards.goal) {
-        setTimeout(() => setJarFull(true), 500);
-      }
+    if (!correct) return;
+
+    const nextSession = sessionStars + 1;
+    setSessionStars(nextSession);
+
+    const nextTotal = storage.addStars(child.id, 1);
+    setTotalStars(nextTotal);
+
+    const justUnlocked = newlyUnlocked(nextTotal - 1, nextTotal);
+    if (justUnlocked.length > 0) {
+      const sticker = justUnlocked[0];
+      storage.unlockSticker(child.id, sticker.id);
+      setUnlockedStickers(stickersUnlockedFor(nextTotal));
+      setTimeout(() => setPendingSticker(sticker), 600);
+    } else if (nextSession >= rewards.goal) {
+      setTimeout(() => setJarFull(true), 500);
     }
+  };
+
+  const onSelectVideo = (v: Video) => {
+    setVideo(v);
+    const event: WatchEvent = {
+      videoId: v.id,
+      youtubeId: v.youtubeId,
+      title: v.title,
+      channel: v.channel,
+      watchedAt: Date.now(),
+    };
+    const next = storage.recordWatch(child.id, event);
+    setHistory(next);
   };
 
   const upNext = video ? filteredVideos.filter((v) => v.id !== video.id).slice(0, 6) : [];
@@ -106,10 +177,27 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: 16,
+            flexWrap: 'wrap',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
             <KindiLogo size={18} />
+            {!video && (
+              <nav style={{ display: 'flex', gap: 4 }}>
+                <NavTab active={view === 'home'} onClick={() => setView('home')}>
+                  Home
+                </NavTab>
+                <NavTab active={view === 'browse'} onClick={() => setView('browse')}>
+                  Browse
+                </NavTab>
+                <NavTab
+                  active={view === 'achievements'}
+                  onClick={() => setView('achievements')}
+                >
+                  Stickers
+                </NavTab>
+              </nav>
+            )}
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Pill icon={<Icon.clock size={11} color="var(--kindi-coral-deep)" />}>
@@ -117,14 +205,12 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
                 {formatTime(sessionTime)}
               </span>
             </Pill>
-            {rewards.enabled && (
-              <Pill
-                color="oklch(0.94 0.10 90)"
-                icon={<Icon.star size={11} color="oklch(0.65 0.18 75)" />}
-              >
-                {stars}/{rewards.goal}
-              </Pill>
-            )}
+            <Pill
+              color="oklch(0.94 0.10 90)"
+              icon={<Icon.star size={11} color="oklch(0.65 0.18 75)" />}
+            >
+              {totalStars}
+            </Pill>
             <div
               style={{
                 display: 'inline-flex',
@@ -147,8 +233,35 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
         </div>
       </header>
 
-      {!video ? (
-        <GridView
+      {video ? (
+        <PlayerView
+          video={video}
+          upNext={upNext}
+          onBack={() => setVideo(null)}
+          onSelect={onSelectVideo}
+          onQuizTime={onQuizTime}
+          rewards={rewards.enabled}
+          quizActive={!!question}
+        />
+      ) : view === 'browse' ? (
+        <BrowseScreen
+          search={search}
+          setSearch={setSearch}
+          availCats={availCats}
+          active={active}
+          setActive={setActive}
+          filteredVideos={browseVideos}
+          videosPerCat={videosPerCat}
+          onSelect={onSelectVideo}
+        />
+      ) : view === 'achievements' ? (
+        <AchievementsScreen
+          childName={child.name}
+          totalStars={totalStars}
+          unlockedIds={unlockedStickers}
+        />
+      ) : (
+        <HomeView
           child={child}
           sessionTime={sessionTime}
           search={search}
@@ -157,27 +270,26 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
           active={active}
           setActive={setActive}
           filteredVideos={filteredVideos}
-          onSelect={setVideo}
-        />
-      ) : (
-        <PlayerView
-          video={video}
-          upNext={upNext}
-          onBack={() => setVideo(null)}
-          onSelect={setVideo}
-          onQuizTime={onQuizTime}
-          rewards={rewards.enabled}
-          quizActive={!!question}
+          continueWatching={continueWatching}
+          onSelect={onSelectVideo}
         />
       )}
 
       {question && <QuestionModal question={question} onAnswer={onAnswer} />}
+      {pendingSticker && (
+        <StickerUnlockModal
+          childName={child.name}
+          sticker={pendingSticker}
+          totalStars={totalStars}
+          onContinue={() => setPendingSticker(null)}
+        />
+      )}
       {jarFull && (
         <JarFullModal
           name={child.name}
           onClaim={() => {
             setJarFull(false);
-            setStars(0);
+            setSessionStars(0);
           }}
         />
       )}
@@ -186,7 +298,37 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
   );
 }
 
-function GridView({
+function NavTab({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        padding: '6px 12px',
+        borderRadius: 8,
+        background: active ? 'var(--kindi-cream-2)' : 'transparent',
+        border: 'none',
+        fontFamily: 'var(--kindi-body)',
+        fontSize: 13,
+        fontWeight: 700,
+        color: active ? 'var(--kindi-ink)' : 'var(--kindi-ink-soft)',
+        cursor: 'pointer',
+        transition: 'all .12s',
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function HomeView({
   child,
   sessionTime,
   search,
@@ -195,6 +337,7 @@ function GridView({
   active,
   setActive,
   filteredVideos,
+  continueWatching,
   onSelect,
 }: {
   child: WatchPageProps['child'];
@@ -205,6 +348,7 @@ function GridView({
   active: string[];
   setActive: React.Dispatch<React.SetStateAction<string[]>>;
   filteredVideos: Video[];
+  continueWatching: Video[];
   onSelect: (v: Video) => void;
 }) {
   const greeting = (() => {
@@ -217,7 +361,6 @@ function GridView({
 
   return (
     <main style={{ maxWidth: 1280, margin: '0 auto', padding: '24px 24px 48px' }}>
-      {/* Greeting block */}
       <section
         style={{
           display: 'flex',
@@ -263,7 +406,6 @@ function GridView({
         </div>
       </section>
 
-      {/* Search + chips */}
       <section
         style={{
           display: 'flex',
@@ -325,6 +467,37 @@ function GridView({
         </div>
       </section>
 
+      {!search && continueWatching.length > 0 && (
+        <section style={{ marginBottom: 32 }}>
+          <h2
+            className="kindi-display"
+            style={{
+              margin: '0 0 12px',
+              fontSize: 22,
+              fontWeight: 600,
+              letterSpacing: '-0.022em',
+            }}
+          >
+            Pick up where you left off
+          </h2>
+          <div
+            className="no-scrollbar"
+            style={{
+              display: 'flex',
+              gap: 14,
+              overflowX: 'auto',
+              paddingBottom: 4,
+            }}
+          >
+            {continueWatching.map((v) => (
+              <div key={v.id} style={{ flex: '0 0 240px' }}>
+                <ContinueCard video={v} onSelect={onSelect} />
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       <section>
         <h2
           className="kindi-display"
@@ -335,7 +508,10 @@ function GridView({
             letterSpacing: '-0.022em',
           }}
         >
-          {filteredVideos.length} {search ? `result${filteredVideos.length === 1 ? '' : 's'}` : 'videos to explore'}
+          {filteredVideos.length}{' '}
+          {search
+            ? `result${filteredVideos.length === 1 ? '' : 's'}`
+            : 'videos to explore'}
         </h2>
         {filteredVideos.length === 0 ? (
           <div
@@ -352,6 +528,82 @@ function GridView({
         )}
       </section>
     </main>
+  );
+}
+
+function ContinueCard({ video, onSelect }: { video: Video; onSelect: (v: Video) => void }) {
+  return (
+    <button
+      onClick={() => onSelect(video)}
+      className="ring"
+      style={{
+        background: 'var(--kindi-paper)',
+        border: '1px solid var(--kindi-line)',
+        borderRadius: 14,
+        padding: 0,
+        textAlign: 'left',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        boxShadow: 'var(--shadow-sm)',
+        width: '100%',
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16 / 9',
+          background: 'var(--kindi-cream-3)',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+          alt={video.title}
+          loading="lazy"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+      </div>
+      <div style={{ padding: 12 }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: 1.3,
+            color: 'var(--kindi-ink)',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            minHeight: 36,
+          }}
+        >
+          {video.title}
+        </div>
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 12,
+            fontWeight: 600,
+            color: 'var(--kindi-ink-soft)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {video.channel}
+        </div>
+      </div>
+    </button>
   );
 }
 

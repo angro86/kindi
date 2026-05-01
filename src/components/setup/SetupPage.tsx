@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { SetupPageProps, ChildProfile, SessionDuration, RewardSettings } from '@/types';
 import { ChildModal } from '@/components/modals/ChildModal';
 import { VIDEOS } from '@/data/videos';
@@ -249,6 +250,27 @@ function Step1Profile({
           {videoCount} videos for age {sel.age}
         </p>
       )}
+      <div style={{ marginTop: 36 }}>
+        <Link
+          href="/parent"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 18px',
+            borderRadius: 999,
+            background: 'var(--kindi-paper)',
+            border: '1px solid var(--kindi-line-2)',
+            fontSize: 13,
+            fontWeight: 700,
+            color: 'var(--kindi-ink-soft)',
+            boxShadow: 'var(--shadow-xs)',
+            textDecoration: 'none',
+          }}
+        >
+          <Icon.lock size={13} /> I&apos;m a parent
+        </Link>
+      </div>
     </div>
   );
 }

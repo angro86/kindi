@@ -1,29 +1,49 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChildProfile, SessionConfig, SessionDuration, RewardSettings } from '@/types';
 import { SetupPage } from '@/components/setup/SetupPage';
 import { WatchPage } from '@/components/watch/WatchPage';
+import { storage } from '@/lib/storage';
 
 export default function Home() {
-  const [kids, setKids] = useState<ChildProfile[]>([
-    { id: 1, name: 'Nico', age: 5, avatar: 0 },
-    { id: 2, name: 'Adri', age: 3, avatar: 1 },
-  ]);
+  const [hydrated, setHydrated] = useState(false);
+  const [kids, setKids] = useState<ChildProfile[]>([]);
   const [session, setSession] = useState<SessionConfig | null>(null);
+
+  useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setKids(storage.getKids());
+    setHydrated(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
+  }, []);
+
+  useEffect(() => {
+    if (hydrated) storage.setKids(kids);
+  }, [kids, hydrated]);
 
   const handleStart = (
     child: ChildProfile,
     duration: SessionDuration,
     categories: string[],
-    rewards: RewardSettings
+    rewards: RewardSettings,
   ) => {
+    storage.setActiveKidId(child.id);
     setSession({ child, duration, categories, rewards });
   };
 
   const handleAddKid = (kid: ChildProfile) => {
-    setKids([...kids, kid]);
+    setKids((prev) => [...prev, kid]);
   };
+
+  const handleEnd = () => {
+    storage.setActiveKidId(null);
+    setSession(null);
+  };
+
+  if (!hydrated) {
+    return <div style={{ minHeight: '100vh', background: 'var(--kindi-cream)' }} />;
+  }
 
   if (session) {
     return (
@@ -32,7 +52,7 @@ export default function Home() {
         duration={session.duration}
         categories={session.categories}
         rewards={session.rewards}
-        onEnd={() => setSession(null)}
+        onEnd={handleEnd}
       />
     );
   }
