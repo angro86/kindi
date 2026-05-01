@@ -1,41 +1,78 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
 import { VideoThumbnailProps } from '@/types';
-import { Play } from '@/components/ui/icons';
 
 export function VideoThumbnail({ video, onClick }: VideoThumbnailProps) {
-  const [imgError, setImgError] = useState(false);
-
   return (
     <button
       onClick={onClick}
-      className="group text-left rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl hover:scale-105 transition-all"
+      className="ring"
+      style={{
+        background: 'var(--kindi-paper)',
+        border: '1px solid var(--kindi-line)',
+        padding: 0,
+        textAlign: 'left',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: 14,
+        overflow: 'hidden',
+        boxShadow: 'var(--shadow-sm)',
+      }}
     >
-      <div className="relative aspect-video bg-gradient-to-br from-purple-400 to-pink-400">
-        {!imgError ? (
-          <Image
-            src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
-            alt={video.title}
-            fill
-            className="object-cover"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-white">
-            <span className="text-5xl">🎬</span>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg">
-            <Play className="w-5 h-5 text-gray-700" />
-          </div>
-        </div>
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16 / 9',
+          background: 'var(--kindi-cream-3)',
+          overflow: 'hidden',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+          alt={video.title}
+          loading="lazy"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
       </div>
-      <div className="p-3 bg-white">
-        <h3 className="font-bold text-sm text-gray-800 line-clamp-2">{video.title}</h3>
-        <p className="text-xs text-gray-500 mt-1">{video.channel}</p>
+      <div style={{ padding: 12 }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: 1.3,
+            color: 'var(--kindi-ink)',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            minHeight: 36,
+          }}
+        >
+          {video.title}
+        </div>
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 12,
+            fontWeight: 600,
+            color: 'var(--kindi-ink-soft)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {video.channel}
+        </div>
       </div>
     </button>
   );

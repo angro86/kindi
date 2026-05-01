@@ -10,7 +10,13 @@ interface VideoGridProps {
 
 export function VideoGrid({ videos, onSelect }: VideoGridProps) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+        gap: 18,
+      }}
+    >
       {videos.map((v) => (
         <VideoThumbnail key={v.id} video={v} onClick={() => onSelect(v)} />
       ))}
