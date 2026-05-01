@@ -1,22 +1,6 @@
 'use client';
 
 import { VideoThumbnailProps } from '@/types';
-import { VideoThumb } from '@/components/ui';
-
-const TOPIC_LABELS: Record<string, string> = {
-  songs: 'Songs',
-  movement: 'Move',
-  social: 'Social',
-  math: 'Numbers',
-  reading: 'Reading',
-  science: 'Science',
-  stories: 'Stories',
-  nature: 'Nature',
-  geography: 'World',
-  coding: 'Coding',
-  space: 'Space',
-  history: 'History',
-};
 
 export function VideoThumbnail({ video, onClick }: VideoThumbnailProps) {
   return (
@@ -24,26 +8,44 @@ export function VideoThumbnail({ video, onClick }: VideoThumbnailProps) {
       onClick={onClick}
       className="ring"
       style={{
-        background: 'transparent',
-        border: 'none',
+        background: 'var(--kindi-paper)',
+        border: '1px solid var(--kindi-line)',
         padding: 0,
         textAlign: 'left',
         cursor: 'pointer',
         display: 'flex',
         flexDirection: 'column',
-        gap: 8,
+        borderRadius: 14,
+        overflow: 'hidden',
+        boxShadow: 'var(--shadow-sm)',
       }}
     >
-      <VideoThumb
-        youtubeId={video.youtubeId}
-        alt={video.title}
-        topic={TOPIC_LABELS[video.cat] || video.cat}
-        height={138}
-        radius={14}
-      />
-      <div style={{ padding: '0 2px' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16 / 9',
+          background: 'var(--kindi-cream-3)',
+          overflow: 'hidden',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+          alt={video.title}
+          loading="lazy"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+      </div>
+      <div style={{ padding: 12 }}>
         <div
-          className="t-h3"
           style={{
             fontSize: 14,
             fontWeight: 700,
