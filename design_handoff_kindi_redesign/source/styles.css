@@ -1,8 +1,7 @@
-@import "tailwindcss";
+/* Kindi design system — polished v2 */
 
-/* Kindi design system v2 */
 :root {
-  /* Core pastels */
+  /* Core pastels — slightly more saturated, premium feel */
   --kindi-blush:       oklch(0.91 0.045 28);
   --kindi-blush-mid:   oklch(0.78 0.10 28);
   --kindi-blush-deep:  oklch(0.58 0.16 28);
@@ -32,13 +31,16 @@
   --kindi-line:     oklch(0.90 0.012 70);
   --kindi-line-2:   oklch(0.84 0.015 70);
 
+  /* Brand primary (parent action, links) */
   --kindi-primary:    var(--kindi-coral-deep);
   --kindi-primary-fg: var(--kindi-paper);
 
-  --kindi-display: var(--font-fraunces), 'Times New Roman', serif;
-  --kindi-body:    var(--font-nunito), system-ui, sans-serif;
-  --kindi-mono:    var(--font-jetbrains-mono), ui-monospace, monospace;
+  /* Type */
+  --kindi-display: 'Fraunces', 'Times New Roman', serif;
+  --kindi-body: 'Nunito', system-ui, sans-serif;
+  --kindi-mono: 'JetBrains Mono', ui-monospace, monospace;
 
+  /* Shadows — layered, soft, premium */
   --shadow-xs: 0 1px 2px rgba(40,30,20,0.04), 0 1px 1px rgba(40,30,20,0.03);
   --shadow-sm: 0 1px 2px rgba(40,30,20,0.05), 0 2px 4px rgba(40,30,20,0.04);
   --shadow-md: 0 2px 4px rgba(40,30,20,0.05), 0 8px 18px rgba(40,30,20,0.06);
@@ -46,36 +48,32 @@
   --shadow-xl: 0 8px 16px rgba(40,30,20,0.08), 0 32px 64px rgba(40,30,20,0.12);
   --shadow-inner: inset 0 1px 0 rgba(255,255,255,0.6);
 
+  /* Radii */
   --r-xs: 6px;
   --r-sm: 10px;
   --r-md: 14px;
   --r-lg: 20px;
   --r-xl: 28px;
-
-  --background: var(--kindi-cream);
-  --foreground: var(--kindi-ink);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--kindi-body);
-}
+/* Surface tokens */
+.surface       { background: var(--kindi-paper); border: 1px solid var(--kindi-line); box-shadow: var(--shadow-sm); }
+.surface-raised{ background: var(--kindi-paper); border: 1px solid var(--kindi-line); box-shadow: var(--shadow-md); }
+.surface-float { background: var(--kindi-paper); border: 1px solid var(--kindi-line); box-shadow: var(--shadow-lg); }
 
 .kindi-body    { font-family: var(--kindi-body); color: var(--kindi-ink); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 .kindi-display { font-family: var(--kindi-display); font-weight: 600; letter-spacing: -0.025em; font-optical-sizing: auto; }
 .kindi-mono    { font-family: var(--kindi-mono); font-feature-settings: "ss01", "cv02"; }
 
-/* Surfaces */
-.surface        { background: var(--kindi-paper); border: 1px solid var(--kindi-line); box-shadow: var(--shadow-sm); }
-.surface-raised { background: var(--kindi-paper); border: 1px solid var(--kindi-line); box-shadow: var(--shadow-md); }
-.surface-float  { background: var(--kindi-paper); border: 1px solid var(--kindi-line); box-shadow: var(--shadow-lg); }
+/* Squiggle underline — uses background-image so wrapping works inline */
+.squig {
+  display: inline;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8' preserveAspectRatio='none'><path d='M0 4 Q 10 0 20 4 T 40 4 T 60 4 T 80 4' stroke='%23E66F4A' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 80px 0.22em;
+  padding-bottom: 0.22em;
+}
 
 /* Type scale */
 .t-display-xl { font-family: var(--kindi-display); font-weight: 600; font-size: 76px; line-height: 0.96; letter-spacing: -0.035em; }
@@ -91,21 +89,11 @@ body {
 .t-label      { font-family: var(--kindi-body);    font-weight: 800; font-size: 11px; line-height: 1.2; letter-spacing: 0.06em; text-transform: uppercase; color: var(--kindi-ink-mute); }
 .t-mono       { font-family: var(--kindi-mono);    font-weight: 600; font-size: 12px; letter-spacing: -0.01em; }
 
-/* Squiggle underline */
-.squig {
-  display: inline;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 8' preserveAspectRatio='none'><path d='M0 4 Q 10 0 20 4 T 40 4 T 60 4 T 80 4' stroke='%23E66F4A' stroke-width='2.5' fill='none' stroke-linecap='round'/></svg>");
-  background-repeat: repeat-x;
-  background-position: 0 100%;
-  background-size: 80px 0.22em;
-  padding-bottom: 0.22em;
-}
-
 /* Hide scrollbars */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { scrollbar-width: none; }
 
-/* Photographic thumbnail backdrops */
+/* Photographic thumbnail backdrop — composed gradients */
 .thumb-grad-1 { background:
   radial-gradient(circle at 30% 20%, oklch(0.85 0.13 35) 0%, transparent 55%),
   radial-gradient(circle at 80% 70%, oklch(0.62 0.18 25) 0%, transparent 60%),
@@ -139,21 +127,19 @@ body {
   radial-gradient(circle at 80% 80%, oklch(0.45 0.14 290) 0%, transparent 60%),
   linear-gradient(155deg, oklch(0.72 0.13 305), oklch(0.4 0.14 285)); }
 
-/* Subtle grain */
-.grain { position: relative; }
+/* Subtle grain — feels less digital */
 .grain::before {
   content: ''; position: absolute; inset: 0; pointer-events: none;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)' opacity='0.4'/></svg>");
   opacity: 0.08; mix-blend-mode: multiply;
 }
 
-/* Hover lift */
+/* Focus ring */
 .ring { transition: box-shadow .14s, transform .14s; }
-.ring:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.ring:hover { box-shadow: var(--shadow-md); }
 
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
+/* Default reset bits */
+* { box-sizing: border-box; }
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+a { color: var(--kindi-primary); }

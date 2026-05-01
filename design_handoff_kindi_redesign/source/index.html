@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Kindi — Redesign</title>
+<meta name="viewport" content="width=1400"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; }
+  body { font-family: 'Nunito', system-ui, sans-serif; color: var(--kindi-ink); }
+  * { box-sizing: border-box; }
+  button { font-family: inherit; }
+  input { font-family: inherit; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="browser-window.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel" src="screens/components.jsx"></script>
+<script type="text/babel" src="screens/KidHome.jsx"></script>
+<script type="text/babel" src="screens/KidPlayer.jsx"></script>
+<script type="text/babel" src="screens/ParentDashboard.jsx"></script>
+<script type="text/babel" src="screens/Auth.jsx"></script>
+<script type="text/babel" src="screens/Landing.jsx"></script>
+<script type="text/babel" src="screens/ProfilePicker.jsx"></script>
+<script type="text/babel" src="screens/KidOnboarding.jsx"></script>
+<script type="text/babel" src="screens/Browse.jsx"></script>
+<script type="text/babel" src="screens/Quiz.jsx"></script>
+<script type="text/babel" src="screens/Achievements.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryAccent": "blush",
+  "shadowStyle": "sticker",
+  "displayFont": "Fraunces",
+  "showSquiggles": true
+}/*EDITMODE-END*/;
+
+// Apply tweaks to root via CSS vars
+function applyTweaks(t) {
+  const root = document.documentElement;
+  const accents = {
+    blush:  ['oklch(0.86 0.07 25)',  'oklch(0.72 0.12 25)'],
+    mint:   ['oklch(0.88 0.06 165)', 'oklch(0.72 0.10 165)'],
+    sky:    ['oklch(0.86 0.07 235)', 'oklch(0.68 0.13 240)'],
+    butter: ['oklch(0.92 0.08 95)',  'oklch(0.78 0.13 85)'],
+    lilac:  ['oklch(0.84 0.07 305)', 'oklch(0.68 0.13 305)'],
+  };
+  const [light, deep] = accents[t.primaryAccent] || accents.blush;
+  // We override the squig color via the --kindi-blush-deep var so the squiggle
+  // re-tints with accent. Whole "blush" semantic remains the same.
+  root.style.setProperty('--kindi-blush', light);
+  root.style.setProperty('--kindi-blush-deep', deep);
+  // Display font
+  root.style.setProperty('--kindi-display', `'${t.displayFont}', serif`);
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(() => applyTweaks(t), [t]);
+
+  const Wrap = ({ children, w, h, scale = 1 }) => (
+    <div style={{
+      width: w, height: h, overflow: 'auto', background: 'var(--kindi-cream)',
+      borderRadius: 0,
+    }} className="no-scrollbar">
+      {children}
+    </div>
+  );
+
+  // iPhone canvas (mock the device frame visually with simple chrome)
+  const PhoneFrame = ({ children, w = 360, h = 720 }) => (
+    <div style={{
+      width: w, height: h,
+      background: '#1a1a1a', borderRadius: 36, padding: 8,
+      boxShadow: 'inset 0 0 0 2px #2c2c2c',
+      position: 'relative',
+    }}>
+      <div style={{
+        position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)',
+        width: 96, height: 26, borderRadius: 14, background: '#000', zIndex: 50,
+      }}/>
+      <div style={{
+        width: '100%', height: '100%', borderRadius: 28, overflow: 'hidden',
+        background: 'var(--kindi-cream)',
+      }} className="no-scrollbar">
+        <div style={{ height: '100%', overflow: 'auto' }} className="no-scrollbar">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+
+  // Desktop "browser" — minimal chrome
+  const DesktopFrame = ({ children, w = 1200, h = 800 }) => (
+    <div style={{
+      width: w, height: h,
+      background: '#e8e6e0', borderRadius: 12, padding: 0,
+      border: '1.5px solid rgba(0,0,0,0.15)',
+      overflow: 'hidden',
+      boxShadow: '0 0 0 1px rgba(0,0,0,0.04)',
+    }}>
+      <div style={{
+        height: 36, background: '#ddd9d2', display: 'flex', alignItems: 'center', gap: 6,
+        padding: '0 14px', borderBottom: '1px solid rgba(0,0,0,0.08)',
+      }}>
+        {['#ff5f57','#febc2e','#28c840'].map(c => (
+          <div key={c} style={{ width: 11, height: 11, borderRadius: '50%', background: c }}/>
+        ))}
+        <div style={{ flex: 1 }}/>
+        <div style={{
+          padding: '4px 14px', background: '#fff', borderRadius: 6,
+          fontSize: 11, color: '#666', fontFamily: 'var(--kindi-mono)',
+        }}>kindi.app</div>
+        <div style={{ flex: 1 }}/>
+      </div>
+      <div style={{ height: 'calc(100% - 36px)', overflow: 'auto', background: 'var(--kindi-cream)' }} className="no-scrollbar">
+        {children}
+      </div>
+    </div>
+  );
+
+  return (
+    <>
+      <DesignCanvas>
+        <DCSection id="hero" title="Kindi · Full redesign" subtitle="Playful, soft-pastel, sticker-shadow design system. Original aesthetic — not based on any existing kids' streaming app.">
+          <DCArtboard id="kid-desktop" label="01 · Kid home (desktop)" width={1200} height={800}>
+            <DesktopFrame><KidHome device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="kid-mobile" label="02 · Kid home (mobile)" width={380} height={760}>
+            <PhoneFrame><KidHome device="mobile"/></PhoneFrame>
+          </DCArtboard>
+          <DCArtboard id="player-desktop" label="03 · Player (desktop)" width={1200} height={800}>
+            <DesktopFrame><KidPlayer device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="player-mobile" label="04 · Player (mobile)" width={380} height={760}>
+            <PhoneFrame><KidPlayer device="mobile"/></PhoneFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="parent" title="Parent dashboard" subtitle="Calmer surface, more data — same visual language. Tabs: Overview · Approve · Library · Limits · Kids.">
+          <DCArtboard id="parent-overview" label="05 · Overview" width={1200} height={900}>
+            <DesktopFrame h={900}><ParentDashboard device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="parent-mobile" label="06 · Mobile" width={380} height={760}>
+            <PhoneFrame><ParentDashboard device="mobile"/></PhoneFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="auth" title="Auth" subtitle="Two-step sign-up: parent account → first kid. Sign-in is one screen.">
+          <DCArtboard id="signup" label="07 · Sign up" width={1200} height={760}>
+            <DesktopFrame h={760}><AuthScreen device="desktop" mode="signup"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="signin" label="08 · Sign in" width={1200} height={760}>
+            <DesktopFrame h={760}><AuthScreen device="desktop" mode="signin"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="signup-mobile" label="09 · Sign up (mobile)" width={380} height={760}>
+            <PhoneFrame><AuthScreen device="mobile" mode="signup"/></PhoneFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="landing" title="Marketing landing page" subtitle="The public-facing front door. Original copy and layout.">
+          <DCArtboard id="landing-desktop" label="10 · Landing (desktop)" width={1280} height={1900}>
+            <DesktopFrame w={1280} h={1900}><Landing device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="landing-mobile" label="11 · Landing (mobile)" width={380} height={1500}>
+            <PhoneFrame h={1500}><Landing device="mobile"/></PhoneFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="profiles" title="Kid entry & onboarding" subtitle='Profile picker (the first thing a kid sees) and the kid first-run flow.'>
+          <DCArtboard id="profile-picker" label="13 · Who is watching?" width={1200} height={760}>
+            <DesktopFrame h={760}><ProfilePicker device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="profile-picker-mobile" label="14 · Who is watching? (mobile)" width={380} height={760}>
+            <PhoneFrame><ProfilePicker device="mobile"/></PhoneFrame>
+          </DCArtboard>
+          <DCArtboard id="kid-onboarding" label="15 · Kid onboarding" width={1200} height={760}>
+            <DesktopFrame h={760}><KidOnboarding device="desktop"/></DesktopFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="discover" title="Browse & search" subtitle="The category browser kids tap into when they're looking for something specific.">
+          <DCArtboard id="browse" label="16 · Browse (desktop)" width={1200} height={760}>
+            <DesktopFrame h={760}><Browse device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="browse-mobile" label="17 · Browse (mobile)" width={380} height={760}>
+            <PhoneFrame><Browse device="mobile"/></PhoneFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="quiz" title="Quiz & rewards" subtitle="A multiple-choice quiz interrupts every 3 minutes of watching. Correct answers earn stars toward stickers.">
+          <DCArtboard id="quiz-asking" label="18 · Quiz · asking" width={1200} height={760}>
+            <DesktopFrame h={760}><Quiz device="desktop" state="asking"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="quiz-answered" label="19 · Quiz · answered" width={1200} height={760}>
+            <DesktopFrame h={760}><Quiz device="desktop" state="answered"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="quiz-mobile" label="20 · Quiz (mobile)" width={380} height={760}>
+            <PhoneFrame><Quiz device="mobile" state="asking"/></PhoneFrame>
+          </DCArtboard>
+          <DCArtboard id="quiz-result" label="21 · Quiz result · stars earned" width={1200} height={760}>
+            <DesktopFrame h={760}><QuizResult device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="achievements" label="22 · Sticker shelf" width={1200} height={900}>
+            <DesktopFrame h={900}><Achievements device="desktop"/></DesktopFrame>
+          </DCArtboard>
+          <DCArtboard id="achievements-mobile" label="23 · Sticker shelf (mobile)" width={380} height={760}>
+            <PhoneFrame><Achievements device="mobile"/></PhoneFrame>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="system" title="Design system" subtitle="The atomic kit. Tweaks panel (top-right toolbar) lets you swap accent + display font live.">
+          <DCArtboard id="system-card" label="12 · Atoms" width={900} height={620}>
+            <SystemCard/>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Brand color"/>
+        <TweakRadio label="Accent" value={t.primaryAccent}
+          options={['blush','mint','sky','butter','lilac']}
+          onChange={(v) => setTweak('primaryAccent', v)}/>
+        <TweakSection label="Type"/>
+        <TweakSelect label="Display font" value={t.displayFont}
+          options={['Fraunces','Nunito','Georgia','Times New Roman']}
+          onChange={(v) => setTweak('displayFont', v)}/>
+        <TweakSection label="Decoration"/>
+        <TweakToggle label="Squiggle underlines" value={t.showSquiggles}
+          onChange={(v) => {
+            setTweak('showSquiggles', v);
+            document.querySelectorAll('.squig').forEach(el => {
+              el.style.backgroundImage = v ? '' : 'none';
+            });
+          }}/>
+      </TweaksPanel>
+    </>
+  );
+}
+
+function SystemCard() {
+  return (
+    <div style={{
+      width: '100%', height: '100%', padding: 32,
+      background: 'var(--kindi-cream)', overflow: 'auto',
+    }} className="no-scrollbar">
+      <KindiLogo size={28}/>
+      <h2 className="kindi-display" style={{ margin: '20px 0 8px', fontSize: 32, fontWeight: 600 }}>
+        The Kindi <span className="squig">visual kit.</span>
+      </h2>
+
+      {/* Palette */}
+      <h4 className="kindi-display" style={{ margin: '20px 0 8px', fontSize: 14, fontWeight: 600, color: 'var(--kindi-ink-soft)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Palette</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', gap: 8, marginBottom: 18 }}>
+        {[
+          ['blush', 'var(--kindi-blush)'],
+          ['mint', 'var(--kindi-mint)'],
+          ['butter','var(--kindi-butter)'],
+          ['sky','var(--kindi-sky)'],
+          ['lilac','var(--kindi-lilac)'],
+          ['coral','var(--kindi-coral)'],
+        ].map(([n, c]) => (
+          <div key={n} className="sticker-sm" style={{ height: 70, borderRadius: 12, background: c, padding: 8, display: 'flex', alignItems: 'flex-end' }}>
+            <span style={{ fontFamily: 'var(--kindi-mono)', fontSize: 10, fontWeight: 700 }}>{n}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Mascot moods */}
+      <h4 className="kindi-display" style={{ margin: '20px 0 8px', fontSize: 14, fontWeight: 600, color: 'var(--kindi-ink-soft)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Mascot</h4>
+      <div style={{ display: 'flex', gap: 14, marginBottom: 18 }}>
+        {[
+          ['var(--kindi-blush)','happy'],
+          ['var(--kindi-mint)','wow'],
+          ['var(--kindi-butter)','wink'],
+          ['var(--kindi-lilac)','sleepy'],
+        ].map(([c,m]) => (
+          <div key={m} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+            <KindiBlob color={c} size={64} mood={m}/>
+            <span style={{ fontFamily: 'var(--kindi-mono)', fontSize: 10, fontWeight: 700 }}>{m}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Buttons + chips */}
+      <h4 className="kindi-display" style={{ margin: '20px 0 8px', fontSize: 14, fontWeight: 600, color: 'var(--kindi-ink-soft)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Controls</h4>
+      <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', marginBottom: 12 }}>
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="accent" icon={Icon.check(13, 'var(--kindi-cream)')}>Accent</Button>
+        <Button variant="soft" size="sm">Soft</Button>
+        <Pill color="var(--kindi-butter)" icon={Icon.clock(11)}>18 min</Pill>
+        <Pill color="var(--kindi-mint)" icon={Icon.check(11, 'oklch(0.55 0.13 150)')}>Approved</Pill>
+        <Chip active>Active chip</Chip>
+        <Chip>Idle chip</Chip>
+      </div>
+
+      <h4 className="kindi-display" style={{ margin: '20px 0 8px', fontSize: 14, fontWeight: 600, color: 'var(--kindi-ink-soft)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Type</h4>
+      <div style={{ display: 'grid', gap: 4 }}>
+        <div className="kindi-display" style={{ fontSize: 36, fontWeight: 600, lineHeight: 1 }}>Display · Fraunces</div>
+        <div style={{ fontSize: 16, fontWeight: 800 }}>Body bold · Nunito 800</div>
+        <div style={{ fontSize: 14, fontWeight: 600 }}>Body · Nunito 600</div>
+        <div style={{ fontFamily: 'var(--kindi-mono)', fontSize: 12, fontWeight: 700 }}>MONO · JETBRAINS · 12 PX</div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

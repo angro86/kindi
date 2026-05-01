@@ -1,10 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import Image from 'next/image';
 import { WatchPageProps, Video, QuizQuestion } from '@/types';
-import { Clock, Star, Search } from '@/components/ui/icons';
-import { avatars } from '@/components/avatars';
 import { VIDEOS } from '@/data/videos';
 import { CATEGORIES } from '@/data/categories';
 import { QUESTIONS } from '@/data/questions';
@@ -16,6 +13,7 @@ import { YouTubePlayer } from './YouTubePlayer';
 import { QuestionModal } from '@/components/modals/QuestionModal';
 import { JarFullModal } from '@/components/modals/JarFullModal';
 import { TimeUpModal } from '@/components/modals/TimeUpModal';
+import { Button, Chip, Icon, KindiAvatar, KindiLogo, Pill } from '@/components/ui';
 
 export function WatchPage({ child, duration, categories, rewards, onEnd }: WatchPageProps) {
   const [video, setVideo] = useState<Video | null>(null);
@@ -36,7 +34,6 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
   }, [ageGroup, active, search]);
 
   const questions = QUESTIONS[ageGroup as 2 | 4 | 6];
-  const Avatar = avatars[child.avatar || 0];
 
   useEffect(() => {
     const t = setInterval(() => {
@@ -52,24 +49,22 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
     return () => clearInterval(t);
   }, []);
 
-  const onQuizTime = useCallback((watchTime: number) => {
-    if (!rewards.enabled || !video) return;
-
-    // Find a video-specific question for the elapsed time window
-    const videoQs = VIDEO_QUESTIONS[video.youtubeId];
-    const chunkStart = watchTime - QUIZ_INTERVAL;
-
-    if (videoQs) {
-      const match = videoQs.find((tq) => tq.startSec >= chunkStart && tq.startSec < watchTime);
-      if (match) {
-        setQuestion(match.question);
-        return;
+  const onQuizTime = useCallback(
+    (watchTime: number) => {
+      if (!rewards.enabled || !video) return;
+      const videoQs = VIDEO_QUESTIONS[video.youtubeId];
+      const chunkStart = watchTime - QUIZ_INTERVAL;
+      if (videoQs) {
+        const match = videoQs.find((tq) => tq.startSec >= chunkStart && tq.startSec < watchTime);
+        if (match) {
+          setQuestion(match.question);
+          return;
+        }
       }
-    }
-
-    // Fallback to static age-group questions
-    setQuestion(questions[Math.floor(Math.random() * questions.length)]);
-  }, [rewards.enabled, video, questions]);
+      setQuestion(questions[Math.floor(Math.random() * questions.length)]);
+    },
+    [rewards.enabled, video, questions],
+  );
 
   const onAnswer = (correct: boolean) => {
     setQuestion(null);
@@ -82,135 +77,479 @@ export function WatchPage({ child, duration, categories, rewards, onEnd }: Watch
     }
   };
 
+  const upNext = video ? filteredVideos.filter((v) => v.id !== video.id).slice(0, 6) : [];
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-100 via-purple-50 to-pink-50">
-      <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-lg sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-              <span className="text-lg">🦊</span>
-            </div>
-            <span className="text-lg font-bold text-white">kindi</span>
+    <div
+      className="kindi-body"
+      style={{
+        minHeight: '100vh',
+        background: 'var(--kindi-cream)',
+      }}
+    >
+      <header
+        style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 40,
+          background: 'rgba(252, 250, 246, 0.92)',
+          backdropFilter: 'blur(12px)',
+          borderBottom: '1px solid var(--kindi-line)',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1280,
+            margin: '0 auto',
+            padding: '14px 24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 16,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <KindiLogo size={18} />
           </div>
-          <div className="flex items-center gap-2">
-            <div className="bg-white/20 rounded-full px-3 py-1.5 flex items-center gap-1.5">
-              <Clock className="w-4 h-4 text-white" />
-              <span className="font-bold text-white">{formatTime(sessionTime)}</span>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Pill icon={<Icon.clock size={11} color="var(--kindi-coral-deep)" />}>
+              <span className="t-mono" style={{ fontWeight: 700 }}>
+                {formatTime(sessionTime)}
+              </span>
+            </Pill>
             {rewards.enabled && (
-              <div className="bg-amber-400 rounded-full px-3 py-1.5 flex items-center gap-1.5">
-                <Star className="w-4 h-4 text-amber-900" />
-                <span className="font-bold text-amber-900">
-                  {stars}/{rewards.goal}
-                </span>
-              </div>
+              <Pill
+                color="oklch(0.94 0.10 90)"
+                icon={<Icon.star size={11} color="oklch(0.65 0.18 75)" />}
+              >
+                {stars}/{rewards.goal}
+              </Pill>
             )}
-            <div className="bg-white/20 rounded-full pl-1 pr-3 py-1 flex items-center gap-1.5">
-              <Avatar size={26} />
-              <span className="text-white font-medium text-sm">{child.name}</span>
-            </div>
-            <button
-              onClick={onEnd}
-              className="px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded-full font-medium text-white text-sm"
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '4px 10px 4px 4px',
+                borderRadius: 999,
+                background: 'var(--kindi-paper)',
+                border: '1px solid var(--kindi-line-2)',
+                boxShadow: 'var(--shadow-xs)',
+              }}
             >
+              <KindiAvatar avatarIndex={child.avatar || 0} size={28} />
+              <span style={{ fontSize: 13, fontWeight: 700 }}>{child.name}</span>
+            </div>
+            <Button variant="secondary" size="sm" onClick={onEnd}>
               End
-            </button>
+            </Button>
           </div>
         </div>
-      </div>
+      </header>
 
-      <div className="bg-white/80 border-b sticky top-14 z-30">
-        <div className="max-w-6xl mx-auto px-4 py-2">
-          <div className="flex items-center gap-3">
-            <div className="relative flex-1 max-w-xs">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search videos..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-full bg-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400"
-              />
-            </div>
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {availCats.map(([k, l]) => (
-                <button
-                  key={k}
-                  onClick={() =>
-                    setActive((p) => (p.includes(k) ? p.filter((c) => c !== k) : [...p, k]))
-                  }
-                  className={`px-3 py-1.5 rounded-full text-sm font-medium whitespace-nowrap ${active.includes(k) ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white' : 'bg-white text-gray-600 border'}`}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        {!video ? (
-          <>
-            <h1 className="text-xl font-bold text-indigo-900 mb-4">
-              {filteredVideos.length} videos to explore! 🎉
-            </h1>
-            {filteredVideos.length === 0 ? (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">🔍</div>
-                <p className="text-gray-500">
-                  {search ? 'No videos match your search' : 'Select a category'}
-                </p>
-              </div>
-            ) : (
-              <VideoGrid videos={filteredVideos} onSelect={setVideo} />
-            )}
-          </>
-        ) : (
-          <div className="max-w-3xl mx-auto space-y-6">
-            <YouTubePlayer
-              video={video}
-              onBack={() => setVideo(null)}
-              onQuizTime={onQuizTime}
-              rewards={rewards.enabled}
-              quizActive={!!question}
-            />
-            {filteredVideos.filter((v) => v.id !== video.id).length > 0 && (
-              <div className="bg-white rounded-2xl p-4 shadow-md">
-                <h3 className="text-lg font-bold text-gray-800 mb-3">Up Next 🎬</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {filteredVideos
-                    .filter((v) => v.id !== video.id)
-                    .slice(0, 4)
-                    .map((v) => (
-                      <button
-                        key={v.id}
-                        onClick={() => setVideo(v)}
-                        className="rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:scale-105 transition-all"
-                      >
-                        <div className="relative aspect-video bg-gray-200">
-                          <Image
-                            src={`https://img.youtube.com/vi/${v.youtubeId}/mqdefault.jpg`}
-                            alt={v.title}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="p-2 bg-white">
-                          <p className="text-xs font-medium text-gray-700 truncate">{v.title}</p>
-                        </div>
-                      </button>
-                    ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      {!video ? (
+        <GridView
+          child={child}
+          sessionTime={sessionTime}
+          search={search}
+          setSearch={setSearch}
+          availCats={availCats}
+          active={active}
+          setActive={setActive}
+          filteredVideos={filteredVideos}
+          onSelect={setVideo}
+        />
+      ) : (
+        <PlayerView
+          video={video}
+          upNext={upNext}
+          onBack={() => setVideo(null)}
+          onSelect={setVideo}
+          onQuizTime={onQuizTime}
+          rewards={rewards.enabled}
+          quizActive={!!question}
+        />
+      )}
 
       {question && <QuestionModal question={question} onAnswer={onAnswer} />}
-      {jarFull && <JarFullModal name={child.name} onClaim={() => { setJarFull(false); setStars(0); }} />}
+      {jarFull && (
+        <JarFullModal
+          name={child.name}
+          onClaim={() => {
+            setJarFull(false);
+            setStars(0);
+          }}
+        />
+      )}
       {timeUp && <TimeUpModal name={child.name} duration={duration} onEnd={onEnd} />}
     </div>
+  );
+}
+
+function GridView({
+  child,
+  sessionTime,
+  search,
+  setSearch,
+  availCats,
+  active,
+  setActive,
+  filteredVideos,
+  onSelect,
+}: {
+  child: WatchPageProps['child'];
+  sessionTime: number;
+  search: string;
+  setSearch: (s: string) => void;
+  availCats: [string, string][];
+  active: string[];
+  setActive: React.Dispatch<React.SetStateAction<string[]>>;
+  filteredVideos: Video[];
+  onSelect: (v: Video) => void;
+}) {
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if (h < 12) return 'Good morning';
+    if (h < 18) return 'Good afternoon';
+    return 'Good evening';
+  })();
+  const minutesLeft = Math.ceil(sessionTime / 60);
+
+  return (
+    <main style={{ maxWidth: 1280, margin: '0 auto', padding: '24px 24px 48px' }}>
+      {/* Greeting block */}
+      <section
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 16,
+          marginBottom: 20,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <KindiAvatar avatarIndex={child.avatar || 0} size={56} />
+          <div>
+            <div className="t-label">{greeting}</div>
+            <div
+              className="kindi-display"
+              style={{
+                fontSize: 32,
+                fontWeight: 600,
+                lineHeight: 1.05,
+                letterSpacing: '-0.025em',
+              }}
+            >
+              Hi, <span className="squig">{child.name}</span>
+            </div>
+          </div>
+        </div>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '8px 14px',
+            borderRadius: 999,
+            background: 'var(--kindi-paper)',
+            border: '1px solid var(--kindi-line-2)',
+            boxShadow: 'var(--shadow-xs)',
+          }}
+        >
+          <Icon.clock size={15} color="var(--kindi-coral-deep)" />
+          <span className="t-mono" style={{ fontWeight: 700, fontSize: 13 }}>
+            {minutesLeft} min left
+          </span>
+        </div>
+      </section>
+
+      {/* Search + chips */}
+      <section
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          marginBottom: 24,
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ position: 'relative', flex: '0 0 280px', maxWidth: '100%' }}>
+          <span
+            style={{
+              position: 'absolute',
+              left: 12,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              color: 'var(--kindi-ink-mute)',
+              display: 'flex',
+            }}
+          >
+            <Icon.search size={14} />
+          </span>
+          <input
+            type="text"
+            placeholder="Search videos..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '9px 14px 9px 34px',
+              borderRadius: 999,
+              border: '1px solid var(--kindi-line-2)',
+              background: 'var(--kindi-paper)',
+              fontSize: 13,
+              fontWeight: 600,
+              fontFamily: 'var(--kindi-body)',
+              outline: 'none',
+              boxShadow: 'var(--shadow-xs)',
+            }}
+          />
+        </div>
+        <div style={{ display: 'flex', gap: 8, overflowX: 'auto' }} className="no-scrollbar">
+          {availCats.map(([k, l]) => {
+            const emoji = l.split(' ')[0];
+            const label = l.split(' ').slice(1).join(' ');
+            return (
+              <Chip
+                key={k}
+                active={active.includes(k)}
+                onClick={() =>
+                  setActive((p) => (p.includes(k) ? p.filter((c) => c !== k) : [...p, k]))
+                }
+              >
+                <span style={{ fontSize: 14 }}>{emoji}</span>
+                {label}
+              </Chip>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Video grid */}
+      <section>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'baseline',
+            justifyContent: 'space-between',
+            marginBottom: 16,
+          }}
+        >
+          <h2
+            className="kindi-display"
+            style={{
+              margin: 0,
+              fontSize: 22,
+              fontWeight: 600,
+              letterSpacing: '-0.022em',
+            }}
+          >
+            {filteredVideos.length} videos to explore
+          </h2>
+        </div>
+
+        {filteredVideos.length === 0 ? (
+          <div
+            className="surface"
+            style={{
+              padding: '48px 24px',
+              textAlign: 'center',
+              borderRadius: 20,
+            }}
+          >
+            <div style={{ fontSize: 40, marginBottom: 8 }}>🔍</div>
+            <p style={{ color: 'var(--kindi-ink-soft)', fontWeight: 600 }}>
+              {search ? 'No videos match your search' : 'Pick a topic above'}
+            </p>
+          </div>
+        ) : (
+          <VideoGrid videos={filteredVideos} onSelect={onSelect} />
+        )}
+      </section>
+    </main>
+  );
+}
+
+function PlayerView({
+  video,
+  upNext,
+  onBack,
+  onSelect,
+  onQuizTime,
+  rewards,
+  quizActive,
+}: {
+  video: Video;
+  upNext: Video[];
+  onBack: () => void;
+  onSelect: (v: Video) => void;
+  onQuizTime: (watchTime: number) => void;
+  rewards: boolean;
+  quizActive: boolean;
+}) {
+  return (
+    <main
+      style={{
+        maxWidth: 1280,
+        margin: '0 auto',
+        padding: '20px 24px 48px',
+      }}
+    >
+      <div style={{ marginBottom: 16 }}>
+        <Button variant="secondary" size="sm" icon={<Icon.arrowL size={13} />} onClick={onBack}>
+          Back
+        </Button>
+      </div>
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr) 320px',
+          gap: 24,
+          alignItems: 'start',
+        }}
+        className="watch-grid"
+      >
+        <div>
+          <YouTubePlayer
+            video={video}
+            onBack={onBack}
+            onQuizTime={onQuizTime}
+            rewards={rewards}
+            quizActive={quizActive}
+          />
+          <div style={{ marginTop: 18 }}>
+            <h1 className="t-h1" style={{ margin: 0 }}>
+              {video.title}
+            </h1>
+            <div
+              style={{
+                marginTop: 8,
+                fontSize: 14,
+                fontWeight: 600,
+                color: 'var(--kindi-ink-soft)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+              }}
+            >
+              <span>{video.channel}</span>
+              <span style={{ opacity: 0.5 }}>•</span>
+              <span>
+                Ages {video.ageMin}–{video.ageMax}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <aside style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          {upNext.length > 0 && (
+            <div className="surface" style={{ padding: 16, borderRadius: 18 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: 12,
+                }}
+              >
+                <div className="t-label">Up next</div>
+                <span
+                  className="t-caption"
+                  style={{ color: 'var(--kindi-ink-soft)' }}
+                >
+                  {upNext.length} approved
+                </span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {upNext.map((v) => (
+                  <UpNextRow key={v.id} video={v} onClick={() => onSelect(v)} />
+                ))}
+              </div>
+            </div>
+          )}
+        </aside>
+      </div>
+
+      <style jsx>{`
+        @media (max-width: 900px) {
+          .watch-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+function UpNextRow({ video, onClick }: { video: Video; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        gap: 10,
+        alignItems: 'flex-start',
+        background: 'transparent',
+        border: 'none',
+        padding: 0,
+        cursor: 'pointer',
+        textAlign: 'left',
+      }}
+    >
+      <div style={{ width: 100, flexShrink: 0 }}>
+        <div
+          style={{
+            position: 'relative',
+            width: '100%',
+            aspectRatio: '16/9',
+            borderRadius: 8,
+            overflow: 'hidden',
+            background: 'var(--kindi-cream-3)',
+            boxShadow: '0 1px 2px rgba(40,30,20,0.06)',
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+            alt={video.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              display: 'block',
+            }}
+          />
+        </div>
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            lineHeight: 1.25,
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {video.title}
+        </div>
+        <div
+          style={{
+            marginTop: 2,
+            fontSize: 11.5,
+            fontWeight: 600,
+            color: 'var(--kindi-ink-soft)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {video.channel}
+        </div>
+      </div>
+    </button>
   );
 }

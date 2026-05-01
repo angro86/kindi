@@ -1,41 +1,76 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
 import { VideoThumbnailProps } from '@/types';
-import { Play } from '@/components/ui/icons';
+import { VideoThumb } from '@/components/ui';
+
+const TOPIC_LABELS: Record<string, string> = {
+  songs: 'Songs',
+  movement: 'Move',
+  social: 'Social',
+  math: 'Numbers',
+  reading: 'Reading',
+  science: 'Science',
+  stories: 'Stories',
+  nature: 'Nature',
+  geography: 'World',
+  coding: 'Coding',
+  space: 'Space',
+  history: 'History',
+};
 
 export function VideoThumbnail({ video, onClick }: VideoThumbnailProps) {
-  const [imgError, setImgError] = useState(false);
-
   return (
     <button
       onClick={onClick}
-      className="group text-left rounded-2xl overflow-hidden bg-white shadow-md hover:shadow-xl hover:scale-105 transition-all"
+      className="ring"
+      style={{
+        background: 'transparent',
+        border: 'none',
+        padding: 0,
+        textAlign: 'left',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+      }}
     >
-      <div className="relative aspect-video bg-gradient-to-br from-purple-400 to-pink-400">
-        {!imgError ? (
-          <Image
-            src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
-            alt={video.title}
-            fill
-            className="object-cover"
-            onError={() => setImgError(true)}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-white">
-            <span className="text-5xl">🎬</span>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-          <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg">
-            <Play className="w-5 h-5 text-gray-700" />
-          </div>
+      <VideoThumb
+        youtubeId={video.youtubeId}
+        alt={video.title}
+        topic={TOPIC_LABELS[video.cat] || video.cat}
+        height={138}
+        radius={14}
+      />
+      <div style={{ padding: '0 2px' }}>
+        <div
+          className="t-h3"
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: 1.3,
+            color: 'var(--kindi-ink)',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            minHeight: 36,
+          }}
+        >
+          {video.title}
         </div>
-      </div>
-      <div className="p-3 bg-white">
-        <h3 className="font-bold text-sm text-gray-800 line-clamp-2">{video.title}</h3>
-        <p className="text-xs text-gray-500 mt-1">{video.channel}</p>
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 12,
+            fontWeight: 600,
+            color: 'var(--kindi-ink-soft)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {video.channel}
+        </div>
       </div>
     </button>
   );

@@ -1,11 +1,26 @@
 import type { Metadata } from 'next';
-import { Nunito } from 'next/font/google';
+import { Nunito, Fraunces, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 const nunito = Nunito({
   subsets: ['latin'],
-  weight: ['400', '600', '700', '800'],
+  weight: ['500', '600', '700', '800', '900'],
   display: 'swap',
+  variable: '--font-nunito',
+});
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+  variable: '--font-fraunces',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
 });
 
 export const metadata: Metadata = {
@@ -20,7 +35,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${nunito.className} antialiased`}>{children}</body>
+      <body
+        className={`${nunito.variable} ${fraunces.variable} ${jetbrainsMono.variable} kindi-body antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }

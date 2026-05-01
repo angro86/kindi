@@ -13,6 +13,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "check-videos.js",
+    "design_handoff_kindi_redesign/**",
   ]),
 ]);
 

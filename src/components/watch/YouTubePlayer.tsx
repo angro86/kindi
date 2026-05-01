@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { YouTubePlayerProps } from '@/types';
-import { ArrowLeft, Play, Pause, Star } from '@/components/ui/icons';
 import { QUIZ_INTERVAL } from '@/lib/constants';
 import { formatTime } from '@/lib/utils';
+import { Icon } from '@/components/ui';
 
 declare global {
   interface Window {
@@ -13,11 +13,11 @@ declare global {
   }
 }
 
-export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }: YouTubePlayerProps) {
+export function YouTubePlayer({ video, onQuizTime, rewards, quizActive }: YouTubePlayerProps) {
   const [watchTime, setWatchTime] = useState(0);
+  const [lastQuizAt, setLastQuizAt] = useState(0);
   const [playing, setPlaying] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const lastQuizRef = useRef(0);
   const playerRef = useRef<YT.Player | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const onQuizTimeRef = useRef(onQuizTime);
@@ -26,7 +26,6 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     onQuizTimeRef.current = onQuizTime;
   }, [onQuizTime]);
 
-  // Load YouTube IFrame API
   useEffect(() => {
     if (window.YT && window.YT.Player) return;
     const tag = document.createElement('script');
@@ -34,7 +33,6 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     document.head.appendChild(tag);
   }, []);
 
-  // Initialize player when API is ready
   useEffect(() => {
     const init = () => {
       if (!containerRef.current) return;
@@ -63,7 +61,6 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     };
   }, [video.youtubeId]);
 
-  // Pause/resume on quiz
   useEffect(() => {
     const player = playerRef.current;
     if (!player) return;
@@ -74,11 +71,10 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
         player.playVideo();
       }
     } catch {
-      // Player may not be ready yet
+      // not ready
     }
   }, [quizActive]);
 
-  // Timer runs only when video is actually playing
   useEffect(() => {
     if (!playing) {
       if (timerRef.current) {
@@ -91,10 +87,13 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     timerRef.current = setInterval(() => {
       setWatchTime((prev) => {
         const newTime = prev + 1;
-        if (rewards && newTime - lastQuizRef.current >= QUIZ_INTERVAL) {
-          lastQuizRef.current = newTime;
-          onQuizTimeRef.current(newTime);
-        }
+        setLastQuizAt((last) => {
+          if (rewards && newTime - last >= QUIZ_INTERVAL) {
+            onQuizTimeRef.current(newTime);
+            return newTime;
+          }
+          return last;
+        });
         return newTime;
       });
     }, 1000);
@@ -104,47 +103,142 @@ export function YouTubePlayer({ video, onBack, onQuizTime, rewards, quizActive }
     };
   }, [playing, rewards]);
 
-  const [lastQuizTime, setLastQuizTime] = useState(0);
+  const nextQuiz = QUIZ_INTERVAL - (watchTime - lastQuizAt);
 
-  useEffect(() => {
-    setLastQuizTime(lastQuizRef.current);
-  }, [watchTime]);
-
-  const nextQuiz = QUIZ_INTERVAL - (watchTime - lastQuizTime);
+  const rewind10 = () => {
+    const player = playerRef.current;
+    if (!player) return;
+    try {
+      const t = player.getCurrentTime();
+      player.seekTo(Math.max(0, t - 10), true);
+    } catch {
+      // not ready
+    }
+  };
 
   return (
-    <div className="space-y-4">
-      <button
-        onClick={onBack}
-        className="px-4 py-2 bg-white hover:bg-gray-50 rounded-full font-medium text-gray-600 flex items-center gap-2 shadow-md"
+    <div
+      style={{
+        position: 'relative',
+        borderRadius: 20,
+        overflow: 'hidden',
+        background: '#000',
+        boxShadow: 'var(--shadow-lg)',
+        border: '1px solid var(--kindi-line-2)',
+      }}
+    >
+      {/* Top chrome strip */}
+      <div
+        style={{
+          padding: '10px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+          background: 'linear-gradient(180deg, oklch(0.22 0.02 50), oklch(0.18 0.02 50))',
+          color: '#fff',
+        }}
       >
-        <ArrowLeft className="w-4 h-4" />
-        Back
-      </button>
-      <div className="bg-white rounded-3xl overflow-hidden shadow-2xl">
-        <div className="relative aspect-video bg-black">
-          <div ref={containerRef} className="w-full h-full" />
-          {rewards && nextQuiz <= 30 && nextQuiz > 0 && playing && (
-            <div className="absolute top-4 right-4 bg-gradient-to-r from-orange-500 to-red-500 rounded-full px-4 py-2 flex items-center gap-2 shadow-lg animate-pulse z-10">
-              <Star className="w-4 h-4 text-yellow-300" />
-              <span className="text-white font-bold text-sm">Quiz in {nextQuiz}s!</span>
-            </div>
-          )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+          <Icon.youtube size={16} color="#fff" />
+          <span style={{ fontSize: 12.5, fontWeight: 700, whiteSpace: 'nowrap' }}>
+            Playing on YouTube
+          </span>
+          <span style={{ opacity: 0.5 }}>·</span>
+          <span
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              opacity: 0.85,
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {video.channel}
+          </span>
         </div>
-        <div className="p-4 flex items-center justify-between border-t bg-gray-50">
-          <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-gray-800 truncate">{video.title}</h3>
-            <p className="text-sm text-gray-500">{video.channel}</p>
-          </div>
-          <div className="flex items-center gap-3 ml-4">
-            <div className={`${playing ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'} px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1.5`}>
-              {playing ? <Play className="w-3 h-3" /> : <Pause className="w-3 h-3" />}
-              {playing ? 'Playing' : 'Paused'}
-            </div>
-            <div className="bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full text-sm font-bold">
-              ⏱️ {formatTime(watchTime)}
-            </div>
-          </div>
+        {rewards && nextQuiz > 0 && playing && (
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              padding: '3px 9px',
+              borderRadius: 999,
+              background: 'rgba(255,255,255,0.12)',
+              fontSize: 11,
+              fontWeight: 700,
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <Icon.sparkle size={11} color="oklch(0.85 0.16 75)" />
+            Quiz in {formatTime(nextQuiz)}
+          </span>
+        )}
+      </div>
+
+      {/* The actual YouTube iframe — never overlay UI on top of it */}
+      <div
+        style={{
+          position: 'relative',
+          aspectRatio: '16 / 9',
+          background: '#000',
+        }}
+      >
+        <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
+      </div>
+
+      {/* Bottom chrome strip — Kindi-only controls */}
+      <div
+        style={{
+          padding: '12px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 12,
+          background: 'oklch(0.22 0.02 50)',
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          color: '#fff',
+        }}
+      >
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          <button
+            onClick={rewind10}
+            style={{
+              padding: '7px 12px',
+              borderRadius: 9,
+              background: 'rgba(255,255,255,0.1)',
+              border: 'none',
+              color: '#fff',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            <Icon.rewind size={13} color="#fff" /> 10s
+          </button>
+          <span
+            style={{
+              padding: '7px 12px',
+              borderRadius: 9,
+              background: 'rgba(255,255,255,0.05)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              fontSize: 12,
+              fontWeight: 700,
+              fontFamily: 'var(--kindi-mono)',
+            }}
+          >
+            <Icon.clock size={13} color="#fff" /> {formatTime(watchTime)}
+          </span>
+        </div>
+        <div style={{ fontSize: 11, fontWeight: 600, opacity: 0.7 }}>
+          {playing ? 'Playing' : 'Paused'} · Kindi controls
         </div>
       </div>
     </div>
