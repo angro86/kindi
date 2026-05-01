@@ -325,48 +325,404 @@ function GridView({
         </div>
       </section>
 
-      {/* Video grid */}
-      <section>
+      {filteredVideos.length === 0 ? (
+        <div
+          className="surface"
+          style={{
+            padding: '48px 24px',
+            textAlign: 'center',
+            borderRadius: 20,
+          }}
+        >
+          <div style={{ fontSize: 40, marginBottom: 8 }}>🔍</div>
+          <p style={{ color: 'var(--kindi-ink-soft)', fontWeight: 600 }}>
+            {search ? 'No videos match your search' : 'Pick a topic above'}
+          </p>
+        </div>
+      ) : search ? (
+        <section>
+          <h2
+            className="kindi-display"
+            style={{
+              margin: '0 0 16px',
+              fontSize: 22,
+              fontWeight: 600,
+              letterSpacing: '-0.022em',
+            }}
+          >
+            {filteredVideos.length} result{filteredVideos.length === 1 ? '' : 's'}
+          </h2>
+          <VideoGrid videos={filteredVideos} onSelect={onSelect} />
+        </section>
+      ) : (
+        <ShelvesLayout
+          videos={filteredVideos}
+          availCats={availCats}
+          active={active}
+          onSelect={onSelect}
+        />
+      )}
+    </main>
+  );
+}
+
+function ShelvesLayout({
+  videos,
+  availCats,
+  active,
+  onSelect,
+}: {
+  videos: Video[];
+  availCats: [string, string][];
+  active: string[];
+  onSelect: (v: Video) => void;
+}) {
+  const hero = videos[0];
+  const restById = new Set(videos.slice(1).map((v) => v.id));
+
+  // Group remaining videos by category, in order of activeCategories
+  const grouped = active
+    .map((catKey) => {
+      const label = availCats.find(([k]) => k === catKey)?.[1] ?? catKey;
+      const items = videos.filter((v) => v.cat === catKey && restById.has(v.id));
+      return { catKey, label, items };
+    })
+    .filter((g) => g.items.length > 0);
+
+  return (
+    <>
+      {hero && <Hero video={hero} onSelect={onSelect} />}
+      {grouped.map(({ catKey, label, items }) => (
+        <Shelf
+          key={catKey}
+          title={label.split(' ').slice(1).join(' ') || label}
+          emoji={label.split(' ')[0]}
+          subtitle={`${items.length} video${items.length === 1 ? '' : 's'}`}
+          videos={items}
+          onSelect={onSelect}
+        />
+      ))}
+    </>
+  );
+}
+
+const TOPIC_LABELS: Record<string, string> = {
+  songs: 'Songs',
+  movement: 'Move',
+  social: 'Social',
+  math: 'Numbers',
+  reading: 'Reading',
+  science: 'Science',
+  stories: 'Stories',
+  nature: 'Nature',
+  geography: 'World',
+  coding: 'Coding',
+  space: 'Space',
+  history: 'History',
+};
+
+function Hero({ video, onSelect }: { video: Video; onSelect: (v: Video) => void }) {
+  return (
+    <section style={{ marginBottom: 32 }}>
+      <button
+        onClick={() => onSelect(video)}
+        className="ring"
+        style={{
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          width: '100%',
+          textAlign: 'left',
+          cursor: 'pointer',
+          display: 'block',
+          position: 'relative',
+          borderRadius: 24,
+          overflow: 'hidden',
+          height: 320,
+          boxShadow: 'var(--shadow-lg)',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
+          alt={video.title}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
         <div
           style={{
+            position: 'absolute',
+            inset: 0,
+            background:
+              'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.15) 50%, transparent 100%)',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            top: 20,
+            left: 20,
             display: 'flex',
-            alignItems: 'baseline',
-            justifyContent: 'space-between',
-            marginBottom: 16,
+            gap: 6,
+            alignItems: 'center',
+          }}
+        >
+          <Pill
+            color="rgba(255,255,255,0.95)"
+            tone="soft"
+            icon={<Icon.sparkle size={11} color="var(--kindi-coral-deep)" />}
+          >
+            Featured
+          </Pill>
+          <Pill color="rgba(255,255,255,0.95)" tone="soft">
+            {TOPIC_LABELS[video.cat] || video.cat}
+          </Pill>
+        </div>
+        <div
+          style={{
+            position: 'absolute',
+            left: 28,
+            right: 28,
+            bottom: 24,
+            color: '#fff',
           }}
         >
           <h2
             className="kindi-display"
             style={{
               margin: 0,
-              fontSize: 22,
+              fontSize: 36,
+              fontWeight: 600,
+              lineHeight: 1.05,
+              letterSpacing: '-0.025em',
+              textShadow: '0 2px 8px rgba(0,0,0,0.25)',
+              maxWidth: 640,
+            }}
+          >
+            {video.title}
+          </h2>
+          <div
+            style={{
+              marginTop: 8,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              fontSize: 13,
+              fontWeight: 600,
+              opacity: 0.9,
+            }}
+          >
+            <span>{video.channel}</span>
+            <span style={{ opacity: 0.6 }}>•</span>
+            <span>
+              Ages {video.ageMin}–{video.ageMax}
+            </span>
+          </div>
+          <div style={{ marginTop: 16 }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '11px 18px',
+                borderRadius: 12,
+                background: 'var(--kindi-primary)',
+                color: '#fff',
+                fontWeight: 700,
+                fontSize: 14,
+                boxShadow:
+                  '0 1px 0 rgba(255,255,255,0.2) inset, 0 4px 10px oklch(0.62 0.18 32 / 0.25)',
+                border: '1px solid oklch(0.5 0.16 32)',
+              }}
+            >
+              <Icon.play size={14} color="#fff" /> Watch now
+            </span>
+          </div>
+        </div>
+      </button>
+    </section>
+  );
+}
+
+function Shelf({
+  title,
+  emoji,
+  subtitle,
+  videos,
+  onSelect,
+}: {
+  title: string;
+  emoji?: string;
+  subtitle: string;
+  videos: Video[];
+  onSelect: (v: Video) => void;
+}) {
+  return (
+    <section style={{ marginBottom: 28 }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          marginBottom: 12,
+          gap: 12,
+        }}
+      >
+        <div>
+          <h3
+            className="kindi-display"
+            style={{
+              margin: 0,
+              fontSize: 24,
               fontWeight: 600,
               letterSpacing: '-0.022em',
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: 8,
             }}
           >
-            {filteredVideos.length} videos to explore
-          </h2>
-        </div>
-
-        {filteredVideos.length === 0 ? (
+            {emoji && (
+              <span style={{ fontSize: 22, lineHeight: 1 }} aria-hidden>
+                {emoji}
+              </span>
+            )}
+            {title}
+          </h3>
           <div
-            className="surface"
             style={{
-              padding: '48px 24px',
-              textAlign: 'center',
-              borderRadius: 20,
+              marginTop: 2,
+              fontSize: 13,
+              fontWeight: 600,
+              color: 'var(--kindi-ink-soft)',
             }}
           >
-            <div style={{ fontSize: 40, marginBottom: 8 }}>🔍</div>
-            <p style={{ color: 'var(--kindi-ink-soft)', fontWeight: 600 }}>
-              {search ? 'No videos match your search' : 'Pick a topic above'}
-            </p>
+            {subtitle}
           </div>
-        ) : (
-          <VideoGrid videos={filteredVideos} onSelect={onSelect} />
-        )}
-      </section>
-    </main>
+        </div>
+      </div>
+      <div
+        className="no-scrollbar"
+        style={{
+          display: 'flex',
+          gap: 14,
+          overflowX: 'auto',
+          paddingBottom: 4,
+          scrollSnapType: 'x mandatory',
+        }}
+      >
+        {videos.map((v) => (
+          <div
+            key={v.id}
+            style={{
+              flex: '0 0 240px',
+              scrollSnapAlign: 'start',
+            }}
+          >
+            <ShelfCard video={v} onSelect={onSelect} />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ShelfCard({ video, onSelect }: { video: Video; onSelect: (v: Video) => void }) {
+  return (
+    <button
+      onClick={() => onSelect(video)}
+      className="ring"
+      style={{
+        background: 'transparent',
+        border: 'none',
+        padding: 0,
+        textAlign: 'left',
+        cursor: 'pointer',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 8,
+        width: '100%',
+      }}
+    >
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16 / 9',
+          borderRadius: 14,
+          overflow: 'hidden',
+          background: 'var(--kindi-cream-3)',
+          boxShadow: '0 1px 2px rgba(40,30,20,0.06), 0 6px 16px rgba(40,30,20,0.10)',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+          alt={video.title}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            top: 10,
+            left: 10,
+            padding: '3px 9px',
+            borderRadius: 999,
+            background: 'rgba(255,255,255,0.92)',
+            fontFamily: 'var(--kindi-body)',
+            fontSize: 11,
+            fontWeight: 800,
+            color: 'var(--kindi-ink)',
+            backdropFilter: 'blur(4px)',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.06)',
+          }}
+        >
+          {TOPIC_LABELS[video.cat] || video.cat}
+        </div>
+      </div>
+      <div style={{ padding: '0 2px' }}>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            lineHeight: 1.3,
+            color: 'var(--kindi-ink)',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            minHeight: 36,
+          }}
+        >
+          {video.title}
+        </div>
+        <div
+          style={{
+            marginTop: 4,
+            fontSize: 12,
+            fontWeight: 600,
+            color: 'var(--kindi-ink-soft)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {video.channel}
+        </div>
+      </div>
+    </button>
   );
 }
 

@@ -79,17 +79,19 @@ export function VideoThumb({
         <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 1 }}>{badge}</div>
       )}
 
-      <div
-        style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 60,
-          background: 'linear-gradient(to top, rgba(0,0,0,0.55), transparent)',
-          pointerEvents: 'none',
-        }}
-      />
+      {(duration || progress !== undefined) && (
+        <div
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 60,
+            background: 'linear-gradient(to top, rgba(0,0,0,0.55), transparent)',
+            pointerEvents: 'none',
+          }}
+        />
+      )}
       {duration && (
         <div
           style={{
